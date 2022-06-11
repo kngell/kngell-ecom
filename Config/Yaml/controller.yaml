@@ -1,0 +1,20 @@
+admin:
+  - admin
+client:
+  - home
+  - users
+  - restricted
+  - cart
+  - security
+ajax:
+  - forms
+  - guests
+  - visitors
+  - checkout
+  - tables
+  - payment_gateway
+auth:
+  - auth
+  - login
+asset:
+  - assets
