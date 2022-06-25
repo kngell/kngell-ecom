@@ -1,7 +1,179 @@
-/** Color */
-    
-$primary-color: #480ca0
+/** Thme Color */
+@use 'sass:math'
 
+$primary: #326dee !default
+$secondary: #1ac888!default
+$error: #d32752!default
+$info: #f6c31c!default
 
-// font-style
-$font-roboto : "roboto", sans serif
+// Spacing
+$base-padding: .75rem!default
+$base-margin: .75rem!default
+
+// Border
+$base-border-thickness: .0625rem!default
+$base-border-radius: 1.25rem!default
+
+// Font size
+$base-font-size: 1rem!default
+$font-size-sm: $base-font-size * .75!default
+$font-size-lg: $base-font-size * 1.5!default
+$font-size-xl: $base-font-size * 2!default
+$font-size-xxl: $base-font-size * 3!default
+
+// Checkout width
+$checkoutWidth: clamp(100%,30%,26.875rem)
+
+// =============================================================================
+// Color
+// =============================================================================
+// Map
+//Color Map
+$colors: ("primary": $primary,"secondary": $secondary,"error": $error,"info": $info,"blue": #1919e6, "red": #e61919,"yellow": #e6e619,"green": #19e635, "orange": #ffa600,"purple": #9900ff,"gray": #808080,"black": black,"white": white)
+
+// white Color
+$white-common: #fefefe
+$white-color: #ffffff
+$white-variant: #FDFFFC
+$white-light: #f2f2f2
+$white-green: #e8f5f1
+$white-smoke: #fbfbfb
+$white-bg: #FFFFFF
+
+// Blue color
+$blue-in: #18ffff
+$blue-in-light: #adffff
+
+$color-primary: #003859
+$color-second: #00a5c4
+$blue-dark: #024873
+$color-blue: #007bff
+$blue-light: #a0caeb
+$blue-variant: #4e91be
+$blue-standard: #45587F
+//Yellow color
+$color-yellow: #ffd289
+$dark-yellow: #b06d00
+$dark-yellow-light: #be7b0e
+
+// Dark color
+$dark-in: #091034
+$dark-in-light: #060b23
+$dark-color: #000
+$dark-variant: #4c4c4c
+$dark-light: #7d7d7d
+$dark-in: #1d1d1d
+$dark-new: #222222
+$dark-hover: #252528f0
+$dark-plus: #0D0D0D
+
+//Purple Color
+$purple: #9400d3
+$purple-color: #cc66ff
+$purple-dark: #886ab5
+
+//gray Color
+$gray-standard: #696969
+$gray: #495057
+$gray-common: #888
+$gray-light: #f5f5f5
+$gray-variant: #c8c8c8
+$gray-dark: #b8b8b8
+$gray-smoke: #ced4da
+$gray-white: #dddddd
+$gray-in: #d8d8d8
+$gray-dark-in: #3a3833
+$gray-100: #fbfbff
+$gray-150: #f4f6fb
+$gray-200: #eef1f6
+$gray-300: #e1e5ee
+$gray-400: #767b91
+$gray-500: #4f546c
+$gray-600: #2a324b
+$gray-700: #161d34
+$grayEmailTemplate: #f6f9fc
+
+//orange color
+$orange-color: #c45500
+$orange-in: #fb774b
+
+//green color
+$green-very-light: #33cabb
+$green-light: #028f68
+$green: #006400
+
+//Marron
+$marron-color: #2a2a2a
+
+//input
+$input-background: #f2f4f6
+
+//credit card color
+$visa-color: #020659
+//Email text color
+$emailTextColor: #4a4a4a
+$emailbg: #e5dec7
+//Font-size
+$font-base: 1rem
+$font-large: 2.5rem
+
+//utilities Map
+$values-p: ("0": 0,"1": $base-padding,"2": $base-padding*2,"3": $base-padding*4,"4":$base-padding*6,"5":$base-padding*8)
+$values-m: ("0": 0,"1": $base-margin,"2": $base-margin*2,"3": $base-margin*4,"4":$base-margin*6,"5":$base-margin*8)
+$opacity-values: ("0": 0,"10": .1,"20": .2, "30": .3,"40": .4, "50": .5,"60": .6,"70": .7,"80": .8,"90": .9,"100": 1)
+$br-values: ("default": $base-border-radius,"none": 0,"xs": math.div($base-border-radius,4),"sm": math.div($base-border-radius,2),"lg": $base-border-radius*2,"full": 50%)
+$font-size-values: ("sm": $font-size-sm,"md": $base-font-size,"lg": $font-size-lg,"xl": $font-size-xl,"xxl": $font-size-xxl)
+$utilities: ("padding":("prefix": "p","values": $values-p),"padding-left":("prefix": "pl","values": $values-p),"padding-right": ("prefix": "pr","values": $values-p),"padding-top": ("prefix": "pt","values": $values-p),"padding-bottom": ("prefix": "pb","values": $values-m),"margin": ("prefix": "m","values": $values-m),"margin-left": ("prefix": "ml","values": $values-m),"margin-right": ("prefix": "mr","values": $values-m),"margin-top": ("prefix": "mt","values": $values-m),"margin-bottom": ("prefix": "mb","values": $values-m),"opacity": ("prefix": "o","values": $opacity-values),"border-radius": ("prefix": "br","values": $br-values),"display": ("prefix": "d","values": ("n": none,"b": block,"f": flex,"i":inline,"ib":inline-block,"if":inline-flex)),"font-size": ("prefix": "font","values": $font-size-values))
+//Breakpoints - media Queries
+$breakpoints: ("xs": 0,"sm": 480px,"md":720px,"lg": 960px,"xl": 1200px )
+//Grid
+$grid-columns: 12
+$grid-gaps: ("0":0,"1":10px,"2":20px,"3":30px)
+$layout-alignment: ("start": flex-start, "end":flex-end, "center":center, "between":space-between, "around":space-around)
+// Box Shadow
+$base-box-shadow: 1px 3px 5px rgba(0,0,0,.1)
+
+// =============================================================================
+// Font
+// =============================================================================
+$font-baloo: "Baloo Thambi 2", cursive
+$font-raleway: "Raleway", sans-serif
+$font-rubik: "Rubik", sans-serif
+$font-roboto: "Roboto", sans-serif
+$font-robotoCondensed: "roboto-condensed",sans-serif
+$font-fira: "fira", sans-serif
+$font-poppins: "poppins", sans-serif
+$font-convergence: "convergence", sans-serif
+$font-playfair: 'Playfair Display', sans-serif
+$font-monserrat: 'monserrat', sans-serif
+$font-consolas: 'consolas'
+$font-share_tech: 'share_tech', sans-serif
+$font-sanserif: sans-serif
+$font-comments: -apple-system,"sf-pro","BlinkMacSystemFont", "Segoe UI", "Roboto", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+//Font height
+$font-weight-normal: normal
+
+//Border 
+$border-width: 1px
+//Line heigjt
+$base-line-heigth: 2rem
+// btn transition 
+$btn-transition: all,.2s ease-in-out
+$border-radius: 10px
+
+// Responsive Variables
+$desktop: "only screen and (min-width: 1400px)"
+$laptop: "only screen and (min-width: 1200px) and (max-width: 1399px)"
+$lg: "only screen and (min-width: 992px) and (max-width: 1199px)"
+$md: "only screen and (min-width: 768px) and (max-width: 991px)"
+$xs: "(max-width: 767px)"
+$sm: "only screen and (min-width: 576px) and (max-width: 767px)"
+// =============================================================================
+// Paragraphe
+// =============================================================================
+$p-color: #131826
+$midnight: #104f55
+// =============================================================================
+// border radius
+// =============================================================================
+$radius: 0.25rem

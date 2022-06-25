@@ -100,7 +100,7 @@ class View extends AbstractView
     }
 
     /** @inheritDoc */
-    public function asset($asset = '', $ext = '') : string
+    public function asset(string $asset = '', string $ext = '') : string
     {
         $root = isset($asset) ? explode('/', $asset) : [];
         if ($root) {

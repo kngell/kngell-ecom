@@ -59,6 +59,8 @@ exports.assetsRuless = {
     rules: [
       {
         test: /\.js$/,
+        enforce: "pre",
+        use: ["source-map-loader"],
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
@@ -93,6 +95,9 @@ exports.assetsRuless = {
           },
           {
             loader: "css-loader",
+            options: {
+              importLoaders: 2,
+            },
           },
           {
             loader: "postcss-loader",

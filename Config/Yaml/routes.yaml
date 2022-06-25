@@ -2,9 +2,21 @@ get: # Http Get ===========================================
   /:
     controller: home
     method: index
-    namespace: Client/brand/clothes
+    namespace: Client/components
   home:
     controller: home
+    method: index
+    namespace: Client
+  checkout:
+    controller: home
+    method: index
+    namespace: Client
+  lib:
+    controller: home
+    method: lib
+    namespace: Client/brand/clothes
+  learn:
+    controller: learning
     method: index
     namespace: Client
   admin/{controller}/{method}:

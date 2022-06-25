@@ -1,0 +1,13 @@
+@use 'sass:math'
+@use 'corecss/abstract/variables' as *
+
+@each $property, $map in $utilities
+    $prefix: map-get($map,"prefix")
+    $values: map-get($map,"values")
+    @each $k, $v in $values
+        @if( $k == "default")
+            .k-#{$prefix}
+                #{$property}: $v!important
+        @else
+            .k-#{$prefix}-#{$k}
+                #{$property} : $v

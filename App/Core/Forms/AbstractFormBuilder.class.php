@@ -48,6 +48,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         'month',
         'week',
         'hidden',
+        'phone',
     ];
     /** @var array */
     const HTML_ELEMENT_PARTS = [
@@ -114,6 +115,12 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return true;
     }
 
+    public function wrapperClass(string $class) : self
+    {
+        array_push($this->formAttr['class'], $class);
+        return $this;
+    }
+
     public function content(string $content) : self
     {
         $this->inputObject[0]->content($content);
@@ -132,13 +139,13 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    protected function noLabel() : self
+    public function noLabel() : self
     {
         $this->inputObject[0]->settings(['show_label' => false]);
         return $this;
     }
 
-    protected function class(string $str)
+    public function class(string $str)
     {
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->class($str);
@@ -146,13 +153,13 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    protected function value(mixed $value)
+    public function value(mixed $value)
     {
         $this->inputObject[0]->value($value);
         return $this;
     }
 
-    protected function placeholder(string $str) : self
+    public function placeholder(string $str) : self
     {
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->placeholder($str);
@@ -160,7 +167,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    protected function label(string $str) : self
+    public function label(string $str) : self
     {
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->settings(['label' => $str, 'show_label' => true]);
@@ -168,7 +175,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    protected function labelClass(string $str) : self
+    public function labelClass(string $str) : self
     {
         if (count($this->inputObject) === 1) {
             $this->htmlAttr['labelClass'] = [$str];
@@ -176,7 +183,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    protected function req() : self
+    public function req() : self
     {
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->req();
@@ -184,7 +191,15 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    protected function spanClass(string $str) : self
+    public function attr(array $args = []) :self
+    {
+        if (count($args) !== 0) {
+            $this->inputObject[0]->attr($args);
+        }
+        return $this;
+    }
+
+    public function spanClass(string $str) : self
     {
         if (count($this->inputObject) === 1) {
             $this->htmlAttr['spanClass'] = [$str];
@@ -192,7 +207,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    protected function labelUp(string $str) : self
+    public function labelUp(string $str) : self
     {
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->settings(['label' => $str, 'show_label' => true, 'label_up' => true]);
@@ -200,7 +215,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    protected function id(string $id) : self
+    public function id(string $id) : self
     {
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->id($id);
@@ -208,7 +223,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    protected function useModel(bool $useModelData = false) : self
+    public function useModel(bool $useModelData = false) : self
     {
         $this->inputObject[0]->useModel($useModelData);
         return $this;
@@ -219,7 +234,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
      * @param $value
      * @return bool
      */
-    protected function setAttributes(string $key, $value): bool
+    public function setAttributes(string $key, $value): bool
     {
         if (empty($key)) {
             throw new FormBuilderInvalidArgumentException('Invalid or empty attribute key. Ensure the key is present and valid');

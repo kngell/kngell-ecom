@@ -1,0 +1,17 @@
+@use 'sass:math'
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+
+.reponsive-text
+    +xs()
+        color: red
+    +sm()
+        color: blue
+    +md()
+        color: green
+    +lg()
+        color: purple
+    +xl()
+        color: orange
+    +breakpoint(1400px)
+        color: pink

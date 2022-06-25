@@ -11,8 +11,13 @@ module.exports = {
       dependOn: "css/librairies/frontlib",
     },
     //Clothes Home sass
-    "css/brand/clothes/pages/home": {
-      import: ["css/brand/clothes/pages/home.sass"],
+    "css/brand/clothes/pages/home/home": {
+      import: ["css/brand/clothes/pages/home/home.sass"],
+      dependOn: "css/librairies/frontlib",
+    },
+    // Checkout
+    "css/components/checkout/checkout": {
+      import: ["css/components/checkout/checkout.sass"],
       dependOn: "css/librairies/frontlib",
     },
   },

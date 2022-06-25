@@ -1,0 +1,17 @@
+@use 'sass:math'
+@use 'corecss/abstract/variables' as *
+.k-card
+    display: block
+    padding: $base-padding
+    border: $base-border-thickness solid #ddd
+    box-shadow: $base-box-shadow
+    border-radius: math.div($base-border-radius, 4)
+    .k-card-title
+        font-size: $font-size-lg
+        padding-bottom: $base-padding
+        font-weight: bold
+    .k-card-body
+        font-size: $base-font-size
+        padding: 0!important
+        a
+            text-decoration: underline

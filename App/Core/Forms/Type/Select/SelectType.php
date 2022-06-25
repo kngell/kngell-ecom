@@ -49,6 +49,7 @@ class SelectType extends AbstractAttr implements FormBuilderTypeInterface
             'size' => '',
             'multiple' => false,
             'autocomplete' => 'off',
+
         ];
     }
 
@@ -103,6 +104,13 @@ class SelectType extends AbstractAttr implements FormBuilderTypeInterface
             'new_label' => '',
             'field_wrapper' => true,
             'input_wrapper' => false,
+            'model_data' => false,
+            'field_wrapper' => true,
+            'input_wrapper' => false,
+            'show_label' => true,
+            'label_up' => false,
+            'label' => '',
+            'require' => false,
             'model_data' => false,
         ];
         return !empty($this->settings) ? array_merge($defaults, $this->settings) : $defaults;

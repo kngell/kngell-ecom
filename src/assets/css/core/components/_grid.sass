@@ -1,0 +1,41 @@
+@use 'sass:math'
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+
+// Base layout
+
+.k-container
+    width: 100%
+    max-width: 75rem
+    margin: 0 auto
+    padding: 0 1.25rem
+    box-sizing: border-box
+.k-row
+    display: flex
+    flex-flow: row wrap
+
+// grid Gap
+@each $key, $val in $grid-gaps
+    .k-gap-#{$key} > *
+        padding: $val
+    .k-gap-#{$key}
+        margin-left: -$val
+        margin-right: -$val
+        gap: 0!important
+//Justify content Classes
+@each $key,$val in $layout-alignment
+    .k-justify-#{$key}
+        justify-content: $val
+
+// col classes
++xs()
+    +col(k-col-xs)
+
++sm()
+    +col(k-col-sm)
++md()
+    +col(k-col-md)
++lg()
+    +col(k-col-lg)
++xl()
+    +col(k-col-xl)

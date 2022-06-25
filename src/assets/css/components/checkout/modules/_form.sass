@@ -1,0 +1,27 @@
+@use 'corecss/abstract/variables' as *
+#checkout-content
+    margin-top: .9375rem
+    width: 100%
+    form
+        width: $checkoutWidth
+        margin: 0 auto
+        border: 1px solid #ccc
+        border-radius: .35rem
+        padding: 1.5rem
+        background-color: #ecf0f1
+        box-shadow: 2px 1px 4px -1px rgba(0,0,0,.5 )
+        .form-step
+            display: none
+            transform-origin: top
+            animation: animate 0.5s
+        .form-step.form-step-active
+            display: block
+        .input-box
+            margin: 2rem 0
+@keyframes animate
+    from
+        transform: scale(1,0)
+        opacity: 0
+    to
+        transform: scale(1,1)
+        opacity: 1

@@ -1,0 +1,23 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+@use 'corecss/abstract/function' as *
+
+.k-btn
+    +btn()
+
+@each $key,$val in $colors
+    .k-btn-#{$key}
+        +btn($val)
+        &:hover
+            background-color: lighten($val,5 )
+    .k-btn-outlined-#{$key}
+        +btn(#fff)
+        border: $base-border-thickness solid $val
+        &:hover
+            background-color: $val
+    .k-btn-complement-#{$key}
+        +btn($val)
+        color: light-comp($val)
+        &:hover
+            color: $val
+            background-color: light-comp($val)

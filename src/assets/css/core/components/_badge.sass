@@ -1,0 +1,8 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+.k-badge
+    +badge()
+
+@each $key,$val in $colors
+    .k-badge-#{$key}
+        +badge($val)

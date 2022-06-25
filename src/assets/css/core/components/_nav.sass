@@ -1,0 +1,22 @@
+@use 'corecss/abstract/variables' as *
+
+%flex-layout
+    width: 100%
+    display: flex
+    align-items: center
+    justify-content: space-between
+    box-sizing: border-box
+
+.k-navbar
+    @extend %flex-layout
+    padding: $base-padding $base-padding*2
+    box-shadow: $base-box-shadow
+    .k-site-title
+        font-size: $font-size-lg
+    .k-container
+        @extend %flex-layout
+
+@each $key,$val in $colors
+    .k-navbar-#{$key}
+        @extend .k-navbar
+        background-color: $val

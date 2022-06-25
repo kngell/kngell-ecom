@@ -42,6 +42,16 @@ abstract class AbstractAttr
         return $this;
     }
 
+    public function attr(array $args = []) : self
+    {
+        foreach ($args as $key => $value) {
+            $this->attr[$key] = $value;
+        }
+        return $this;
+    }
+
+
+
     // public function class(string $str) : self
     // {
     //     !in_array($str, $this->attr['class']) ? array_push($this->attr['class'], $str) : '';

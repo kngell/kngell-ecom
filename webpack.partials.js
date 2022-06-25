@@ -33,6 +33,7 @@ exports.alias = {
  */
 const serverOpt = {
   static: ["./"],
+
   client: {
     webSocketURL: "auto://myapp.test:80/ws",
   },
@@ -58,18 +59,6 @@ const serverOpt = {
       secure: false,
       changeOrigin: true,
       pathRewrite: { "^/ecom": "" },
-      // onProxyReq: (proxyReq) => {
-      //   if (proxyReq.getHeader("origin")) {
-      //     proxyReq.setHeader("origin", "https://localhost");
-      //   }
-      // },
-      // onProxyRes: (response) => {
-      //   response.headers["access-control-allow-origin"] =
-      //     "https://localhost:8001";
-      // },
-      // headers: {
-      //   "Access-Control-Allow-Origin": "https://localhost:8001",
-      // },
     },
   },
   devMiddleware: {
@@ -108,6 +97,18 @@ const assetParams = {
         ? "lazyload/css/home/[name].css"
         : "lazyload/css/home/[name]_[chunkhash].css",
     }),
+    // new PurgecssPlugin({
+    //   paths: glob.sync([`${PATHS.src}/**/*`], { nodir: true }),
+    //   extractors: [
+    //     {
+    //       extractor: (content) => content.match(/[A-z0-9-:\/]+/g) || [],
+    //       extensions: ["js", "css", "php"],
+    //     },
+    //   ],
+    //   whitelist: [],
+    //   whitelistPatterns: [],
+    //   whitelistPatternsChildren: [],
+    // }),
   ],
 };
 /**

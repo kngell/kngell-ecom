@@ -1,0 +1,48 @@
+
+@use 'corecss/abstract/variables' as *
+$primary: rgb(11,78,179)
+
+#checkout-element
+    .bar
+        width: 100%
+        margin: 0 auto
+    .progressBar
+        position: relative
+        display: flex
+        justify-content: space-between
+        margin: 2rem 0 4rem 0
+        width: $checkoutWidth
+        counter-reset: step
+        &::before, .progress
+            content: ""
+            position: absolute
+            top: 50%
+            transform: translateY(-50%)
+            height: 4px
+            width: 100%
+            background-color: #dcdcdc
+        .progress
+            background-color: $primary
+            width: 0
+            transition: .3s ease-in-out
+    .progress-step
+        width: 2.1875rem
+        height: 2.1875rem
+        background-color: #dcdcdc
+        border-radius: 50%
+        display: flex
+        justify-content: center
+        align-items: center
+        z-index: 2
+        &::before
+            counter-increment: step
+            content: counter(step)
+        &::after
+            content: attr(data-title)
+            position: absolute
+            top: calc(100% + 0.5rem)
+            font-size: 0.80rem
+            color: #666
+    .progress-step.progress-step-active
+        background-color: $primary
+        color: #f3f3f3

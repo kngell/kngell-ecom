@@ -92,6 +92,18 @@ trait ControllerTrait
         return Application::getInstance();
     }
 
+    protected function displayUserCart() : array
+    {
+        return  $this->container(DisplayUserCart::class, [
+            'userCart' => function () {
+                if (!$this->cache->exists($this->cachedFiles['user_cart'])) {
+                    $this->cache->set($this->cachedFiles['user_cart'], $this->model(CartManager::class)->getUserCart());
+                }
+                return $this->cache->get($this->cachedFiles['user_cart']);
+            },
+        ])->userCartItems();
+    }
+
     private function AuthenticationFroms() : array
     {
         return [
