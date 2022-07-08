@@ -57,7 +57,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         'feedbackTag' => '<div class="invalid-feedback form-text"></div>',
         'labelTag' => '%s {{label}}',
         'helpBlock' => '',
-        'labelClass' => ['field_label'],
+        'labelClass' => [],
         'require' => '<span class="text-danger">*</span>',
         'spanClass' => ['span_class'],
         'labelId' => '',
@@ -79,6 +79,7 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
     /** @var array */
     protected array $formAttr = [];
     /** @var array */
+    protected array $globalClasses = [];
 
     /**
      * Main class constructor.
@@ -115,9 +116,24 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return true;
     }
 
-    public function wrapperClass(string $class) : self
+    public function globalClasses(array $classes) : self
     {
-        array_push($this->formAttr['class'], $class);
+        foreach ($classes as $key => $class) {
+            $this->globalClasses[$key] = $class;
+        }
+        return $this;
+    }
+
+    public function wrapperClass(array $class = []) : self
+    {
+        if (!array_key_exists(__FUNCTION__, $this->htmlAttr)) {
+            $this->htmlAttr[__FUNCTION__] = [];
+        }
+        if (!empty($class)) {
+            foreach ($class as $classStr) {
+                array_push($this->htmlAttr[__FUNCTION__], $classStr);
+            }
+        }
         return $this;
     }
 
@@ -139,16 +155,40 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
+    public function removeDefaultClasses() : self
+    {
+        $this->htmlAttr['wrapperClass'] = isset($this->htmlAttr['wrapperClass']) ? [] : '';
+        $this->htmlAttr['labelClass'] = isset($this->htmlAttr['labelClass']) ? [] : '';
+        return $this;
+    }
+
+    public function noWrapper() : self
+    {
+        $this->inputObject[0]->settings(['field_wrapper' => false]);
+        return $this;
+    }
+
     public function noLabel() : self
     {
         $this->inputObject[0]->settings(['show_label' => false]);
         return $this;
     }
 
-    public function class(string $str)
+    public function templatePath(string $str) : self
+    {
+        $this->inputObject[0]->settings(['templatePath' => $str]);
+        $this->inputObject[0]->templatesReset();
+        return $this;
+    }
+
+    public function class(array $class = [])
     {
         if (count($this->inputObject) === 1) {
-            $this->inputObject[0]->class($str);
+            if (!empty($class)) {
+                foreach ($class as $classStr) {
+                    $this->inputObject[0]->class($classStr);
+                }
+            }
         }
         return $this;
     }
@@ -175,10 +215,22 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    public function labelClass(string $str) : self
+    public function labelClass(array $class = []) : self
     {
         if (count($this->inputObject) === 1) {
-            $this->htmlAttr['labelClass'] = [$str];
+            if (!empty($class)) {
+                foreach ($class as $classStr) {
+                    array_push($this->htmlAttr[__FUNCTION__], $classStr);
+                }
+            }
+        }
+        return $this;
+    }
+
+    public function labelDescr(string $str) : self
+    {
+        if (count($this->inputObject) === 1) {
+            $this->htmlAttr[__FUNCTION__] = [$str];
         }
         return $this;
     }
@@ -199,10 +251,37 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         return $this;
     }
 
-    public function spanClass(string $str) : self
+    public function spanClass(array $class = []) : self
     {
         if (count($this->inputObject) === 1) {
-            $this->htmlAttr['spanClass'] = [$str];
+            if (!empty($class)) {
+                foreach ($class as $classStr) {
+                    array_push($this->htmlAttr[__FUNCTION__], $classStr);
+                }
+            }
+        }
+        return $this;
+    }
+
+    public function textClass(array $class = []) : self
+    {
+        if (!array_key_exists(__FUNCTION__, $this->htmlAttr)) {
+            $this->htmlAttr[__FUNCTION__] = [];
+        }
+        if (count($this->inputObject) === 1) {
+            if (!empty($class)) {
+                foreach ($class as $classStr) {
+                    array_push($this->htmlAttr[__FUNCTION__], $classStr);
+                }
+            }
+        }
+        return $this;
+    }
+
+    public function checked(bool $chk) : self
+    {
+        if (count($this->inputObject) === 1) {
+            $this->inputObject[0]->checked($chk);
         }
         return $this;
     }
@@ -275,5 +354,23 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
         endswitch;
         $this->formAttr[$key] = $value;
         return true;
+    }
+
+    protected function setGelobalClasses()
+    {
+        foreach ($this->globalClasses as $key => $class) {
+            if ($key == 'wrapper') {
+                !in_array($class, $this->htmlAttr['wrapperClass']) ? $this->wrapperClass($class) : '';
+            }
+            if (!in_array($this->inputObject[0]::class, ['SelectType', 'CheckBoxType', 'TextAreaType', 'RadioType', 'ButtonType'])) {
+                if ($key == 'input') {
+                    $this->class($class);
+                }
+                if ($key == 'label') {
+                    $this->labelClass($class);
+                }
+            }
+        }
+        return $this;
     }
 }

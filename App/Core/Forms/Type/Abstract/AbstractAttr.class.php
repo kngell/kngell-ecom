@@ -6,8 +6,14 @@ abstract class AbstractAttr
 {
     protected array $attr = [];
     protected array $globalAttr;
-    protected string $template;
-    protected string $labelTemplate;
+    /** @var string - this is the standard Template */
+    protected string $template = '';
+    /** @var string - this is the standard Label Template */
+    protected string $labelTemplate = '';
+    /** @var string - this is the standard Label Template */
+    protected string $labelTemplatePath = '';
+    /** @var string - this is the standard Path */
+    protected string $templatePath = '';
 
     public function settings(array $args) : self
     {
@@ -15,6 +21,15 @@ abstract class AbstractAttr
             $this->settings[$key] = $value;
         }
         return $this;
+    }
+
+    public function templatesReset()
+    {
+        if (isset($this->settings['templatePath'])) {
+            $this->templatePath = $this->settings['templatePath'];
+            unset($this->settings['templatePath']);
+        }
+        list($this->template, $this->labelTemplate) = $this->template($this->templatePath);
     }
 
     public function type(string $str) : self
@@ -50,13 +65,6 @@ abstract class AbstractAttr
         return $this;
     }
 
-
-
-    // public function class(string $str) : self
-    // {
-    //     !in_array($str, $this->attr['class']) ? array_push($this->attr['class'], $str) : '';
-    //     return $this;
-    // }
     public function class(array|string $class) : self
     {
         if (is_string($class)) {
@@ -68,6 +76,12 @@ abstract class AbstractAttr
             }
             $this->settings[__FUNCTION__] = array_merge($currentClass, $class);
         }
+        return $this;
+    }
+
+    public function checked(bool $chk = false) : self
+    {
+        $this->attr[__FUNCTION__] = $chk;
         return $this;
     }
 
@@ -163,6 +177,17 @@ abstract class AbstractAttr
         }
         $arr1['class'] = $class;
         return $arr1;
+    }
+
+    protected function template() : array
+    {
+        if ((!empty($this->templatePath) && !file_exists($this->templatePath)) || (!empty($this->labelTemplatePath) && !file_exists($this->labelTemplatePath))) {
+            throw new BaseException('Template Not Found!', 1);
+        }
+        return[
+            !empty($this->templatePath) ? file_get_contents($this->templatePath) : '',
+            !empty($this->labelTemplatePath) ? file_get_contents($this->labelTemplatePath) : '',
+        ];
     }
 
     /**

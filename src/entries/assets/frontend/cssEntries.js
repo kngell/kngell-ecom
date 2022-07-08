@@ -20,5 +20,10 @@ module.exports = {
       import: ["css/components/checkout/checkout.sass"],
       dependOn: "css/librairies/frontlib",
     },
+    // Learning
+    "css/learn/learn": {
+      import: ["css/learn/learn.sass"],
+      dependOn: "css/librairies/frontlib",
+    },
   },
 };

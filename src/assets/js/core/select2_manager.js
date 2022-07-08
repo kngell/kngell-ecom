@@ -25,13 +25,15 @@ export default class Upload {
       : "";
     let select = params.element
       .select2({
-        placeholder: "---" + params.placeholder + "---",
+        placeholder: params.placeholder + " ---",
         maximumSelectionLength: 2,
         tags: true,
         // tokenSeparators: [";", "\n", "\t"],
         allowClear: true,
         width: "100%",
         ajax: select2AjaxParams(data),
+        theme: "bootstrap-5",
+        dropdownCssClass: "select2--small",
         dropdownParent: params.element.parent(),
       })
       .on("select2:close", function () {

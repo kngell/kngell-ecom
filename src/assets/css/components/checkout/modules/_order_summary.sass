@@ -1,0 +1,87 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+.order-summary
+    .order-summary__content
+        box-shadow: 1px 1px 0.3rem 0 rgba(0,0,0, .15)
+        .card-body
+            padding: 1rem!important
+            background-color: #fffffd
+            .header-title
+                color: $gray-standard
+            .order-resume
+                .product-line
+                    width: 100%
+                    .p-cell
+                        vertical-align: middle
+                        padding-bottom: .5rem!important
+                        .product-thumbnail-wrapper
+                            position: relative
+                            width: 60px
+                            .product-thumbnail-quantity
+                                font-size: 0.85em
+                                font-weight: 500
+                                line-height: 1.75em
+                                white-space: nowrap
+                                text-align: center
+                                border-radius: 1.75em
+                                background-color: rgba(114, 114, 114, 0.9)
+                                color: #fff
+                                box-sizing: border-box
+                                min-width: 21px
+                                height: 21px
+                                padding: 0 0.58em
+                                position: absolute
+                                right: 13px
+                                top: -8px
+                    .p-title
+                        color: $gray-dark-in
+                        font-size: .9rem
+                        margin-left: -10px!important
+                    .p-price
+                        color: $dark-in
+                        font-size: .9rem
+                        text-align: end
+        .order-resume
+            padding-bottom: 8px!important
+        .discount-frm-data
+            width: 100%
+            .discount
+                display: flex
+                max-width: 100%
+                align-items: center
+                gap: 5px
+                .input-box
+                    flex-basis: 100%
+                .button-box
+                    .btn
+                        color: #fff
+        .total
+            .title
+                text-align: start
+            .sub-total
+                width: 100%
+                font-size: 1rem
+                font-weight: 600
+                border-bottom: 1px dashed $purple-dark
+            .res-tax-item,.total-shipping
+                font-style: italic
+                font-size: .8rem
+                text-transform: capitalize
+                .title
+                    padding-left: .75rem!important
+                td
+                    padding-bottom: .05rem!important
+            .total-ttc
+                font-size: 1.1rem
+                font-weight: 600
+                color: $dark-color
+                padding-bottom: 1.5rem
+            .code-achat
+                display: flex
+                justify-content: space-around
+                vertical-align: middle
+                line-height: .8rem
+                +input($gray-300,$radius,$dark-in,$white-green,$blue-light,$gray-dark,$white-bg,.8rem)
+                &__btn
+                    +button($color-primary,$blue-dark,10px,lowercase)
+                    margin-left: .5rem

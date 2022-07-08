@@ -18,10 +18,10 @@ class TextAreaType extends AbstractAttr implements FormBuilderTypeInterface
     protected mixed $options = null;
     /** @var array returns an array of default options set */
     protected array $baseOptions = [];
-    /** @var string - this is the standard Template */
-    protected string $template = '';
-    /** @var string - this is the standard Label Template */
-    protected string $labelTemplate = '';
+    /** @var string - this is the standard Path */
+    protected string $templatePath = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'SelectTemplate.php';
+    /** @var string - this is the standard Label Template Path */
+    protected string $labelTemplatePath = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'inputLabelTemplate.php';
 
     /**
      * Set Params.
@@ -76,8 +76,7 @@ class TextAreaType extends AbstractAttr implements FormBuilderTypeInterface
         $defaultWithExtensionOptions = (!empty($options) ? array_merge($this->baseOptions, $options) : $this->baseOptions);
         if ($this->fields) {
             $this->throwExceptionOnBadInvalidKeys($this->fields, $defaultWithExtensionOptions, __CLASS__);
-
-            $this->attr = array_merge($defaultWithExtensionOptions, $this->fields);
+            $this->attr = $this->mergeArys($defaultWithExtensionOptions, $this->fields, !empty($this->attr) ? $this->attr : []);
         }
     }
 
@@ -158,17 +157,5 @@ class TextAreaType extends AbstractAttr implements FormBuilderTypeInterface
     public function view(): string
     {
         return sprintf('<textarea %s>%s</textarea>', $this->filtering(), $this->options);
-    }
-
-    public function template() : array
-    {
-        $temp = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'SelectTemplate.php';
-        $leblTemp = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'inputLabelTemplate.php';
-        if (file_exists($temp) && file_exists($leblTemp)) {
-            return[
-                file_get_contents($temp), file_get_contents($leblTemp),
-            ];
-        }
-        return [];
     }
 }

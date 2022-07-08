@@ -9,7 +9,7 @@ class FileStorage
      */
     public function flatDatabase()
     {
-        $storage = new Filesystem(STORAGE_PATH . '/files');
+        $storage = new Filesystem(STORAGE_PATH . DS . 'Files');
         $flatbase = new Flatbase($storage);
         if ($flatbase) {
             return $flatbase;

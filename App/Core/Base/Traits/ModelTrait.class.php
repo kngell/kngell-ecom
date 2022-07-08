@@ -90,10 +90,19 @@ trait ModelTrait
         return isset($this->_media_img) ? $this->_media_img : '';
     }
 
+    private function getModelProperties()
+    {
+        $props = YamlFile::get('model_properties');
+        if ($this->_flatDb === true) {
+            $props['repository'] = FileStorageRepository::class;
+        }
+        return $props;
+    }
+
     private function properties() : void
     {
         $this->container = property_exists($this, 'container') ? Container::getInstance() : '';
-        $props = array_merge(['entity' => str_replace(' ', '', ucwords(str_replace('_', ' ', $this->tableSchema))) . 'Entity'], YamlFile::get('model_properties'));
+        $props = array_merge(['entity' => str_replace(' ', '', ucwords(str_replace('_', ' ', $this->tableSchema))) . 'Entity'], $this->getModelProperties());
         foreach ($props as $prop => $class) {
             if (property_exists($this, $prop)) {
                 $this->{$prop} = match ($prop) {

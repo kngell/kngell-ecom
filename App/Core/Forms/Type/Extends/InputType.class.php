@@ -18,10 +18,10 @@ class InputType extends AbstractAttr implements FormBuilderTypeInterface
     protected mixed $options = null;
     /** @var array returns an array of default options set */
     protected array $baseOptions = [];
-    /** @var string - this is the standard Template */
-    protected string $template = '';
+    /** @var string - this is the standard Path */
+    protected string $templatePath = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'InputFieldTemplate.php';
     /** @var string - this is the standard Label Template */
-    protected string $labelTemplate = '';
+    protected string $labelTemplatePath = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'inputLabelTemplate.php';
 
     public function __construct(array $fields, mixed $options = null, array $settings = [])
     {
@@ -137,17 +137,5 @@ class InputType extends AbstractAttr implements FormBuilderTypeInterface
                 return sprintf("\n<input %s>\n", $this->filtering());
         break;
         endswitch;
-    }
-
-    protected function template() : array
-    {
-        $temp = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'InputFieldTemplate.php';
-        $leblTemp = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'inputLabelTemplate.php';
-        if (file_exists($temp) && file_exists($leblTemp)) {
-            return[
-                file_get_contents($temp), file_get_contents($leblTemp),
-            ];
-        }
-        return [];
     }
 }

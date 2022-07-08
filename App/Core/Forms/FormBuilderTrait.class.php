@@ -188,7 +188,7 @@ trait FormBuilderTrait
             $template = str_replace('{{labelClass}}', implode(' ', $htmlAttr['labelClass']) ?? '', $template);
             $template = str_replace('{{spanClass}}', implode(' ', $htmlAttr['spanClass']), $template);
             $template = str_replace('{{label}}', $show_label ? $label : '', $template);
-            $template = str_replace('{{req}}', isset($options['required']) ? $htmlAttr['require'] : '', $template);
+            $template = str_replace('{{req}}', isset($options['required']) && $options['required'] == true ? $htmlAttr['require'] : '', $template);
             return $template;
         }
         return '';
@@ -214,14 +214,17 @@ trait FormBuilderTrait
 
     private function getLabel(Object $objectType, string $template, $show_label) : string
     {
-        if (in_array($objectType::class, ['CheckboxType'])) {
+        if (in_array($objectType::class, ['CheckBoxType', 'RadioType'])) {
             return $template;
         }
-        if ($show_label && !in_array($objectType::class, ['SelectType'])) {
-            return str_replace('{{label}}', $objectType->getLabelTemplate(), $template);
-        } else {
-            return str_replace('{{label}}', '', $template);
-        }
+        // if ($show_label && !in_array($objectType::class, ['SelectType'])) {
+        //     return str_replace('{{label}}', $objectType->getLabelTemplate(), $template);
+        // }
+        // else {
+        //     return str_replace('{{label}}', '', $template);
+        // }
+        // return $template;
+        return str_replace('{{label}}', $objectType->getLabelTemplate(), $template);
     }
 
     private function getNameFromID(int $id, object $form)

@@ -115,7 +115,8 @@ trait ControllerTrait
 
     private function searchBox() : array
     {
-        $path = FILES . 'Template' . DS . 'Base' . DS . 'search_box.php';
-        return ['search_box' => file_exists($path) ? file_get_contents($path) : ''];
+        return $this->container(DisplaySearchBox::class)->searchBox();
+        // $path = FILES . 'Template' . DS . 'Base' . DS . 'search_box.php';
+        // return ['search_box' => file_exists($path) ? file_get_contents($path) : ''];
     }
 }

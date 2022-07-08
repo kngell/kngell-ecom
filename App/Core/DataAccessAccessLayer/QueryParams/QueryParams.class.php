@@ -76,12 +76,18 @@ class QueryParams extends AbstractQueryParams
         return $this;
     }
 
-    public function where(array $conditions, ?string $op = null) : self
+    public function where(array $conditions, ?string $op = null, ?string $whereType = null) : self
     {
         if (isset($conditions) && !empty($conditions)) {
             foreach ($conditions as $key => $value) {
                 $whereParams = $this->whereParams($conditions, $key, $value);
                 if (is_string($key)) {
+                    if (!is_null($whereType)) {
+                        list($key, $tbl) = $this->getField($key);
+                        $key = $key . '|' . 'IN';
+                        $tbl == '' ? $this->tableSchema : '';
+                        $whereParams['tbl'] = $tbl;
+                    }
                     list($whereParams['field'], $whereParams['operator']) = $this->fieldOperator($key);
                     is_null($op) ? $this->query_params['conditions'] += $this->condition($whereParams) : $this->query_params['conditions'][$op] += $this->condition($whereParams);
                     $this->conditionBreak = [];
@@ -91,6 +97,24 @@ class QueryParams extends AbstractQueryParams
             }
             return $this;
         }
+    }
+
+    public function whereIn(array $conditions, ?string $op = null) : self
+    {
+        return $this->where($conditions, null, 'IN');
+        // if (isset($conditions) && !empty($conditions)) {
+        //     foreach ($conditions as $key => $value) {
+        //         $whereParams = $this->whereParams($conditions, $key, $value);
+        //         if (is_string($key)) {
+        //             list($whereParams['field'], $whereParams['operator']) = $this->fieldOperator($key);
+        //             is_null($op) ? $this->query_params['conditions'] += $this->condition($whereParams) : $this->query_params['conditions'][$op] += $this->condition($whereParams);
+        //             $this->conditionBreak = [];
+        //         } else {
+        //             $this->conditionBreak = $whereParams;
+        //         }
+        //     }
+        //     return $this;
+        // }
     }
 
     public function and(array $cond, string $op = 'and') : self
@@ -113,14 +137,14 @@ class QueryParams extends AbstractQueryParams
         return $this->query_params;
     }
 
-    public function groupBy(array $groupByAry) : self
+    public function groupBy(...$groupByAry) : self
     {
         $this->key('options');
-        foreach ($groupByAry as $field => $tbl) {
-            if (is_numeric($tbl)) {
-                $this->query_params['options']['group_by'][] = $field;
-            } else {
-                $this->query_params['options']['group_by'][] = $tbl . '.' . $field;
+        foreach ($groupByAry as $param) {
+            if (is_string($param)) {
+                $this->query_params['options']['group_by'][] = $param;
+            } elseif (is_array($param)) {
+                $this->query_params['options']['group_by'][] = $param[key($param)] . '.' . key($param);
             }
         }
         return $this;

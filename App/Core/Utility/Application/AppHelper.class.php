@@ -41,7 +41,6 @@ final class AppHelper
             'TreeBuilderInterface' => TreeBuilder::class,
             'DisplayPhonesInterface' => PhonesHomePage::class,
             'CollectionInterface' => Collection::class,
-
         ];
     }
 

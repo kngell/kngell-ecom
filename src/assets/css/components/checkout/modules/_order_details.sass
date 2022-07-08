@@ -1,0 +1,52 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+.order-details
+    .order-details__content
+        box-shadow: .3px .3px 0.3rem 0 rgba(0,0,0, .15)
+        .card-body
+            padding: 1rem .5rem!important
+            background-color: #fffffd
+            .card-sub-title
+                font-size: 1.1rem
+                margin-bottom: 1rem!important
+                color: #777
+            .info-resume
+                font-size: .9rem
+                table
+                    .contact,.address,.method
+                        color: $gray-standard
+                        .value
+                            font-style: normal
+#payment-information
+    .order-details
+        #order-payment
+            .payment-gateway
+                .payment-gateway-header
+                    .brand-icons
+                        +dflex()
+                        .payment-icon
+                            border-radius: 0.22em
+                            transition: all 0.2s ease-in-out
+                            width: 38px
+                            height: 24px
+                            display: inline-block
+                            &.payment-icon-visa
+                                +background("img/visa.svg")
+                            &.payment-icon-master
+                                +background("img/master.svg")
+                            &.payment-icon-american-express
+                                +background("img/american_express.svg")
+                            &.payment-icon-discover
+                                +background("img/discover.svg")
+                        a
+                            font-size: .9rem
+                            margin-right: 1rem
+                            display: none
+                .payment-gateway-content
+                    display: block
+                    +input($gray-300,$radius,$dark-in,$white-green,$blue-light,$gray-dark,$white-bg)
+                    .payment-gateway-outsite
+                        display: block
+                        width: 240px
+                        height: 120px
+                        +background("img/outsite.svg")

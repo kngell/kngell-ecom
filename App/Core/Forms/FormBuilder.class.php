@@ -92,7 +92,7 @@ class FormBuilder extends AbstractFormBuilder
     public function input(array $args = [], $options = null, array $settings = []) : self
     {
         $this->inputObject = [];
-        return $this->add($args, $options, $settings);
+        return $this->add($args, $options, $settings)->setGelobalClasses();
     }
 
     public function button(array $args = [], $options = null, array $settings = []) : self

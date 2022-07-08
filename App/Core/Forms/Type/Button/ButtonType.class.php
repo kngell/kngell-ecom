@@ -28,6 +28,10 @@ class ButtonType extends AbstractAttr implements FormBuilderTypeInterface
     protected mixed $fields;
     /** @var array returns an array of default options set */
     protected array $baseOptions = [];
+    /** @var string - this is the standard Path */
+    protected string $templatePath = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'buttonTemplate.php';
+    /** @var string - this is the standard Label Template Path */
+    protected string $labelTemplatePath = '';
 
     public function __construct(array $fields, mixed $options = null, array $settings = [])
     {
@@ -132,17 +136,6 @@ class ButtonType extends AbstractAttr implements FormBuilderTypeInterface
     {
         $this->attr[__FUNCTION__] = $str;
         return $this;
-    }
-
-    public function template() : array
-    {
-        $temp = FILES . 'Template' . DS . 'Base' . DS . 'Forms' . DS . 'FieldsTemplate' . DS . 'buttonTemplate.php';
-        if (file_exists($temp)) {
-            return[
-                file_get_contents($temp), '',
-            ];
-        }
-        return [];
     }
 
     /**

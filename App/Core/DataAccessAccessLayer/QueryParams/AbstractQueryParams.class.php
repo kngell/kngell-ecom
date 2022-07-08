@@ -51,7 +51,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         $where = [];
         $this->key('conditions');
         if (is_string($params['field'])) {
-            $where[$params['field']] = !is_array($params['value']) ? ['value' => $params['value'], 'tbl' => $this->tableSchema] : ['value' => $params['value'][0], 'tbl' => $params['value'][1]];
+            $where[$params['field']] = !is_array($params['value']) ? ['value' => $params['value'], 'tbl' => $this->tableSchema] : ['value' => $params['value'], 'tbl' => !isset($params['tbl']) ? $this->tableSchema : $params['tbl']];
         }
         if ($params['operator'] != '') {
             $where[$params['field']]['operator'] = $params['operator'];
@@ -66,6 +66,14 @@ abstract class AbstractQueryParams implements QueryParamsInterface
             $where[$params['field']]['braceEnd'] = $params['braceEnd'];
         }
         return $where;
+    }
+
+    protected function getField(string $field) : array
+    {
+        if (str_contains($field, '|')) {
+            $parts = explode('|', $field);
+            return count($parts) > 1 ? [$parts[0], $parts[1]] : [$parts[0], ''];
+        }
     }
 
     protected function addTableToOptions(?string $tbl = null, mixed $columns = null) : void

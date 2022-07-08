@@ -1,3 +1,4 @@
 # list of all cached files
 phones_products: phones_products
 user_cart: user_cart_items
+shipping_class: shipping_class

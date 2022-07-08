@@ -26,7 +26,7 @@ exports.viewRules = {
         ],
       },
       {
-        test: /\.(png|svg|jpg|gif|ico)$/i,
+        test: /\.(png|svg|jpg|gif|ico|webp|jpeg)$/i,
         exclude: [
           /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
           /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css/,

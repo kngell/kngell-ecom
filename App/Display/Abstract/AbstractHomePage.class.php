@@ -5,12 +5,16 @@ declare(strict_types=1);
 abstract class AbstractHomePage
 {
     protected CollectionInterface $userCart;
+    protected CollectionInterface $shippingClass;
+    protected CollectionInterface $paths;
     protected CheckoutForm $frm;
 
-    public function __construct(CollectionInterface $userCart, CheckoutForm $frm)
+    public function __construct(CollectionInterface $userCart, CollectionInterface $shippingClass, CheckoutForm $frm, CollectionInterface $paths)
     {
         $this->userCart = $userCart;
+        $this->shippingClass = $shippingClass;
         $this->frm = $frm;
+        $this->paths = $paths;
     }
 
     protected function outputUserInfosTemplate(string $template = '', string $dataTemplate = '') : string

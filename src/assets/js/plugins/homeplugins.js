@@ -1,5 +1,4 @@
 import log_reg from "corejs/logregloader";
-import "focus-within-polyfill";
 import select2 from "corejs/select2_manager";
 import { get_visitors_data, send_visitors_data } from "corejs/visitors";
 class HomePlugin {
@@ -16,7 +15,7 @@ class HomePlugin {
     this.loginBtn = this.element.find("#login_btn");
     this.header = this.element.find("#header");
     this.navigation = this.element.find(".navigation");
-    this.wrapper = this.element.find(".tab-content");
+    this.wrapper = this.element.find(".checkout-content");
   };
   _setupEvents = (e) => {
     var phpPlugin = this;
@@ -38,11 +37,12 @@ class HomePlugin {
 
     //Activate select2 box for contries
     const select = new select2();
+
     const csrftoken = document.querySelector('meta[name="csrftoken"]');
     select._init({
       element: phpPlugin.wrapper.find(".select_country"),
       placeholder: "Sélectionnez un pays",
-      url: "guests/get_countries",
+      url: "get_countries",
       csrftoken: csrftoken ? csrftoken.getAttribute("content") : "",
       frm_name: "all_product_page",
     });

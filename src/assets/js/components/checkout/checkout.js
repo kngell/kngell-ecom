@@ -1,5 +1,3 @@
-import { DatasetController } from "chart.js";
-
 class Checkout {
   constructor(element) {
     this.element = element;

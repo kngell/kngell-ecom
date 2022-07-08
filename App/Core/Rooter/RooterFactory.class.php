@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 class RooterFactory
 {
     /** @var array */
@@ -37,6 +38,9 @@ class RooterFactory
                 foreach ($this->routes as $mthd => $routes) {
                     $args = [];
                     foreach ($routes as $route => $params) {
+                        if (str_starts_with($route, '/') && strlen($route) > 1) {
+                            $route = substr($route, 1);
+                        }
                         if (isset($params['namespace']) && $params['namespace'] != '') {
                             $args = ['namespace' => $params['namespace']];
                         }

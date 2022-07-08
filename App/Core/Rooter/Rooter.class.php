@@ -61,6 +61,7 @@ class Rooter implements RooterInterface
             if (YamlFile::get('app')['system']['use_resolvable_method'] === true) {
                 $this->resolveControllerMethodDependencies($controllerObject, $method);
             } elseif (\is_callable([$controllerObject, $method], true, $callableName)) {
+                $args = $this->params;
                 $controllerObject->$method($this->arguments);
             } else {
                 throw new NoActionFoundException("Method $method in controller $controllerString cannot be called");
@@ -156,7 +157,7 @@ class Rooter implements RooterInterface
 
     private function resolveWithException(string $url): array
     {
-        $url = $this->parseUrl($url);
+        $url = $this->parseUrl($url) == 'assets' ? 'assets/getAsset' : $url;
         if (!$this->getMatchRoute($url, $this->routes[$this->request->getMethod()])) {
             http_response_code(404);
             throw new RouterNoRoutesFound('Route ' . $url . ' does not match any valid route.', 404);

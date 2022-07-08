@@ -33,6 +33,12 @@ trait HomeControllerTrait
                 }
                 return $this->cache->get($this->cachedFiles['user_cart']);
             },
+            'shippingClass' => function () {
+                if (!$this->cache->exists($this->cachedFiles['shipping_class'])) {
+                    $this->cache->set($this->cachedFiles['shipping_class'], $this->model(ShippingClassManager::class)->getShippingClass());
+                }
+                return $this->cache->get($this->cachedFiles['shipping_class']);
+            },
         ])->displayAll();
     }
 }

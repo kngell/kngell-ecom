@@ -1,5 +1,5 @@
 get: # Http Get ===========================================
-  /:
+  "":
     controller: home
     method: index
     namespace: Client/components
@@ -24,6 +24,8 @@ get: # Http Get ===========================================
   admin/{controller}/{method}/{id:[\da-f]+}:
     namespace: Admin
   client/{controller}/{method}:
+    namespace: Client
+  /{controller}/{method}:
     namespace: Client
   client/{controller}/{method}/{id:[\da-f]+}:
     namespace: Client
@@ -53,6 +55,9 @@ post: # Http Post method =======================================================
   comments:
     controller: comments
     method: newComment
+  get_countries:
+    controller: country
+    method: getCountries
   add_item_into_cart:
     controller: user_cart
     method: add

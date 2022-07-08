@@ -26,7 +26,7 @@ class Model extends AbstractModel
     private bool $_deleted_item = false;
     private string $_current_ctrl_method = 'update';
     private int $_lasID;
-    private string $_matchingTestColumn;
+    private bool $_flatDb; //$_matchingTestColumn;
 
     /**
      * Main Constructor
@@ -34,11 +34,12 @@ class Model extends AbstractModel
      * @param string $tableSchema
      * @param string $tableSchemaID
      */
-    public function __construct(string $tableSchema, string $tableSchemaID, $matchingTestCol = '')
+    public function __construct(string $tableSchema, string $tableSchemaID, bool $flatDb = false)
     {
         $this->throwException($tableSchema, $tableSchemaID);
         $this->tableSchema = $tableSchema;
         $this->tableSchemaID = $tableSchemaID;
+        $this->_flatDb = $flatDb;
         $this->properties();
         $this->_modelName = $this::class;
     }

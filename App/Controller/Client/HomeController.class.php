@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     protected function indexPage(array $data = []) : void
     {
-        $this->setLayout('clothes');
+        // $this->setLayout('clothes');
         $this->pageTitle('Clothing - Best Aparels Online Store');
         $this->view()->addProperties(['name' => 'Home Page']);
         $this->render('checkout' . DS . 'checkout', $this->homePage());
