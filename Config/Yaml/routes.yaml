@@ -2,11 +2,15 @@ get: # Http Get ===========================================
   "":
     controller: home
     method: index
-    namespace: Client/components
+    namespace: Client/brand
   home:
     controller: home
     method: index
-    namespace: Client
+    namespace: Client/brand
+  todo:
+    controller: home
+    method: todo
+    namespace: Client/components
   checkout:
     controller: home
     method: index
@@ -26,6 +30,8 @@ get: # Http Get ===========================================
   client/{controller}/{method}:
     namespace: Client
   /{controller}/{method}:
+    namespace: Client
+  /{controller}/{method}/{id:[\da-f]+}:
     namespace: Client
   client/{controller}/{method}/{id:[\da-f]+}:
     namespace: Client

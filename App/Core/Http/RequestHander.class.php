@@ -31,7 +31,7 @@ class RequestHandler extends GlobalVariables
      */
     public function getPath() : string
     {
-        $path = $this->getGet('url');
+        $path = $this->removeQueryString($this->getGet('url'));
         if (empty($path)) {
             return '';
         }
@@ -218,5 +218,18 @@ class RequestHandler extends GlobalVariables
     public function htmlDecode(string $str) : string
     {
         return !empty($str) ? htmlspecialchars_decode(html_entity_decode($str), ENT_QUOTES) : '';
+    }
+
+    private function removeQueryString(string $url) : string
+    {
+        if ($url != '') {
+            $parts = explode('&', $url, 2);
+            if (strpos($parts[0], '=') === false) {
+                $url = $parts[0];
+            } else {
+                $url = '';
+            }
+        }
+        return $url;
     }
 }

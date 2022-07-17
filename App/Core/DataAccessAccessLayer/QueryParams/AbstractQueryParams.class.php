@@ -46,12 +46,30 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         return [$field, '='];
     }
 
+    protected function fieldValue(mixed $value) : array
+    {
+        $tbl = $this->tableSchema;
+        if (is_array($value) && !empty($value)) {
+            if (array_key_exists('tbl', $value)) {
+                $tbl = $value['tbl'];
+                unset($value['tbl']);
+            } elseif (count($value) === 2) {
+                $tbl = $value[1];
+                unset($value[1]);
+            }
+            foreach ($value as $key => $val) {
+                return [$val, $tbl];
+            }
+        }
+        return [$value, $tbl];
+    }
+
     protected function condition(array $params) : array
     {
         $where = [];
         $this->key('conditions');
         if (is_string($params['field'])) {
-            $where[$params['field']] = !is_array($params['value']) ? ['value' => $params['value'], 'tbl' => $this->tableSchema] : ['value' => $params['value'], 'tbl' => !isset($params['tbl']) ? $this->tableSchema : $params['tbl']];
+            $where[$params['field']] = !is_array($params['value']) ? ['value' => $params['value'], 'tbl' => !isset($params['tbl']) ? $this->tableSchema : $params['tbl']] : ['value' => $params['value'], 'tbl' => !isset($params['tbl']) ? $this->tableSchema : $params['tbl']];
         }
         if ($params['operator'] != '') {
             $where[$params['field']]['operator'] = $params['operator'];

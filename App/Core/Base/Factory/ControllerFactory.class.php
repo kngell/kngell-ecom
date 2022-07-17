@@ -6,7 +6,7 @@ class ControllerFactory
 {
     private ContainerInterface $container;
 
-    public function __construct(private string $controllerString, private string $method, private string $path, private array $controllerProperties)
+    public function __construct(private string $controllerString, private string $method, private string $path, private array $routeParams, private array $controllerProperties)
     {
     }
 
@@ -25,17 +25,10 @@ class ControllerFactory
 
     private function getControllerParams() : array
     {
-        $controllerProperties = [];
-        foreach ($this->controllerProperties as $prop => $class) {
-            if ($prop === 'dispatcher' || $prop === 'comment') {
-                $controllerProperties[$prop] = $this->container->make($class)->create();
-            } else {
-                $controllerProperties[$prop] = $this->container->make($class);
-            }
-        }
-        return array_merge($controllerProperties, [
+        return array_merge($this->controllerProperties, [
             'filePath' => $this->path,
             'cachedFiles' => YamlFile::get('cache_files_list'),
+            'route_params' => $this->routeParams,
         ]);
     }
 }

@@ -39,7 +39,6 @@ final class AppHelper
             'EventDispatcherInterface' => EventDispatcher::class,
             'ListenerProviderInterface' => ListenerProvider::class,
             'TreeBuilderInterface' => TreeBuilder::class,
-            'DisplayPhonesInterface' => PhonesHomePage::class,
             'CollectionInterface' => Collection::class,
         ];
     }
@@ -62,6 +61,7 @@ final class AppHelper
             'View' => View::class,
             'CommentsInterface' => Comments::class,
             'ClientFormBuilder' => ClientFormBuilder::class,
+            'DisplayPhonesInterface' => PhonesHomePage::class,
         ];
     }
 }

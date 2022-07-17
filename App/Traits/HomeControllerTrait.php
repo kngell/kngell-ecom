@@ -7,9 +7,9 @@ trait HomeControllerTrait
     private function displayProducts() : array
     {
         return $this->container(DisplayPhonesInterface::class, [
-            'products' => function ($products) {
+            'products' => function () {
                 if (!$this->cache->exists($this->cachedFiles['phones_products'])) {
-                    return $this->cache->set($this->cachedFiles['phones_products'], $products->getProducts());
+                    $this->cache->set($this->cachedFiles['phones_products'], $this->model(ProductsManager::class)->getProducts());
                 }
                 return $this->cache->get($this->cachedFiles['phones_products']);
             },
@@ -38,6 +38,12 @@ trait HomeControllerTrait
                     $this->cache->set($this->cachedFiles['shipping_class'], $this->model(ShippingClassManager::class)->getShippingClass());
                 }
                 return $this->cache->get($this->cachedFiles['shipping_class']);
+            },
+            'pmtMode' => function () {
+                if (!$this->cache->exists($this->cachedFiles['paiement_mode'])) {
+                    $this->cache->set($this->cachedFiles['paiement_mode'], $this->model(PaymentModeManager::class)->all());
+                }
+                return $this->cache->get($this->cachedFiles['paiement_mode']);
             },
         ])->displayAll();
     }

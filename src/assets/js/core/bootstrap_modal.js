@@ -9,7 +9,7 @@ class Bs_Modal {
     return new Promise((resolve, reject) => {
       p.modals.forEach((modal, i) => {
         let my_modal = [];
-        my_modal[i] = Modal.getOrCreateInstance(
+        my_modal[String(modal)] = Modal.getOrCreateInstance(
           document.getElementById(String(modal)),
           {
             keyboard: false,

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-class ButtonsGroup extends AbstractCheckout
+class ButtonsGroup extends AbstractCheckoutformSteps
 {
-    public function __construct(private ?object $frm = null, private ?object $obj = null)
+    public function __construct(private ?object $frm = null)
     {
     }
 

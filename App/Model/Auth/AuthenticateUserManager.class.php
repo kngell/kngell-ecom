@@ -14,7 +14,7 @@ class AuthenticateUserManager extends Model
         $this->userSession = $this->container->make(UserSessionsManager::class);
     }
 
-    public function authenticate() : ?array
+    public function authenticate() : bool|array
     {
         $user = $this->loginAttemps($this->entity->{'getEmail'}());
         if ($user->count() > 0) {
@@ -30,7 +30,7 @@ class AuthenticateUserManager extends Model
 
     public function login(bool|string $remember_me, array $data) : ?Model
     {
-        if (!AuthManager::isLoggedIn()) {
+        if (!AuthManager::isUserLoggedIn()) {
             $this->assign((array) $this);
             /** @var VisitorsManager */
             $visitor = $this->container->make(VisitorsManager::class)->manageVisitors([
@@ -100,7 +100,7 @@ class AuthenticateUserManager extends Model
             if (!( new ReflectionProperty($session->getEntity(), $session->getEntity()->getFields('sessionToken')))->isInitialized($session->getEntity())) {
                 if (!$this->cookie->exists(TOKEN_NAME)) {
                     $session->getQueryParams();
-                    $sessionToken = $session->getUniqueId('sessionToken');
+                    $sessionToken = $session->getUniqueId('session_token');
                     $this->cookie->set($sessionToken, TOKEN_NAME);
                 } else {
                     $sessionToken = $this->cookie->get(TOKEN_NAME);
@@ -118,7 +118,7 @@ class AuthenticateUserManager extends Model
         } else {
             if (!$this->cookie->exists(TOKEN_NAME)) {
                 $session->getQueryParams();
-                $sessionToken = $session->getUniqueId('sessionToken');
+                $sessionToken = $session->getUniqueId('session_token');
                 $this->cookie->set($sessionToken, TOKEN_NAME);
             } else {
                 $sessionToken = $this->cookie->get(TOKEN_NAME);

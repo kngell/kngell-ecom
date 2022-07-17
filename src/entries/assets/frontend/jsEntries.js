@@ -12,7 +12,17 @@ module.exports = {
     // Checkout
     "js/components/checkout/checkout": {
       import: ["js/components/checkout/checkout"],
-      dependOn: "css/librairies/frontlib",
+      dependOn: "js/librairies/frontlib",
+    },
+    // Todo
+    "js/components/todoList/todoList": {
+      import: ["js/components/todoList/todoList"],
+      dependOn: "js/librairies/frontlib",
+    },
+    //Phones Products Home sass
+    "js/brand/phones/home": {
+      import: ["js/brand/phones/index"],
+      dependOn: "js/librairies/frontlib",
     },
   },
 };

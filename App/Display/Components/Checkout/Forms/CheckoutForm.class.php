@@ -21,37 +21,46 @@ class CheckoutForm extends ClientFormBuilder implements ClientFormBuilderInterfa
             'class' => ['checkout-frm'],
             'id' => 'checkout-frm',
         ]);
-        list($paths, $shipping, $btns, $cartSummary, $dataRepository) = $this->nestedObjects($dataRepository);
+        list($paths, $shipping, $btns, $cartSummary, $pmtMode, $dataRepository) = $this->nestedObjects($dataRepository);
         $this->template = str_replace('{{form_begin}}', $this->frm->begin(), $this->template);
         $this->template = str_replace('{{userInfos}}', (new UserInfos($this->frm, $dataRepository, $btns, $cartSummary, $paths))->display(), $this->template);
         $this->template = str_replace('{{shippingInfos}}', (new ShippingInfos($this->frm, $cartSummary, $shipping, $paths, $btns))->display(), $this->template);
         $this->template = str_replace('{{billiingInfos}}', (new BillingInfos($this->frm, $cartSummary, $paths, $btns))->display(), $this->template);
-        $this->template = str_replace('{{paiementInfos}}', (new PaiementInfos($this->frm, $cartSummary, $paths, $btns))->display(), $this->template);
+        $this->template = str_replace('{{paiementInfos}}', (new PaiementInfos($this->frm, $cartSummary, $pmtMode, $paths, $btns))->display(), $this->template);
         $this->template = str_replace('{{form_end}}', $this->frm->end(), $this->template);
-        $this->template = str_replace('{{formDiscount}}', $this->formDiscount(), $this->template);
+        $this->template = str_replace('{{formDiscount}}', $this->newform('discount-frm'), $this->template);
         return $this->template;
+    }
+
+    public function newform(string $id, string $action = '')
+    {
+        $this->frm->form([
+            'action' => $action,
+            'class' => [$id],
+            'id' => $id,
+        ]);
+        $frmHtml = $this->frm->begin();
+        $frmHtml .= $this->frm->end();
+        return $frmHtml;
     }
 
     private function nestedObjects(?object $dataRepository = null) : array
     {
         $paths = $dataRepository->offsetGet('paths');
         $shipping = $dataRepository->offsetGet('shipping');
-        $dataRepository->offsetUnset('paths');
-        $dataRepository->offsetUnset('shipping');
-        $btns = new ButtonsGroup($this->frm, $dataRepository);
-        $cartSummary = (new CartSummary($dataRepository, $paths))->userCartSummary();
-        return [$paths, $shipping, $btns, $cartSummary, $dataRepository];
+        $pmtMode = $dataRepository->offsetGet('pmtMode');
+        $cartSummary = $dataRepository->offsetGet('cartSummary');
+        $dataRepository = $this->cleanRepo($dataRepository);
+        $btns = new ButtonsGroup($this->frm);
+        return [$paths, $shipping, $btns, $cartSummary, $pmtMode, $dataRepository];
     }
 
-    private function formDiscount() : string
+    private function cleanRepo(?object $dataRepository = null) : object
     {
-        $this->frm->form([
-            'action' => '',
-            'class' => ['discount-frm'],
-            'id' => 'discount-frm',
-        ]);
-        $frmHtml = $this->frm->begin();
-        $frmHtml .= $this->frm->end();
-        return $frmHtml;
+        $dataRepository->offsetUnset('paths');
+        $dataRepository->offsetUnset('shipping');
+        $dataRepository->offsetUnset('pmtMode');
+        $dataRepository->offsetUnset('cartSummary');
+        return $dataRepository;
     }
 }

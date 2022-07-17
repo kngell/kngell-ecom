@@ -39,7 +39,6 @@
                         font-size: 14px
                         text-align: center
                     .form-wrapper
-                        +input($gray-300,$radius,$dark-in,$white-green,$blue-light,$gray-dark,$white-color)
                         .checkbox
                             +checkbox($gray-common,$color-primary,$color-primary,$gray-variant,$white-smoke)
                             text-align: start
@@ -159,8 +158,7 @@
         .login
             display: inline-flex
             &::before
-                font-family: "Font Awesome 6 free"
-                font-weight: 900
+                font: var(--fa-font-solid)
                 content: "\f007"
                 color: gray
                 align-self: end

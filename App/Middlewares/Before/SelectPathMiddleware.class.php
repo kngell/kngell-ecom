@@ -19,13 +19,21 @@ class SelectPathMiddleware extends BeforeMiddleware
     {
         $object->createView();
         if (str_contains($object->getFilePath(), 'Client' . DS)) {
-            $object->view()->addProperties([
-                'settings' => $object->getSettings(),
-            ]);
+            $object->view()->layout('default');
+            $object->frontComponents($this->displayFronEndComponents($object));
         } elseif (str_contains($object->getFilePath(), 'Backend' . DS)) {
-            $object->view_instance->siteTitle("K'nGELL Administration");
-            $object->view_instance->layout('admin');
+            $object->view()->siteTitle("K'nGELL Administration");
+            $object->view()->layout('admin');
         }
         return $next($object);
+    }
+
+    private function displayFronEndComponents(?object $obj = null) : array
+    {
+        return array_merge($obj->container(DisplayAuthSystem::class)->displayAll(), $obj->outputComments(), $obj->container(Navigation::class, [
+            'settings' => $obj->getSettings(),
+            'cartItem' => $obj->displayUserCart(),
+            'view' => $obj->view(),
+        ])->displayAll());
     }
 }

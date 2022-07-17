@@ -51,7 +51,7 @@ class VisitorsManager extends Model
         $query_data = $this->table()
             ->where([
                 'cookies' => $this->cookie->get(VISITOR_COOKIE_NAME),
-                'ip_address|in' => [[$ip, '2', '3'], 'visitors'],
+                'ip_address|in' => [[$ip, '2', '3'], 'tbl' => 'visitors'],
             ])
             ->return('class')
             ->build();

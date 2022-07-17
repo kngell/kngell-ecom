@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class DisplayUserCart extends AbstractDisplayUserCart
+class DisplayUserCart extends AbstractDisplayUserCart implements DisplayPagesInterface
 {
     public function __construct(CollectionInterface|closure $userCart, UserCartItemsForm $userCartForm)
     {
@@ -12,7 +12,7 @@ class DisplayUserCart extends AbstractDisplayUserCart
         parent::__construct($userCart, $userCartForm);
     }
 
-    public function userCartItems() : array
+    public function displayAll() : array
     {
         return ['cartItems' => $this->userCartForm->createForm('#', $this->userCart)];
     }

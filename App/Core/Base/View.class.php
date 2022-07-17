@@ -67,7 +67,7 @@ class View extends AbstractView
         if (!empty($viewname)) { //$this->view_file != $viewname
             $this->view_file = preg_replace("/\s+/", '', $viewname);
             //home/kngell/projects/ecom/App/Views/client/users/account/verifyUserAccount.php
-            if (file_exists(VIEW . strtolower($this->file_path) . $this->view_file . '.php')) {
+            if (is_readable(VIEW . strtolower($this->file_path) . $this->view_file . '.php')) {
                 return $this->renderViewContent(VIEW . strtolower($this->file_path) . $this->view_file . '.php', $params);
             }
         }
@@ -129,9 +129,7 @@ class View extends AbstractView
 
     private function renderViewContent($view, array $params = []) : ?string
     {
-        foreach ($params as $key => $value) {
-            $$key = $value;
-        }
+        extract($params, EXTR_SKIP);
         require_once $view;
         $this->start('html');
         require_once VIEW . strtolower(explode(DS, $this->file_path)[0]) . DS . 'layouts' . DS . $this->_layout . '.php';

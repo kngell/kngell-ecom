@@ -174,7 +174,7 @@ class Container implements ContainerInterface
     protected function resolveDependencies(array $dependencies, array $args, reflectionClass $reflector): array
     {
         $results = [];
-        foreach ($dependencies as $dependency) {
+        foreach ($dependencies as $key => $dependency) {
             $type = $dependency->getType(); // ReflectionType|null
             if (!$type instanceof ReflectionNamedType || $type->isBuiltin()) {
                 if ($dependency->isDefaultValueAvailable() || !empty($args)) {
@@ -183,6 +183,8 @@ class Container implements ContainerInterface
                     }
                     if (array_key_exists($dependency->name, $args)) {
                         $results[] = $args[$dependency->name];
+                    } elseif (array_key_exists($key, $args)) {
+                        $results[] = $args[$key];
                     }
                 } else {
                     throw new DependencyHasNoDefaultValueException('Sorry cannot resolve class dependency ' . $dependency->name);
@@ -192,6 +194,8 @@ class Container implements ContainerInterface
             } else {
                 if (array_key_exists($dependency->name, $args)) {
                     $results[] = $args[$dependency->name];
+                } elseif (array_key_exists($key, $args)) {
+                    $results[] = $args[$key];
                 } else {
                     $results[] = $this->make($type->getName());
                 }

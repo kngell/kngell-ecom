@@ -210,7 +210,7 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
      */
     public function buildQueryParameters(array $conditions = [], array $parameters = []): array
     {
-        return (!empty($parameters) || !empty($conditions)) ? array_merge($parameters, $conditions) : $parameters;
+        return (!empty($parameters) || !empty($conditions)) ? array_merge($conditions, $parameters) : $parameters;
     }
 
     /**

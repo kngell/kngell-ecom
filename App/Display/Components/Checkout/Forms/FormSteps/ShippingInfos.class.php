@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
-class ShippingInfos extends AbstractCheckout
+class ShippingInfos extends AbstractCheckoutformSteps
 {
-    public function __construct(protected ?object $frm, private ?string $summary, private ?CollectionInterface $obj, protected ?CollectionInterface $paths, private ?ButtonsGroup $btns)
+    private string $title = 'Shipping Method';
+    private MoneyManager $money;
+
+    public function __construct(protected ?object $frm, private ?CartSummary $summary, private ?CollectionInterface $obj, protected ?CollectionInterface $paths, protected ?ButtonsGroup $btns)
     {
+        $this->money = MoneyManager::getInstance();
     }
 
     public function display() : string
@@ -15,20 +19,19 @@ class ShippingInfos extends AbstractCheckout
         if ((!file_exists($mainTemplate) || !file_exists($shippingData))) {
             throw new BaseException('Files Not found!', 1);
         }
-        return $this->outputShippingInfosTemplate(file_get_contents($mainTemplate), file_get_contents($shippingData), $this->obj);
+        return $this->outputTemplate(file_get_contents($mainTemplate), file_get_contents($shippingData), $this->obj);
     }
 
-    private function outputShippingInfosTemplate(string $template = '', string $dataTemplate = '', ?Object $obj = null) : string
+    private function outputTemplate(string $template = '', string $dataTemplate = '', ?Object $obj = null) : string
     {
         $temp = '';
         if (!is_null($obj) && $obj->count() > 0) {
-            $temp = str_replace('{{userCartSummary}}', $this->summary, $template);
+            $temp = str_replace('{{userCartSummary}}', $this->summary->display($this), $template);
             $temp = str_replace('{{discountCode}}', $this->discountCode(), $temp);
-            $temp = str_replace('{{shipping_data}}', $dataTemplate, $temp);
-            $temp = str_replace('{{shippingTitle}}', $this->titleTemplate('Shipping Method'), $temp);
+            $temp = str_replace('{{data}}', $dataTemplate, $temp);
+            $temp = str_replace('{{title}}', $this->titleTemplate($this->title), $temp);
             $temp = str_replace('{{form_shipping_method}}', $this->shippingform($obj), $temp);
-            $temp = str_replace('{{buttonsRight}}', $this->btns->buttonsGroup('next'), $temp);
-            $temp = str_replace('{{buttonsLeft}}', $this->btns->buttonsGroup('prev'), $temp);
+            $temp = str_replace('{{buttons_group}}', $this->buttons(), $temp);
         }
         return $temp;
     }
@@ -55,7 +58,7 @@ class ShippingInfos extends AbstractCheckout
                     ->labelClass(['radio'])
                     ->templatePath($this->paths->offsetGet('shippingRadioInpuut'))
                     ->html(), $temp);
-                $template = str_replace('{{price}}', $shippingClass->price, $template);
+                $template = str_replace('{{price}}', strval($this->money->getFormatedAmount(strval($shippingClass->price))) ?? '', $template);
                 $html .= $template;
                 $i++;
             }

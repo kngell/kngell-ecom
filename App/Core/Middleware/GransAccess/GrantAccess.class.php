@@ -16,7 +16,7 @@ class GrantAccess
         $this->container = Container::getInstance();
         $this->session = $this->container->make(SessionInterface::class);
         $this->aclGroup = AuthManager::acls();
-        $this->loggedInUser = AuthManager::isLoggedIn();
+        $this->loggedInUser = AuthManager::isUserLoggedIn();
         $this->fileSystem = $this->container->make(FilesSystemInterface::class);
         $this->acl = $this->fileSystem->get(APP, 'acl.json', true);
     }
@@ -55,7 +55,7 @@ class GrantAccess
                 }
             }
         }
-        return $submenu !== null && isset($menuAry[$submenu]) ? $menuAry[$submenu] : $menuAry;
+        return new Collection($submenu !== null && isset($menuAry[$submenu]) ? $menuAry[$submenu] : $menuAry);
     }
 
     private function accountIsVerified(array $acl) : array

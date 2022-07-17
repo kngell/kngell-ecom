@@ -37,7 +37,7 @@
             </tr>
          </table>
       </div>
-      {{paiementTitle}}
+      {{title}}
       <p class="infos-transaction">All transactions are secure and encrypted.</p>
       <div id="order-payment" class="border mb-3 rounded radio-check-group">
          {{paiementForm}}

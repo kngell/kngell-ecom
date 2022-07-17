@@ -7,18 +7,18 @@ class VisitorsController extends Controller
     public function track()
     {
         $data = $this->isValidRequest();
-        if (!$this->cache->exists('visitor' . $data['ip'])) {
+        if (!$this->cache->exists($this->cachedFiles['visitors'])) {
             /** @var VisitorsManager */
             $model = $this->model(VisitorsManager::class)->assign($data);
             $output = $model->manageVisitors($data);
             if ($output->count() > 0) {
-                $this->cache->set('visitor' . $data['ip'], $output->count());
+                $this->cache->set($this->cachedFiles['visitors'], $output->count());
                 $this->jsonResponse(['result' => 'success', 'msg' => true]);
             }
         }
 
-        if ($this->cache->get('visitor' . $data['ip']) > 0) {
-            $this->jsonResponse(['result' => 'success', 'msg' => true]);
+        if ($resp = $this->cache->get($this->cachedFiles['visitors']) > 0) {
+            $this->jsonResponse(['result' => 'success', 'msg' => $resp]);
         }
     }
 

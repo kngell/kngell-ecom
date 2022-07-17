@@ -15,7 +15,7 @@ class HomePlugin {
     this.loginBtn = this.element.find("#login_btn");
     this.header = this.element.find("#header");
     this.navigation = this.element.find(".navigation");
-    this.wrapper = this.element.find(".checkout-content");
+    this.wrapper = this.element.find(".page-content");
   };
   _setupEvents = (e) => {
     var phpPlugin = this;
@@ -23,9 +23,9 @@ class HomePlugin {
      * Login and Register
      * ------------------------------------------------------
      */
-    phpPlugin.header.on(
-      "click show.bs.dropdown",
-      ".connect .connexion",
+    phpPlugin.element.on(
+      "click",
+      "show.bs.dropdown,.connect .connexion,.account-request .text-highlight",
       function (e) {
         var loader = new log_reg().check();
         if (!loader.isLoad) {
@@ -50,7 +50,7 @@ class HomePlugin {
 }
 document.addEventListener("DOMContentLoaded", function (e) {
   new HomePlugin($("#body"))._init(e);
-  (function () {
+  (function (e) {
     if (typeof EventTarget !== "undefined") {
       let supportsPassive = false;
       try {
@@ -70,14 +70,4 @@ document.addEventListener("DOMContentLoaded", function (e) {
       };
     }
   })();
-  let visitor = get_visitors_data().then((visitors_data) => {
-    var data = {
-      url: "visitors",
-      table: "visitors",
-      ip: visitors_data.ip,
-    };
-    send_visitors_data(data, (response) => {
-      console.log(response);
-    });
-  });
 });

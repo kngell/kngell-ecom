@@ -6,9 +6,17 @@ abstract class AbstractRepository
 {
     protected Entity $entity;
 
-    public function fields() : array
+    public function fields(array $conditions = []) : array
     {
-        return $this->entity->getInitializedAttributes();
+        $fields = $this->entity->getInitializedAttributes();
+        if (!empty($conditions)) {
+            foreach ($conditions as $key => $value) {
+                if (array_key_exists($key, $fields)) {
+                    unset($fields[$key]);
+                }
+            }
+        }
+        return $fields;
     }
 
     protected function isArray(array $conditions) : bool

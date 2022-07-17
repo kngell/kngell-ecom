@@ -366,6 +366,8 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
                 if ($key == 'input') {
                     $this->class($class);
                 }
+            }
+            if (!in_array($this->inputObject[0]::class, ['CheckBoxType', 'TextAreaType', 'RadioType', 'ButtonType'])) {
                 if ($key == 'label') {
                     $this->labelClass($class);
                 }

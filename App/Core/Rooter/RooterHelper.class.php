@@ -54,16 +54,16 @@ class RooterHelper
         return rtrim($url, '/');
     }
 
-    public function dynamicNamespace(string $route, string $realroute, array $ctrlAry) : string
-    {
-        if (str_contains($route, 'controller')) {
-            foreach ($ctrlAry as $namesapce => $ctrl) {
-                if (in_array($realroute, $ctrl)) {
-                    return $this->transformCtrlToCmCase($namesapce) . DS;
-                    break;
-                }
-            }
-        }
-        return '';
-    }
+    // public function dynamicNamespace(string $route, string $realroute, array $ctrlAry) : string
+    // {
+    //     if (str_contains($route, 'controller')) {
+    //         foreach ($ctrlAry as $namesapce => $ctrl) {
+    //             if (in_array($realroute, $ctrl)) {
+    //                 return $this->transformCtrlToCmCase($namesapce) . DS;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return '';
+    // }
 }

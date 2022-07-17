@@ -9,8 +9,9 @@ class ErrorHandling
      */
     private const NUM_LINES = 10;
     private static $trace = [];
+    private static RooterInterface $rooter;
 
-    public function __construct()
+    public function __construct(RooterInterface $rooter)
     {
         register_shutdown_function(function () {
             $error = error_get_last();
@@ -18,6 +19,7 @@ class ErrorHandling
                 throw new ErrorException($error['message'], -1, $error['type'], $error['file'], $error['line']);
             }
         });
+        self::$rooter = $rooter;
     }
 
     /**
@@ -39,12 +41,12 @@ class ErrorHandling
      * @param [type] $line
      * @return void
      */
-    public static function errorHandle($serverity, $message, $file, $line)
+    public static function errorHandle(int $serverity, string $message, string $file, int $line)
     {
         if (!error_reporting() && $serverity) {
             return;
         }
-        throw new ErrorException($message, 0, $file, $line);
+        throw new ErrorException($message, 0, $serverity, $file, $line);
     }
 
     /**
@@ -65,12 +67,7 @@ class ErrorHandling
         if (self::isMode()['mode'] == 'dev' && self::isMode()['mode'] != 'prod') {
             list($srcCode, $snippet) = self::srcCode($exception->getFile(), $exception->getLine(), 'highlight');
             $stacktrace = self::$trace;
-            Container::getInstance()->make(ControllerFactory::class, [
-                'controllerString' => ErrorsController::class,
-                'method' => 'index',
-                'params' => [],
-                'path' => 'Client/',
-            ])->create()->index(['exception' => $exception, 'snippet' => $snippet, 'srcCode' => $srcCode, 'stacktrace' => $stacktrace]);
+            self::render('client/errors/index', ['exception' => $exception, 'snippet' => $snippet, 'srcCode' => $srcCode, 'stacktrace' => $stacktrace]);
         } else {
             $logFile = LOG_DIR . '/error-' . date('Y-m-d') . '-.log';
             ini_set('log_errors', 'On');
@@ -80,9 +77,18 @@ class ErrorHandling
             $message .= 'with message ' . $exception->getMessage();
             $message .= "\nStack trace: " . $exception->getTraceAsString();
             $message .= "\nThrown in " . $exception->getFile() . ' on line ' . $exception->getLine();
-            error_log($message);
-            Container::getInstance()->make(ErrorsController::class)->iniParams(ErrorsController::class, $code, [], 'Client/')
-                ->index(['exception' => $exception, 'snippet' => '', 'srcCode' => '', 'stacktrace' => '']);
+            error_log($message, 1, $logFile);
+            self::render('client/errors/user', ['exception' => $exception, 'snippet' => '', 'srcCode' => '', 'stacktrace' => '']);
+        }
+    }
+
+    public static function render(string $route, array $params = []) : void
+    {
+        $rooter = Container::getInstance()->make(RooterInterface::class);
+        list($controller, $method) = $rooter->resolveWithException($route);
+        $controllerObject = $rooter->controllerObject($controller, $method);
+        if (is_callable([$controllerObject, $method], true, $callableName)) {
+            $controllerObject->$method($params);
         }
     }
 

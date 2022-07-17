@@ -32,7 +32,7 @@ class FormBuilderBlueprint implements FormBuilderBlueprintInterface
         ];
     }
 
-    public function textarea(string $name, array $class = [], mixed $id = null, string|null $placeholder = null, int $rows = 5, int $cols = 33, ): array
+    public function textarea(string $name, array $class = [], mixed $id = null, string|null $placeholder = null, int $rows = 5, int $cols = 33): array
     {
         return [
             TextareaType::class => current([
@@ -76,13 +76,13 @@ class FormBuilderBlueprint implements FormBuilderBlueprintInterface
     public function checkbox(string $name, array $class = [], mixed $value = null): array
     {
         return [
-            CheckboxType::class => current([
+            CheckBoxType::class => current([
                 $this->arg($name, array_merge(['uk-checkbox'], $class), $value),
             ]),
         ];
     }
 
-    public function select(string $name, array $class = [], ?string $id = null, mixed $size = null, bool $multiple = false, ): array
+    public function select(string $name, array $class = [], ?string $id = null, mixed $size = null, bool $multiple = false): array
     {
         return [
             SelectType::class => current([

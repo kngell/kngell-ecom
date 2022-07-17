@@ -21,11 +21,10 @@
             </tr>
          </table>
       </div>
-      {{shippingTitle}}
+      {{title}}
       <div class="border mb-3 rounded radio-check-group">
          {{form_shipping_method}}
       </div>
-      {{buttonsLeft}}
    </div>
    <!-- end card-body -->
 </div>

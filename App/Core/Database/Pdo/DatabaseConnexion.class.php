@@ -72,4 +72,17 @@ final class DatabaseConnexion implements DatabaseConnexionInterface
     {
         return $this->con;
     }
+
+    /**
+     * Set the value of credentials.
+     *
+     * @param  array  $credentials
+     *
+     * @return  self
+     */
+    public function setCredentials(array $credentials)
+    {
+        $this->credentials = $credentials;
+        return $this;
+    }
 }

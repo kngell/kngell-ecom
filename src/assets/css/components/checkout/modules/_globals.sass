@@ -1,15 +1,17 @@
 @use 'corecss/abstract/variables' as *
 #checkout-element
     *,*::before,*::after
-        margin: 0
-        padding: 0
         box-sizing: border-box
 #checkout-element
     max-width: 1062px
-
-#checkout-content
-    input, select, textarea
-        outline: none
-        box-shadow: none
     .card
         border: none
+        margin-bottom: 1rem
+
+form
+    input, select, textarea
+        outline: none!important
+        box-shadow: none!important
+        &:focus
+            box-shadow: none!important
+            outline: none!important

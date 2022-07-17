@@ -15,7 +15,7 @@ class FormBuilder extends AbstractFormBuilder
     protected bool $addCsrf = true;
     protected string $csrfKey = '';
     protected string $element = '';
-    protected string $template;
+    protected string $template = '';
     protected CoreError $error;
     protected RequestHandler $request;
     protected Token $token;
@@ -312,22 +312,22 @@ class FormBuilder extends AbstractFormBuilder
     }
 
     /**
+     * Set the value of csrfKey.
+     *
+     * @return  self
+     */
+    public function setCsrfKey(string $csrfKey) : self
+    {
+        $this->csrfKey = $csrfKey;
+        return $this;
+    }
+
+    /**
      * Get the value of csrfKey.
      */
     protected function getCsrfKey() : string
     {
         return $this->csrfKey;
-    }
-
-    /**
-     * Set the value of csrfKey.
-     *
-     * @return  self
-     */
-    protected function setCsrfKey(string $csrfKey) : self
-    {
-        $this->csrfKey = $csrfKey;
-        return $this;
     }
 
     protected function getStream()

@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 require_once 'inc/default/header.php'; ?>
 <!----------------Navbar-------------------->
-<?php require_once 'inc/default/nav.php'?>
+<?= $navComponent ?? ''?>
 <!----------------xNavbar-------------------->
 
 <!----------------Body----------------------->
 <?= $this->content('body'); ?>
 <!----------------xBody---------------------->
 <!----------------Modals-------------------->
-<?php require_once 'inc/default/modal.php'; ?>
+<?= $authenticationComponent ?? '' ?>
 <!----------------xModals-------------------->
 
 <?php require_once 'inc/default/footer.php';

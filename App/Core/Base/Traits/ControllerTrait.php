@@ -5,16 +5,6 @@ declare(strict_types=1);
 trait ControllerTrait
 {
     /**
-     * Get the value of commentOutput.
-     */
-    public function outputComments() : array
-    {
-        return array_filter($this->customProperties, function ($prop) {
-            return in_array($prop, ['comments']);
-        }, ARRAY_FILTER_USE_KEY);
-    }
-
-    /**
      * Set the value of commentOutput.
      *
      * @return  self
@@ -25,12 +15,48 @@ trait ControllerTrait
         return $this;
     }
 
-    public function getSettings() : Object
+    public function frontComponents(array $froncComponents = []) : self
+    {
+        $this->frontEndComponents = $froncComponents;
+        return $this;
+    }
+
+    /**
+     * Get the value of commentOutput.
+     */
+    public function outputComments() : array
+    {
+        return array_filter($this->customProperties, function ($prop) {
+            return in_array($prop, ['comments']);
+        }, ARRAY_FILTER_USE_KEY);
+    }
+
+    public function getSettings() : object
     {
         if (!$this->cache->exists('settings')) {
             $this->cache->set('settings', $this->container(SettingsManager::class)->getSettings());
         }
         return $this->cache->get('settings');
+    }
+
+    public function container(?string $class = null, array $args = []) : object
+    {
+        if (null != $class) {
+            return Application::diGet($class, $args);
+        }
+        return Application::getInstance();
+    }
+
+    public function displayUserCart() : array
+    {
+        return  $this->container(DisplayUserCart::class, [
+            'userCart' => function () {
+                if (!$this->cache->exists($this->cachedFiles['user_cart'])) {
+                    $this->cache->set($this->cachedFiles['user_cart'], $this->model(CartManager::class)->getUserCart());
+                }
+                return $this->cache->get($this->cachedFiles['user_cart']);
+            },
+        ])->displayAll();
     }
 
     protected function isIncommingDataValid(Model $m, string $ruleMethod, array $newKeys = []) : void
@@ -70,53 +96,24 @@ trait ControllerTrait
      * Init controller.
      * ==================================================================.
      * @param array $params
-     * @return self
+     * @return void
      */
-    protected function properties(array $params = []) : self
+    protected function properties(array $params = []) : void
     {
         if (!empty($params)) {
-            foreach ($params as $key => $value) {
-                if ($key != '' && property_exists($this, $key)) {
-                    $this->{$key} = $value;
+            foreach ($params as $prop => $value) {
+                if ($prop != '' && property_exists($this, $prop)) {
+                    if (is_string($value) && (class_exists($value) || interface_exists($value))) {
+                        if ($prop === 'dispatcher' || $prop === 'comment') {
+                            $this->{$prop} = $this->container($value)->create();
+                        } else {
+                            $this->{$prop} = $this->container($value);
+                        }
+                    } else {
+                        $this->{$prop} = $value;
+                    }
                 }
             }
         }
-        return $this;
-    }
-
-    protected function container(?string $class = null, array $args = []) : object
-    {
-        if (null != $class) {
-            return Application::diGet($class, $args);
-        }
-        return Application::getInstance();
-    }
-
-    protected function displayUserCart() : array
-    {
-        return  $this->container(DisplayUserCart::class, [
-            'userCart' => function () {
-                if (!$this->cache->exists($this->cachedFiles['user_cart'])) {
-                    $this->cache->set($this->cachedFiles['user_cart'], $this->model(CartManager::class)->getUserCart());
-                }
-                return $this->cache->get($this->cachedFiles['user_cart']);
-            },
-        ])->userCartItems();
-    }
-
-    private function AuthenticationFroms() : array
-    {
-        return [
-            'loginFrm' => class_exists(LoginForm::class) ? $this->container(LoginForm::class)->createForm('login' . DS . 'login') : '',
-            'registerFrm' => class_exists(RegisterForm::class) ? $this->container(RegisterForm::class)->createForm('register' . DS . 'register') : '',
-            'forgotFrm' => class_exists(ForgotPasswordForm::class) ? $this->container(ForgotPasswordForm::class)->createForm('forgot' . DS . 'forgot') : '',
-        ];
-    }
-
-    private function searchBox() : array
-    {
-        return $this->container(DisplaySearchBox::class)->searchBox();
-        // $path = FILES . 'Template' . DS . 'Base' . DS . 'search_box.php';
-        // return ['search_box' => file_exists($path) ? file_get_contents($path) : ''];
     }
 }

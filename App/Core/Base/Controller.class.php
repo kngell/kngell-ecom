@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class Controller extends AbstractController
+abstract class Controller extends AbstractController
 {
     use ControllerTrait;
 
@@ -35,7 +35,7 @@ class Controller extends AbstractController
         if ($this->view_instance === null) {
             throw new BaseLogicException('You cannot use the render method if the View is not available !');
         }
-        return $this->view_instance->render($viewName, array_merge($this->AuthenticationFroms(), $this->searchBox(), $this->outputComments(), $context));
+        return $this->view_instance->render($viewName, array_merge($this->frontEndComponents, $context));
     }
 
     public function model(string $modelString) : Object

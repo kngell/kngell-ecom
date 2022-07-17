@@ -224,7 +224,7 @@ trait FormBuilderTrait
         //     return str_replace('{{label}}', '', $template);
         // }
         // return $template;
-        return str_replace('{{label}}', $objectType->getLabelTemplate(), $template);
+        return str_replace('{{label}}', $show_label ? $objectType->getLabelTemplate() : '', $template);
     }
 
     private function getNameFromID(int $id, object $form)

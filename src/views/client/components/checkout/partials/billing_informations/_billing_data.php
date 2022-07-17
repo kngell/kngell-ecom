@@ -37,12 +37,11 @@
             </tr>
          </table>
       </div>
-      {{billingTitle}}
+      {{title}}
       <p class="infos-transaction">Select the address that matches your card or
          payment
          method.</p>
       {{billingFrom}}
    </div>
-   {{buttonsLeft}}
    <!-- end card-body -->
 </div>

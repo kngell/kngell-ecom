@@ -2,3 +2,5 @@
 phones_products: phones_products
 user_cart: user_cart_items
 shipping_class: shipping_class
+paiement_mode: paiement_mode_list
+visitors: visitors

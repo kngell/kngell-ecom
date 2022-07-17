@@ -28,6 +28,37 @@ trait FormalizerTrait
         return $this->dataRepository;
     }
 
+    public function setTemplate(string $template) : self
+    {
+        $this->template = $template;
+        return $this;
+    }
+
+    public function getTemplate() : string
+    {
+        return $this->template;
+    }
+
+    /**
+     * Get the value of print.
+     */
+    public function getPrint() : FormBuilderBlueprint
+    {
+        return $this->print;
+    }
+
+    /**
+     * Set the value of print.
+     *
+     * @return  self
+     */
+    public function setPrint(FormBuilderBlueprint $print) : self
+    {
+        $this->print = $print;
+
+        return $this;
+    }
+
     /**
      * Undocumented function.
      *

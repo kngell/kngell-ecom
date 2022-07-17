@@ -4,24 +4,47 @@ declare(strict_types=1);
 
 use Brick\Money\Money;
 
-class CartSummary extends AbstractCheckout
+class CartSummary extends AbstractCheckoutformSteps implements CheckoutFormStepInterface
 {
     private MoneyManager $money;
     private array $taxesProducts = [];
+    private Money $HT;
+    private string $TTC;
+    private string $cardContent = '';
+    private string $cardSubTotal = '';
 
     public function __construct(private ?object $obj, private ?CollectionInterface $paths = null)
     {
         $this->money = MoneyManager::getInstance();
     }
 
-    public function userCartSummary() : string
+    public function display(?object $step = null) : string
     {
         $uCartSummary = $this->paths->offsetGet('cartSummaryPath');
         $this->isFileexists($uCartSummary);
+        $this->cardContent = empty($this->cardContent) ? $this->cartSummaryContent() : $this->cardContent;
+        $this->cardSubTotal = empty($this->cardSubTotal) ? $this->cartSummaryTotal() : $this->cardSubTotal;
         $uCartSummary = file_get_contents($uCartSummary);
-        $uCartSummary = str_replace('{{cartSummaryContent}}', $this->cartSummaryContent(), $uCartSummary);
-        $uCartSummary = str_replace('{{CartSummaryTotal}}', $this->cartSummaryTotal(), $uCartSummary);
+        $uCartSummary = str_replace('{{cartSummaryContent}}', $this->cardContent, $uCartSummary);
+        $uCartSummary = str_replace('{{CartSummaryTotal}}', $this->cardSubTotal, $uCartSummary);
+        $uCartSummary = str_replace('{{button}}', $this->cartSummaryButton($step), $uCartSummary);
         return $uCartSummary;
+    }
+
+    /**
+     * Get the value of TTC.
+     */
+    public function getTTC() : string
+    {
+        return isset($this->TTC) ? $this->TTC : 0;
+    }
+
+    private function cartSummaryButton(?object $step = null) : string
+    {
+        if ($step::class === 'PaiementInfos') {
+            return '<div class="button-pay"><button type="button" class="btn btn-pay">Complete Order</button></div>';
+        }
+        return '';
     }
 
     private function cartSummaryContent() : string
@@ -30,6 +53,7 @@ class CartSummary extends AbstractCheckout
         $this->isFileexists($temp);
         $temp = file_get_contents($temp);
         $template = '';
+        $this->taxesProducts = [];
         foreach ($this->obj as $product) {
             if ($product->cart_type == 'cart') {
                 $HT = $product->regular_price * $product->item_qty;
@@ -50,15 +74,17 @@ class CartSummary extends AbstractCheckout
 
     private function cartSummaryTotal() : string
     {
-        $totalHT = $this->totalHT();
+        $this->HT = $this->totalHT();
         list($taxeHtml, $totalTaxes) = $this->calcTaxesHtml();
         $uCartSummaryTotal = $this->paths->offsetGet('cartSummaryTotalPath');
         $this->isFileexists($uCartSummaryTotal);
         $uCartSummaryTotal = file_get_contents($uCartSummaryTotal);
-        $uCartSummaryTotal = str_replace('{{totalHT}}', $totalHT->formatTo('fr_FR') ?? '', $uCartSummaryTotal);
+        $uCartSummaryTotal = str_replace('{{totalHT}}', $this->HT->formatTo('fr_FR') ?? '', $uCartSummaryTotal);
         $uCartSummaryTotal = str_replace('{{reduction}}', $reduction ?? '', $uCartSummaryTotal);
         $uCartSummaryTotal = str_replace('{{taxes}}', $taxeHtml ?? '', $uCartSummaryTotal);
-        $uCartSummaryTotal = str_replace('{{totalTTC}}', $totalHT->plus($totalTaxes)->formatTo('fr_FR') ?? '', $uCartSummaryTotal);
+        $this->TTC = $this->HT->plus($totalTaxes)->formatTo('fr_FR');
+        $uCartSummaryTotal = str_replace('{{totalTTC}}', $this->TTC ?? '', $uCartSummaryTotal);
+
         return $uCartSummaryTotal;
     }
 

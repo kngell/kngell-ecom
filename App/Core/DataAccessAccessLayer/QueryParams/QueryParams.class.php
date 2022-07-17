@@ -89,6 +89,7 @@ class QueryParams extends AbstractQueryParams
                         $whereParams['tbl'] = $tbl;
                     }
                     list($whereParams['field'], $whereParams['operator']) = $this->fieldOperator($key);
+                    list($whereParams['value'], $whereParams['tbl']) = $this->fieldValue($whereParams['value']);
                     is_null($op) ? $this->query_params['conditions'] += $this->condition($whereParams) : $this->query_params['conditions'][$op] += $this->condition($whereParams);
                     $this->conditionBreak = [];
                 } else {

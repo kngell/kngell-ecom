@@ -1,7 +1,7 @@
 @use 'corecss/abstract/variables' as *
 @use 'corecss/abstract/mixins' as *
 .order-summary
-    .order-summary__content
+    .card
         box-shadow: 1px 1px 0.3rem 0 rgba(0,0,0, .15)
         .card-body
             padding: 1rem!important
@@ -12,13 +12,14 @@
                 .product-line
                     width: 100%
                     .p-cell
-                        vertical-align: middle
-                        padding-bottom: .5rem!important
+                        vertical-align: top
+                        padding-bottom: 0rem!important
                         .product-thumbnail-wrapper
                             position: relative
-                            width: 60px
+                            width: 100%
+                            margin-right: 0!important
                             .product-thumbnail-quantity
-                                font-size: 0.85em
+                                font-size: .80em
                                 font-weight: 500
                                 line-height: 1.75em
                                 white-space: nowrap
@@ -31,11 +32,11 @@
                                 height: 21px
                                 padding: 0 0.58em
                                 position: absolute
-                                right: 13px
+                                right: 2px
                                 top: -8px
                     .p-title
                         color: $gray-dark-in
-                        font-size: .9rem
+                        font-size: 1rem
                         margin-left: -10px!important
                     .p-price
                         color: $dark-in
@@ -55,6 +56,12 @@
                 .button-box
                     .btn
                         color: #fff
+                        background-color: #a1adb3
+                        padding: 5px 25px
+                        &:hover
+                            box-shadow: 0 0 0 2px #fff, 0 0 0 3px $primary
+                        &:active
+                            transform: scale(.98)
         .total
             .title
                 text-align: start
@@ -75,13 +82,4 @@
                 font-size: 1.1rem
                 font-weight: 600
                 color: $dark-color
-                padding-bottom: 1.5rem
-            .code-achat
-                display: flex
-                justify-content: space-around
-                vertical-align: middle
-                line-height: .8rem
-                +input($gray-300,$radius,$dark-in,$white-green,$blue-light,$gray-dark,$white-bg,.8rem)
-                &__btn
-                    +button($color-primary,$blue-dark,10px,lowercase)
-                    margin-left: .5rem
+                padding-bottom: 1.25rem

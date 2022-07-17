@@ -55,7 +55,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
     public function update(array $conditions) : ?int
     {
         try {
-            return $this->em->getCrud()->update($this->fields(), $conditions);
+            return $this->em->getCrud()->update($this->fields($conditions), $conditions);
         } catch (\Throwable $th) {
             throw $th;
         }

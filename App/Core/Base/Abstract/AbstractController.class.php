@@ -22,6 +22,8 @@ abstract class AbstractController
     protected array $callAfterMiddlewares = [];
     protected string $filePath;
     protected array $cachedFiles;
+    protected array $route_params = [];
+    protected array $frontEndComponents = [];
 
     // public function getComment() : CommentsInterface
     // {

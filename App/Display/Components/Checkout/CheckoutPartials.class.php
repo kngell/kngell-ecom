@@ -10,10 +10,21 @@ class CheckoutPartials
     private string $shippingInfosPath = 'shipping_informations' . DS;
     private string $billingInfosPath = 'billing_informations' . DS;
     private string $paimentPath = 'paiment_informations' . DS;
+    private string $modalPath = 'extras_sections' . DS . 'modals' . DS;
+    private string $buttonPath = 'buttons_group' . DS;
+    private string $cartSummaryPath = 'cart_summary' . DS;
 
     public function Paths() : CollectionInterface
     {
-        return new Collection(array_merge($this->userInfosPaths(), $this->progressBarPath(), $this->shippingInfosPaths(), $this->billingInfosPaths(), $this->discountPaths(), $this->paiementPaths()));
+        return new Collection(array_merge($this->userInfosPaths(), $this->progressBarPath(), $this->shippingInfosPaths(), $this->billingInfosPaths(), $this->discountPaths(), $this->paiementPaths(), $this->buttonPath(), $this->cartSummaryPath(), $this->modalsPaths()));
+    }
+
+    private function cartSummaryPath() : array
+    {
+        return [
+            'cartSummaryPath' => $this->viewPath . $this->cartSummaryPath . '_card_summary.php',
+            'cartSummaryContentPath' => $this->viewPath . $this->cartSummaryPath . '_cart_summary_data.php',
+        ];
     }
 
     private function progressBarPath() : array
@@ -31,8 +42,6 @@ class CheckoutPartials
             'deliveryAddressPath' => $this->viewPath . $this->orderInfosPath . '_checkout_delivery_address.php',
             'contactInfosPath' => $this->viewPath . $this->orderInfosPath . '_checkout_contact_infos.php',
             'contactTitlePath' => $this->viewPath . $this->orderInfosPath . '_contact_title.php',
-            'cartSummaryPath' => $this->viewPath . $this->orderInfosPath . '_card_summary.php',
-            'cartSummaryContentPath' => $this->viewPath . $this->orderInfosPath . '_cart_summary_content.php',
             'cartSummaryTotalPath' => $this->viewPath . $this->orderInfosPath . '_cartSummaryTotal.php',
             'texesPath' => $this->templatePath . 'checkoutTaxTemplate.php',
         ];
@@ -70,6 +79,23 @@ class CheckoutPartials
             'mainPaiementPath' => $this->viewPath . $this->paimentPath . '_paiment_infos.php',
             'paiementData' => $this->viewPath . $this->paimentPath . '_paiement_data.php',
             'paiementFormPath' => $this->templatePath . 'paiementFormTemplate.php',
+            'creditCardIconsPath' => $this->templatePath . 'paiementCcIconTemplate.php',
+            'creditCardTemplatePath' => $this->templatePath . 'creditCardformTemplate.php',
+        ];
+    }
+
+    private function modalsPaths() : array
+    {
+        return [
+            'creditCardModalPath' => $this->viewPath . $this->modalPath . 'creditCardFormModal.php',
+            'deliveryAddressModalPath' => $this->viewPath . $this->modalPath . 'deliveryAdressModal.php',
+        ];
+    }
+
+    private function buttonPath() : array
+    {
+        return [
+            'buttonGroupPath' => $this->viewPath . $this->buttonPath . '_button_group.php',
         ];
     }
 }

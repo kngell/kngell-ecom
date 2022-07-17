@@ -41,10 +41,22 @@ class Rooter implements RooterInterface
                 $this->arguments = [$urlroute];
                 $this->route = $urlroute = 'assets';
             } else {
-                $url = explode(DS, filter_var(rtrim($urlroute, DS), FILTER_SANITIZE_URL));
-                $this->route = isset($url[0]) ? strtolower($url[0]) : $this->route;
-                unset($url[0]);
-                $this->arguments = count($url) > 0 ? $this->helper->formatUrlArguments(array_values($url)) : [];
+                $urlroute = explode(DS, filter_var(rtrim($urlroute, DS), FILTER_SANITIZE_URL));
+                if (isset($urlroute[0])) {
+                    $this->route = strtolower($urlroute[0]);
+                    unset($urlroute[0]);
+                }
+                if (isset($urlroute[1])) {
+                    if ($this->route == 'assets') {
+                        if ($urlroute[1] == 'img') {
+                            unset($urlroute[1]);
+                        }
+                    } else {
+                        $this->route = $this->route . DS . strtolower($urlroute[1]);
+                        unset($urlroute[1]);
+                    }
+                }
+                $this->arguments = count($urlroute) > 0 ? $this->helper->formatUrlArguments(array_values($urlroute)) : [];
             }
             return strtolower($this->route);
         }
@@ -60,8 +72,7 @@ class Rooter implements RooterInterface
         if (preg_match('/method$/i', $method) == 0) {
             if (YamlFile::get('app')['system']['use_resolvable_method'] === true) {
                 $this->resolveControllerMethodDependencies($controllerObject, $method);
-            } elseif (\is_callable([$controllerObject, $method], true, $callableName)) {
-                $args = $this->params;
+            } elseif (is_callable([$controllerObject, $method], true, $callableName)) {
                 $controllerObject->$method($this->arguments);
             } else {
                 throw new NoActionFoundException("Method $method in controller $controllerString cannot be called");
@@ -84,7 +95,7 @@ class Rooter implements RooterInterface
     public function getMatchRoute(string $url, array $routes) : bool
     {
         foreach ($routes as $route => $params) {
-            if (preg_match($route, $this->helper->dynamicNamespace($route, $this->route, $this->controllerAry) . $url, $matches)) {
+            if (preg_match($route, $url, $matches)) {
                 foreach ($matches as $key => $param) {
                     if (is_string($key)) {
                         $params[$key] = $param;
@@ -104,6 +115,7 @@ class Rooter implements RooterInterface
             'method' => $method,
             'path' => $this->getNamespace($controllerString),
             'controllerProperties' => $this->controllerProperties,
+            'routeParams' => $this->params,
         ])->create();
     }
 
@@ -116,16 +128,28 @@ class Rooter implements RooterInterface
      * Get the namespace for the controller class. the namespace difined within the route parameters
      * only if it was added.
      *
-     * @param string $string
      * @return string
      */
-    public function getNamespace(?string $string = null) : string
+    public function getNamespace() : string
     {
         $namespace = '';
         if (array_key_exists('namespace', $this->params)) {
             $namespace .= $this->params['namespace'] . DS;
         }
         return $namespace;
+    }
+
+    public function resolveWithException(string $url): array
+    {
+        $url = $this->parseUrl($url) == 'assets' ? 'assets/getAsset' : $url;
+        if (!$this->getMatchRoute($url, $this->routes[$this->request->getMethod()])) {
+            http_response_code(404);
+            throw new RouterNoRoutesFound('Route ' . $url . ' does not match any valid route.', 404);
+        }
+        if (!class_exists($controller = $this->createController())) {
+            throw new RouterBadFunctionCallException('Class ' . $controller . ' does not exists.');
+        }
+        return [$controller, $this->createMethod()];
     }
 
     private function resolveControllerMethodDependencies(object $controllerObject, string $newAction): mixed
@@ -153,19 +177,6 @@ class Rooter implements RooterInterface
         $controllerName = $this->params['controller'] . $this->controllerSuffix;
         $controllerName = Stringify::studlyCaps($controllerName);
         return $controllerName;
-    }
-
-    private function resolveWithException(string $url): array
-    {
-        $url = $this->parseUrl($url) == 'assets' ? 'assets/getAsset' : $url;
-        if (!$this->getMatchRoute($url, $this->routes[$this->request->getMethod()])) {
-            http_response_code(404);
-            throw new RouterNoRoutesFound('Route ' . $url . ' does not match any valid route.', 404);
-        }
-        if (!class_exists($controller = $this->createController())) {
-            throw new RouterBadFunctionCallException('Class ' . $controller . ' does not exists.');
-        }
-        return [$controller, $this->createMethod()];
     }
 
     private function createMethod(): string
