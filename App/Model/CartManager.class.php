@@ -34,9 +34,10 @@ class CartManager extends Model
     {
         if ($this->cookie->exists(VISITOR_COOKIE_NAME)) {
             $this->table()
-                ->join('products', ['title', 'regular_price', 'charge_tax', 'media', 'color', 'size'])
+                ->leftJoin('products', ['pdt_id', 'title', 'regular_price', 'charge_tax', 'media', 'color', 'size'])
                 ->leftJoin('product_categorie', ['cat_id'])
-                ->on(['item_id', 'pdt_id'], ['pdt_id', 'pdt_id'])
+                ->leftJoin('categories', ['categorie'])
+                ->on(['item_id', 'pdt_id'], ['pdt_id', 'pdt_id'], ['cat_id', 'cat_id'])
                 ->where(['user_id' => $this->cookie->get(VISITOR_COOKIE_NAME)])
                 ->groupBy(['pdt_id' => 'products'])
                 ->return('object');

@@ -47,19 +47,24 @@ trait ControllerTrait
         return Application::getInstance();
     }
 
+    public function userCart()
+    {
+        if (!$this->cache->exists($this->cachedFiles['user_cart'])) {
+            $this->cache->set($this->cachedFiles['user_cart'], $this->model(CartManager::class)->getUserCart());
+        }
+        return $this->cache->get($this->cachedFiles['user_cart']);
+    }
+
     public function displayUserCart() : array
     {
         return  $this->container(DisplayUserCart::class, [
             'userCart' => function () {
-                if (!$this->cache->exists($this->cachedFiles['user_cart'])) {
-                    $this->cache->set($this->cachedFiles['user_cart'], $this->model(CartManager::class)->getUserCart());
-                }
-                return $this->cache->get($this->cachedFiles['user_cart']);
+                return $this->userCart();
             },
         ])->displayAll();
     }
 
-    protected function isIncommingDataValid(Model $m, string $ruleMethod, array $newKeys = []) : void
+    protected function isIncommingDataValid(object $m, string $ruleMethod, array $newKeys = []) : void
     {
         method_exists('Form_rules', $ruleMethod) ? $m->validator(Form_rules::$ruleMethod()) : '';
         if (!$m->validationPasses()) {
@@ -115,5 +120,38 @@ trait ControllerTrait
                 }
             }
         }
+    }
+
+    protected function getUserCart(?CartManager $m = null) : CollectionInterface
+    {
+        $model = $m == null ? $this->model(CartManager::class) : $m;
+        if (!$this->cache->exists($this->cachedFiles['user_cart'])) {
+            $this->cache->set($this->cachedFiles['user_cart'], $model->getUserCart());
+        }
+        return $this->cache->get($this->cachedFiles['user_cart']);
+    }
+
+    protected function getShippingClass(?ShippingClassManager $m = null) : CollectionInterface
+    {
+        $model = $m == null ? $this->model(ShippingClassManager::class) : $m;
+        if (!$this->cache->exists($this->cachedFiles['shipping_class'])) {
+            $this->cache->set($this->cachedFiles['shipping_class'], $model->getShippingClass());
+        }
+        return $this->cache->get($this->cachedFiles['shipping_class']);
+    }
+
+    protected function checkoutPage() : array
+    {
+        return $this->container(CheckoutPage::class, [
+            'userCart' => $this->getUserCart(),
+            'shippingClass' => $this->getShippingClass(),
+            'pmtMode' => function () {
+                if (!$this->cache->exists($this->cachedFiles['paiement_mode'])) {
+                    $this->cache->set($this->cachedFiles['paiement_mode'], $this->model(PaymentModeManager::class)->all());
+                }
+                return $this->cache->get($this->cachedFiles['paiement_mode']);
+            },
+            'customer' => $this->container(Customer::class)->get(),
+        ])->displayAll();
     }
 }

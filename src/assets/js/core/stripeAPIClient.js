@@ -1,30 +1,61 @@
 export default class StripeAPIClient {
   constructor(params = {}) {
-    this.api_key = params.api_key; // ok
-    this.cardHolderFname = params.cardHolderFname; //ok
-    this.cardHolderLname = params.cardHolderLname; //ok
-    this.cardElement = params.cardElement; //ok
-    this.cardExp = params.cardExp;
-    this.cardCvc = params.cardCvc;
-    this.cardError = params.cardError; //ok
-    this.cardErrorID = params.cardErrorID;
-    this.cardButton = params.cardButton; //ok
-    this.cardButtonID = params.cardButtonID;
-    this.responseError = params.responseError; //ok
+    this.params = params;
   }
-  /**
-   * Manage Button
-   * ======================================================================================
-   */
-  _create_cardElements = () => {
-    const plugin = this;
-    // document.querySelector(plugin.cardButtonID).disabled = true;
-    const stripe = Stripe(plugin.api_key);
-    var style = {
+  _init = () => {
+    this._setupVariables();
+    this._create_cardElements();
+    return this;
+  };
+  _setupVariables = () => {
+    this.api_key = this.params.api_key;
+    this.cardHolder = this.params.cardholder;
+    this.cardElement = this.params.cardElement;
+    this.cardExp = this.params.cardExp;
+    this.cardCvc = this.params.cardCvc;
+    this.cardButton = this.params.cardButton;
+    this.cardError = this.params.cardError;
+    this.baseClasses = this.params.baseClasses;
+    //-----------------------
+    this.stripe = Stripe(this.api_key);
+    this.elements = this.stripe.elements();
+
+    this.Card = this.elements.create("cardNumber", {
+      classes: {
+        base: this.baseClasses,
+        focus: "valid",
+        invalid: "invalid",
+      },
+      style: this._style(),
+      showIcon: true,
+      iconStyle: "solid",
+      // placeholder: "1234 1234 1234 1234",
+    });
+    this.Exp = this.elements.create("cardExpiry", {
+      classes: {
+        base: this.baseClasses,
+        focus: "valid",
+        invalid: "invalid",
+      },
+      disabled: true,
+      style: this._style(),
+    });
+    this.Cvc = this.elements.create("cardCvc", {
+      classes: {
+        base: this.baseClasses,
+        focus: "valid",
+        invalid: "invalid",
+      },
+      disabled: true,
+      style: this._style(),
+    });
+  };
+  _style = () => {
+    const style = {
       base: {
-        backgroundColor: "transparent",
+        // backgroundColor: "transparent",
         color: "#333",
-        fontSize: "20.8px",
+        fontSize: "16px",
         iconColor: "rgba(126,128,251)",
         fontFamily: "share_tech,sans-serif",
         fontSmoothing: "antialiased",
@@ -39,44 +70,32 @@ export default class StripeAPIClient {
       },
       complete: { color: "green" },
     };
-    const elements = stripe.elements();
-    const card = elements.create("cardNumber", {
-      style: style,
-      showIcon: true,
-      iconStyle: "solid",
-      placeholder: "1234 1234 1234 1234",
-    });
-    const cardExp = elements.create("cardExpiry", {
-      disabled: true,
-      style: style,
-    });
-    const cardCvc = elements.create("cardCvc", {
-      disabled: true,
-      style: style,
-    });
-    card.mount(plugin.cardElement);
-    cardExp.mount(plugin.cardExp);
-    cardCvc.mount(plugin.cardCvc);
-    card.on("change", function (e) {
+    return style;
+  };
+  _create_cardElements = () => {
+    const plugin = this;
+
+    plugin.Card.mount(plugin.cardElement);
+    plugin.Exp.mount(plugin.cardExp);
+    plugin.Cvc.mount(plugin.cardCvc);
+    plugin.Card.on("change", function (e) {
       if (e.complete) {
-        cardExp.update({ disabled: false });
-        cardExp.focus();
+        plugin.Exp.update({ disabled: false });
+        plugin.Exp.focus();
       }
     });
-    cardExp.on("change", function (e) {
+    plugin.Exp.on("change", function (e) {
       if (e.complete) {
-        cardCvc.update({ disabled: false });
-        cardCvc.focus();
+        plugin.Cvc.update({ disabled: false });
+        plugin.Cvc.focus();
       }
     });
-    cardCvc.on("change", function (e) {
+    plugin.Cvc.on("change", function (e) {
       if (e.complete) {
         plugin.cardButton.disabled = false;
       }
     });
-    plugin._manage_errors(card, cardExp, cardCvc);
-    plugin.card = card;
-    plugin.stripe = stripe;
+    plugin._manage_errors(plugin.Card, plugin.Exp, plugin.Cvc);
     return plugin;
   };
 
@@ -106,11 +125,10 @@ export default class StripeAPIClient {
       plugin.stripe
         .createPaymentMethod({
           type: "card",
-          card: plugin.card,
+          card: plugin.Card,
           billing_details: {
             // Include any additional collected billing details.
-            name:
-              plugin.cardHolderFname.value + " " + plugin.cardHolderLname.value,
+            name: plugin.cardHolder,
           },
         })
         .then((response) => {

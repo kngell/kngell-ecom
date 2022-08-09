@@ -32,7 +32,30 @@ class Entity extends AbstractEntity
         return array_column($this->reflectionInstance()->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PRIVATE), 'name');
     }
 
-    public function getInitializedAttributes() : array
+    public function isInitialized(string $field) : bool
+    {
+        $f = $this->regenerateField($field);
+        $rp = $this->reflectionInstance()->getProperty($f);
+        if ($rp->isInitialized($this)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getColId(string $withDocComment = 'id', bool $entityProp = false) :  string
+    {
+        $props = $this->getAllAttributes();
+        foreach ($props as $field) {
+            $docs = $this->getPropertyComment($field);
+            if ($docs == $withDocComment) {
+                return $entityProp == false ? $this->getOriginalField($field) : $field;
+                exit;
+            }
+        }
+        return '';
+    }
+
+    public function getInitializedAttributes(bool $output = false) : array
     {
         $properties = [];
         foreach ($this->getAllAttributes() as $field) {
@@ -41,7 +64,15 @@ class Entity extends AbstractEntity
                 if ($rp->getType()->getName() === 'DateTimeInterface') {
                     $properties[$this->getOriginalField($field)] = $rp->getValue($this)->format('Y-m-d H:i:s');
                 } else {
-                    $properties[$this->getOriginalField($field)] = $rp->getValue($this);
+                    if ($output) {
+                        if ($rp->getType()->getName() === 'string') {
+                            $properties[$this->getOriginalField($field)] = $this->htmlDecode($rp->getValue($this));
+                        } else {
+                            $properties[$this->getOriginalField($field)] = $rp->getValue($this);
+                        }
+                    } else {
+                        $properties[$this->getOriginalField($field)] = $rp->getValue($this);
+                    }
                 }
             }
         }
@@ -56,19 +87,6 @@ class Entity extends AbstractEntity
     public function getFieldWithDoc(string $withDocComment) : string
     {
         return $this->getColID($withDocComment);
-    }
-
-    public function getColId(string $withDocComment = 'id') :  string
-    {
-        $props = $this->getAllAttributes();
-        foreach ($props as $field) {
-            $docs = $this->getPropertyComment($field);
-            if ($docs == $withDocComment) {
-                return $this->getOriginalField($field);
-                exit;
-            }
-        }
-        return '';
     }
 
     public function getPropertyComment(string $field) : string

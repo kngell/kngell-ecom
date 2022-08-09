@@ -75,7 +75,7 @@ class NativeSessionStorage extends AbstractSessionStorage
     public function invalidateSession() : void
     {
         $_SESSION = [];
-        if (ini_set('session.use_cookies', $this->options['use_cookies'])) {
+        if (ini_get('session.use_cookies')) {// $this->options['use_cookies']
             $params = session_get_cookie_params();
             setcookie($this->getSessionName(), '', time() - $params['lifetime'], $params['path'], $params['domain'], $params['secure'], $params['httponly']);
         }

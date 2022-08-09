@@ -10,33 +10,12 @@ interface PaymentGatewayInterface
      *
      * @return object
      */
-    public function createPaymentIntent() : ?Object;
+    public function createPayment() : ?self;
 
     /**
      * Confirm Payment Intent
      * --------------------------------------------------------------------------------------------------.
      * @return object
      */
-    public function confirmPaymentIntent() : Object;
-
-    /**
-     * Create Custumer
-     * --------------------------------------------------------------------------------------------------.
-     * @return object
-     */
-    public function createCustomer() : Object;
-
-    /**
-     * Get Payment intent
-     * --------------------------------------------------------------------------------------------------.
-     * @return object
-     */
-    public function getPaymentIntent() : Object;
-
-    /**
-     * Get Customer
-     * --------------------------------------------------------------------------------------------------.
-     * @return object
-     */
-    public function getCustomer() : Object;
+    public function confirmPayment() : ?self;
 }

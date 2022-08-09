@@ -90,43 +90,11 @@ abstract class Controller extends AbstractController
         $this->response->jsonResponse($resp);
     }
 
-    protected function getController() : string
-    {
-        return $this->controller;
-    }
-
-    protected function getMethod() : string
-    {
-        return $this->method;
-    }
-
     protected function redirect(string $url, bool $replace = true, int $responseCode = 303)
     {
         // $this->redirect = new BaseRedirect($url, $this->routeParams, $replace, $responseCode);
         if ($this->redirect) {
             $this->redirect->redirect();
-        }
-    }
-
-    protected function getRoutes(): array
-    {
-        return $this->routeParams;
-    }
-
-    protected function getSiteUrl(?string $path = null): string
-    {
-        return sprintf('%s://%s%s', isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http', $_SERVER['SERVER_NAME'], ($path !== null) ? $path : $_SERVER['REQUEST_URI']);
-    }
-
-    protected function getSession(): object
-    {
-        return SessionTrait::sessionFromGlobal();
-    }
-
-    private function throwViewException(): void
-    {
-        if (null === $this->view_instance) {
-            throw new BaseLogicException('You can not use the render method if the build in template engine is not available.');
         }
     }
 }

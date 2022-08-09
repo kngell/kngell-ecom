@@ -1,0 +1,46 @@
+@use 'corecss/abstract/variables' as *
+.credit-card
+   background: #eee
+   .card_error
+      text-transform: lowercase
+      color: red
+      font-size: 15px
+      font-weight: 500
+   .form
+      background: #fff
+      border-radius: 5px
+      box-shadow: 0 10px 15px rgba(0,0 ,0 ,.1 )
+      padding: 20px
+      width: 100%
+      .input-box
+         label
+            display: block
+            color: #999
+         .input
+            font-size: 18px
+            color: #444
+            text-transform: uppercase
+      .flexbox
+         display: flex
+         gap: .9375rem
+         .input-box
+            flex: 1 1 150px
+      .submit-btn
+         width: 100%
+         background: linear-gradient(45deg,$color-second, $dark-yellow-light)
+         margin-top: 20px
+         padding: 10px
+         font-size: 20px
+         color: #fff
+         border-radius: 10px
+         cursor: pointer
+         transition: .2s linear
+         &:hover
+            letter-spacing: 2px
+            opacity: .8
+      .valid
+         border: 1px solid #028f68
+      .invalid
+         border: 1px solid red
+      .custom-font
+         font-size: 16px

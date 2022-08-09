@@ -30,11 +30,11 @@ class GlobalVariables implements GlobalVariablesInterface
      */
     public function getPost(?string $key = null) : mixed
     {
-        $global = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS) ?? null;
+        $global = filter_input_array(INPUT_POST, FILTER_DEFAULT) ?? null;
         if (null != $key) {
-            return $post[$key] ?? null;
+            return $global[$key] ?? null;
         }
-        return array_map('strip_tags', $global ?? []);
+        return $global ?? [];
     }
 
     /**

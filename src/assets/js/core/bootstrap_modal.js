@@ -7,16 +7,15 @@ class Bs_Modal {
   _init = () => {
     const p = this;
     return new Promise((resolve, reject) => {
+      let my_modal = [];
       p.modals.forEach((modal, i) => {
-        let my_modal = [];
-        my_modal[String(modal)] = Modal.getOrCreateInstance(
-          document.getElementById(String(modal)),
-          {
-            keyboard: false,
-          }
-        );
-        resolve(my_modal);
+        const el = document.getElementById(modal);
+        my_modal[modal] = Modal.getOrCreateInstance(el, {
+          keyboard: false,
+        });
+        my_modal[modal]["selector"] = el;
       });
+      resolve(my_modal);
     });
   };
 }

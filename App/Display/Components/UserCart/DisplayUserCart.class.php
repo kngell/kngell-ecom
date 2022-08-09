@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 class DisplayUserCart extends AbstractDisplayUserCart implements DisplayPagesInterface
 {
+    use DisplayTraits;
+
     public function __construct(CollectionInterface|closure $userCart, UserCartItemsForm $userCartForm)
     {
-        if ($userCart instanceof Closure) {
-            $userCart = $userCart->__invoke();
-        }
+        list($userCart) = $this->invoke([$userCart]);
         parent::__construct($userCart, $userCartForm);
     }
 

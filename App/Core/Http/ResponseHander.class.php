@@ -91,6 +91,17 @@ class ResponseHandler extends GlobalVariables
     }
 
     /**
+     * Get Html Decode texte
+     * ========================================================.
+     * @param string $str
+     * @return string
+     */
+    public function htmlDecode(string $str) : string
+    {
+        return !empty($str) ? htmlspecialchars_decode(html_entity_decode($str), ENT_QUOTES) : '';
+    }
+
+    /**
      * Rename keys
      * ==================================================================================.
      * @param string $oldkey

@@ -1,0 +1,62 @@
+
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+
+.address-content
+    .card
+        margin-bottom: 1rem
+        border-style: dashed
+        height: 90%
+        cursor: pointer
+        .card-body
+            position: relative
+            .address-content
+                font-size: .85rem
+                .address-text
+                    padding-left: 0
+                    .name
+                        font-weight: 600
+                    .zip-city
+                        vertical-align: middle
+                        .zip_code
+                            margin-right: .25rem
+            .manage
+                position: absolute
+                bottom: 5px
+                left: 10px
+                vertical-align: bottom
+                font-size: 0.75rem
+                .links
+                    display: flex
+                    .modify,.erase,.select
+                        margin-right: .5rem
+                        margin-left: .5rem
+                        text-decoration: none
+                        &:hover
+                            text-decoration: underline
+                            cursor: pointer
+                            color: $orange-color
+        &--active
+            background: #e7f2f0
+            box-shadow: 1px 2px 3px rgb(0 0 0 / 30%)
+
+.address-footer
+    display: flex
+    justify-content: space-between
+    .addAddress,.closeAddress
+        font-size: .75rem
+        text-decoration: none
+        +btn-main(.3rem 1rem,5px,$gray-light,$dark-color,$gray-dark)
+        +box-shadow(0px 2px 3px rgba($dark-light, 0.6))
+    .closeAddress
+        background: $color-yellow
+.add-address
+    .address
+        width: 50%
+        .address-content
+            padding-bottom: 10px
+    hr
+        margin: 0!important
+        padding: 0!important
+    .closeAddress
+        display: none

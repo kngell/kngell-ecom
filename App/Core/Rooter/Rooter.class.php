@@ -21,7 +21,7 @@ class Rooter implements RooterInterface
     public function add(string $method, string $route, array $params): void
     {
         $route = preg_replace('/\//', '\\/', $route);
-        $route = preg_replace('/\{([a-z]+)\}/', '(?P<\1>[a-z-]+)', $route);
+        $route = preg_replace('/\{([a-z]+)\}/', '(?P<\1>[a-z-_]+)', $route); //adding underscore
         $route = preg_replace('/\{([a-z]+):([^\}]+)\}/', '(?P<\1>\2)', $route);
         $route = '/^' . $route . '$/i';
         $this->routes[$method][$route] = $params;
@@ -141,7 +141,8 @@ class Rooter implements RooterInterface
 
     public function resolveWithException(string $url): array
     {
-        $url = $this->parseUrl($url) == 'assets' ? 'assets/getAsset' : $url;
+        $method = $this->request->getMethod();
+        $url = $this->parseUrl($url) == 'assets' ? 'assets/getAsset' : $this->parseUrl($url);
         if (!$this->getMatchRoute($url, $this->routes[$this->request->getMethod()])) {
             http_response_code(404);
             throw new RouterNoRoutesFound('Route ' . $url . ' does not match any valid route.', 404);

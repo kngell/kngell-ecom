@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 class PhonesHomePage extends AbstractPhonesPage implements DisplayPagesInterface
 {
-    private string $productPath;
-
-    public function __construct(array|closure $products, ?FormComponent $frm, ?ProductsManager $pm, ?object $userCart = null, ?PhonesHomePagePaths $paths = null, ?MoneyManager $money = null)
+    public function __construct(array|closure $products, ?FormBuilder $frm, ?ProductsManager $pm, ?object $userCart = null, ?PhonesHomePagePaths $paths = null, ?MoneyManager $money = null)
     {
-        //$productForm, $proceedToBuy, $addToCart
         parent::__construct($products, $frm, $pm, $userCart, $paths, $money);
     }
 

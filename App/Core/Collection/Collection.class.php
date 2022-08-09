@@ -221,6 +221,27 @@ class Collection implements CollectionInterface
         unset($this->items[$key]);
     }
 
+    public function updateValue(mixed $oldValue, mixed $NewValue) : void
+    {
+        $key = array_search($oldValue, $this->items, true);
+        if ($key === false) {
+            throw new BaseException('This value doesnot exsit!');
+        }
+        if (gettype($oldValue) !== gettype($NewValue)) {
+            throw new BaseException('Values are not the same type!');
+        }
+        $this->items[$key] = $NewValue;
+    }
+
+    public function removeByValue(mixed $value) : void
+    {
+        $key = array_search($value, $this->items, true);
+        if ($key === false) {
+            throw new BaseException('Cannot remove the value');
+        }
+        $this->remove($key);
+    }
+
     /**
      * Removes duplicate entry from the collection items.
      *

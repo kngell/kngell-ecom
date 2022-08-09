@@ -1,8 +1,8 @@
 module.exports = {
   entry: {
     //Main Js
-    "js/main/main": {
-      import: ["js/main/main.js"],
+    "js/main/frontend/main": {
+      import: ["js/main/frontend/main.js"],
       dependOn: "js/librairies/frontlib",
     },
     "js/plugins/homeplugins": {
@@ -20,8 +20,8 @@ module.exports = {
       dependOn: "js/librairies/frontlib",
     },
     //Phones Products Home sass
-    "js/brand/phones/home": {
-      import: ["js/brand/phones/index"],
+    "js/brand/phones/home/home": {
+      import: ["js/brand/phones/home/index"],
       dependOn: "js/librairies/frontlib",
     },
   },

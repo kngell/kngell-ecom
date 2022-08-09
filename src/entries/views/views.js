@@ -31,6 +31,11 @@ import "views/client/brand/phones/index.php";
 /** Clothes Home page */
 import "views/client/brand/clothes/home/index.php";
 import "views/client/brand/clothes/home/lib.php";
+/** Shopping cart component */
+import "views/client/components/shoppingCart/shoppingCart.php";
+import "views/client/components/shoppingCart/partials/_shopping_cart.php";
+import "views/client/components/shoppingCart/partials/_empty_shopping_cart.php";
+import "views/client/components/shoppingCart/partials/_shopping_cart_subTotal.php";
 /** Checkout */
 import "views/client/components/checkout/checkout.php";
 /** Checkout Progress bar */
@@ -38,16 +43,12 @@ import "views/client/components/checkout/partials/progress_bar/_progress_bar.php
 /** Checkout user infos */
 import "views/client/components/checkout/partials/cart_summary/_card_summary.php";
 import "views/client/components/checkout/partials/cart_summary/_cart_summary_data.php";
-import "views/client/components/checkout/partials/order_informations/_cartSummaryTotal.php";
-import "views/client/components/checkout/partials/order_informations/_checkout_contact_infos.php";
-import "views/client/components/checkout/partials/order_informations/_checkout_delivery_address.php";
-import "views/client/components/checkout/partials/order_informations/_chk_user_info.php";
-import "views/client/components/checkout/partials/order_informations/_user_data.php";
+import "views/client/components/checkout/partials/cart_summary/_cartSummaryTotal.php";
+import "views/client/components/checkout/partials/user_informations/_checkout_add_address.php";
+import "views/client/components/checkout/partials/user_informations/_chk_user_info.php";
+import "views/client/components/checkout/partials/user_informations/_user_data.php";
 import "views/client/components/checkout/partials/buttons_group/_button_group.php";
-import "views/client/components/checkout/partials/order_informations/_contact_title.php";
-/** Checkout extras sections */
-import "views/client/components/checkout/partials/extras_sections/modals/creditCardFormModal.php";
-import "views/client/components/checkout/partials/extras_sections/modals/deliveryAdressModal.php";
+import "views/client/components/checkout/partials/user_informations/_contact_title.php";
 /** Checkout shipping infos */
 import "views/client/components/checkout/partials/shipping_informations/_shipping_infos.php";
 import "views/client/components/checkout/partials/shipping_informations/_shipping_data.php";
@@ -58,6 +59,9 @@ import "views/client/components/checkout/partials/billing_informations/_billing_
 /** Paiements Infos */
 import "views/client/components/checkout/partials/paiment_informations/_paiement_data.php";
 import "views/client/components/checkout/partials/paiment_informations/_paiment_infos.php";
+/** Credit Card */
+import "views/client/components/credit_card/_cc_front.php";
+import "views/client/components/credit_card/_cc_back.php";
 /** Todo List */
 import "views/client/components/todoList/todo.php";
 /** Learning */

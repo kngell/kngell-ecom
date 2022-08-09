@@ -1,6 +1,7 @@
 import { Call_controller } from "corejs/form_crud";
 import input from "corejs/inputErrManager";
 import { readurl } from "corejs/profile_img";
+import { csrftoken, frm_name } from "corejs/config";
 // import modal from "corejs/bootstrap_modal";
 
 class Login_And_Register {
@@ -78,7 +79,9 @@ class Login_And_Register {
       });
     });
     //remove invalid input on focus
-    input.removeInvalidInput(phpLR.loginfrm);
+    input.removeInvalidInput(phpLR.loginfrm, (el) => {
+      $("label[for='" + el.attr("id") + "']").css("top", "");
+    });
     input.removeInvalidInput(phpLR.regfrm);
     input.removeInvalidInput(phpLR.forgotfrm);
     //reset forgot password frm
@@ -157,9 +160,8 @@ class Login_And_Register {
             }
           }
         } else {
-          console.log(response);
           if (response.result == "error-field") {
-            input.error(phpLR.loginfrm, response.msg);
+            input.error(phpLR.loginfrm, response.msg, 30);
           } else {
             phpLR.loginfrm.find(".alertErr").html(response.msg);
           }
@@ -199,10 +201,8 @@ class Login_And_Register {
       }
       var data = {
         url: "ajaxlogout",
-        csrftoken: document
-          .querySelector('meta[name="csrftoken"]')
-          .getAttribute("content"),
-        frm_name: "home_page",
+        csrftoken: csrftoken,
+        frm_name: frm_name,
       };
       Call_controller(data, (response) => {
         if (response.result == "success") {

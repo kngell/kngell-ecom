@@ -4,3 +4,4 @@ user_cart: user_cart_items
 shipping_class: shipping_class
 paiement_mode: paiement_mode_list
 visitors: visitors
+user_address: user_addree_list

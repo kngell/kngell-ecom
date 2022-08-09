@@ -10,7 +10,7 @@ class ActivateUserManager extends Model
 
     public function __construct()
     {
-        parent::__construct($this->_table, $this->_colID, $this->_matchingTestColumn);
+        parent::__construct($this->_table, $this->_colID);
     }
 
     public function register() : ?self

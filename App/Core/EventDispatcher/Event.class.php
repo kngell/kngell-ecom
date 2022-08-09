@@ -5,12 +5,12 @@ declare(strict_types=1);
 class Event implements StoppableEventInterface, EventsInterface
 {
     private bool $propagationStopped = false;
-    private object $object;
-    private string $name;
-    private array $params;
+    private ?object $object = null;
+    private string $name = '';
+    private array $params = [];
     private ?object $results = null;
 
-    public function __construct(Object $object, string $name = '', array $params = [])
+    public function __construct(?Object $object = null, string $name = '', array $params = [])
     {
         $this->object = $object;
         $this->name = $name;

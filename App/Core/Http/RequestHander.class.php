@@ -112,7 +112,7 @@ class RequestHandler extends GlobalVariables
         if (!$input) {
             $data = [];
             foreach ($postData as $field => $value) {
-                !is_array($value) ? $data[$field] = $this->sanitizer::clean($value) : '';
+                $data[$field] = $this->sanitizer::clean($value);
             }
 
             return $data;
@@ -207,17 +207,6 @@ class RequestHandler extends GlobalVariables
     public function add_slashes(mixed $data) : string
     {
         return addslashes($data);
-    }
-
-    /**
-     * Get Html Decode texte
-     * ========================================================.
-     * @param string $str
-     * @return string
-     */
-    public function htmlDecode(string $str) : string
-    {
-        return !empty($str) ? htmlspecialchars_decode(html_entity_decode($str), ENT_QUOTES) : '';
     }
 
     private function removeQueryString(string $url) : string

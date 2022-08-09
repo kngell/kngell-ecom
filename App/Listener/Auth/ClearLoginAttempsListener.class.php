@@ -10,8 +10,8 @@ class ClearLoginAttempsListener implements ListenerInterface
         if ($object instanceof UserSessionsEntity) {
             /** @var LoginAttemptsManager */
             $loginAttemps = Container::getInstance()->make(LoginAttemptsManager::class);
-            $loginAttemps->table()->where(['user_id' => $object->getUserId()]);
-            $delete = $loginAttemps->delete();
+            $conditions = $loginAttemps->table()->where(['user_id' => $object->getUserId()])->build();
+            $delete = $loginAttemps->delete($conditions);
             return [$delete];
         }
         return [];

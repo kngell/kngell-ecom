@@ -16,6 +16,22 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
             }
             return $eventObj;
         }
+        return $this->event($event, $obj, $args);
+    }
+
+    private function event(string|EventsInterface $event, ?object $obj = null, array $args = []) : EventsInterface
+    {
+        if (is_object($event)) {
+            if ($event->getObject() == null) {
+                $event->setObject($obj);
+            }
+            if ($event->getName() == '') {
+                $event->setName($obj::class);
+            }
+            if ($event->getParams() == []) {
+                $event->setParams($args);
+            }
+        }
         return $event;
     }
 }

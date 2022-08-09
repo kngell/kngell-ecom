@@ -17,17 +17,15 @@ $this->start('head'); ?>
          </section>
          <!-- extra elements -->
          <section id="extras-features">
-            <?= $creditCardModal ?? ''?>
-            <?= $defaultDeliveryAdressModal ?? ''?>
+            <?= $modals ?? ''?>
          </section>
       </div>
    </div>
    <!-- Fin Content -->
-   <input type="hidden" id="ip_address" style="display:none" value="<?=H_visitors::getIP()?>">
 </main>
 <?php $this->end(); ?>
 <?php $this->start('footer') ?>
 <!----------custom--------->
-<script type="text/javascript" src="<?= $this->asset('js/components/checkout/checkout', 'js') ?? ''?>">
+<script type="text/javascript" src="<?= $this->asset('js/components/checkout/checkout', 'js') ?? ''?>" defer>
 </script>
 <?php $this->end();

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class ActivationEvent extends Event
+class ActivationEvent extends Event implements EventsInterface
 {
     /**
      * Construct.

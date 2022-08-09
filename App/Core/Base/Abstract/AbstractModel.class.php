@@ -6,7 +6,7 @@ abstract class AbstractModel
 {
     protected string $_modelName;
     protected QueryParams $queryParams;
-    protected RepositoryInterface $repository;
+    protected RepositoryInterface|FileStorageRepositoryInterface $repository;
 
     /*
      * Prevent Deleting Ids
@@ -27,10 +27,14 @@ abstract class AbstractModel
 
     public function conditions() : self
     {
-        if (!$this->queryParams->hasConditions()) {
-            $colID = $this->entity->getColId();
-            $this->table()->where([$colID => $this->entity->{$this->entity->getGetters($colID)}()])->build();
+        if ($this->queryParams->hasConditions()) {
+            return $this;
         }
+        $colID = $this->entity->getColId();
+        if (!$this->entity->isInitialized($colID)) {
+            throw new BaseException('unable to update row!');
+        }
+        $this->table()->where([$colID => $this->entity->{$this->entity->getGetters($colID)}()])->build();
         return $this;
     }
 
@@ -78,7 +82,7 @@ abstract class AbstractModel
 
     public function afterSave(array $params = [])
     {
-        return $params['saveID'] ?? null;
+        return $params['saveID'] ? $this : null;
     }
 
     //Before delete

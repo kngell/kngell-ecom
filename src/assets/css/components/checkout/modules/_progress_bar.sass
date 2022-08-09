@@ -1,19 +1,15 @@
 
 @use 'corecss/abstract/variables' as *
-$primary: rgb(11,78,179)
 // $step-disable: #e0e0e0
 
 #checkout-element
-    .bar
-        width: 100%
-        margin: 0 auto
     .progressBar
+        max-width: 950px
         position: relative
         display: flex
-        // flex-wrap: nowrap
+        flex-wrap: nowrap
         justify-content: space-between
-        max-width: 100%
-        margin: 1.5rem 0 3rem 0
+        margin: 1.5rem auto 3rem auto
         counter-reset: step
         &::before, .progress
             content: ""
@@ -25,7 +21,7 @@ $primary: rgb(11,78,179)
             background-color: #dcdcdc
             // z-index: -1
         .progress
-            background-color: $primary
+            background-color: $color-second
             width: 0
             transition: .3s ease-in-out
     .progress-step
@@ -48,7 +44,8 @@ $primary: rgb(11,78,179)
             top: calc(100% + 0.5rem)
             font-size: 0.80rem
             color: #666
+            white-space: nowrap
     .progress-step.progress-step-active
-        background-color: $primary
+        background-color: $color-second
         color: #f3f3f3
         // border: 3px solid $primary

@@ -52,11 +52,11 @@ trait FormBuilderTrait
         return '';
     }
 
-    protected function renderSelectOptions(array $options, bool $useModel = false): bool|string
+    protected function renderSelectOptions(array $allOptions, bool $useModel = false): bool|string
     {
         $output = '';
-        if (is_array($options) && count($options) > 0) {
-            foreach ($options as $key => $options) {
+        if (is_array($allOptions) && count($allOptions) > 0) {
+            foreach ($allOptions as $key => $options) {
                 $class = $options->getOptionGlobalAttr();
                 foreach ($options->getOptions() as $k => $option) {
                     $output .= $option->getOption($class);
@@ -217,13 +217,6 @@ trait FormBuilderTrait
         if (in_array($objectType::class, ['CheckBoxType', 'RadioType'])) {
             return $template;
         }
-        // if ($show_label && !in_array($objectType::class, ['SelectType'])) {
-        //     return str_replace('{{label}}', $objectType->getLabelTemplate(), $template);
-        // }
-        // else {
-        //     return str_replace('{{label}}', '', $template);
-        // }
-        // return $template;
         return str_replace('{{label}}', $show_label ? $objectType->getLabelTemplate() : '', $template);
     }
 

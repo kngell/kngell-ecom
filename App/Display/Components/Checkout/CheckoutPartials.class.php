@@ -6,7 +6,7 @@ class CheckoutPartials
     private string $viewPath = VIEW . 'client' . DS . 'components' . DS . 'checkout' . DS . 'partials' . DS;
     private string $templatePath = APP . 'Display' . DS . 'Components' . DS . 'Checkout' . DS . 'Templates' . DS;
     private string $progressPath = 'progress_bar' . DS;
-    private string $orderInfosPath = 'order_informations' . DS;
+    private string $orderInfosPath = 'user_informations' . DS;
     private string $shippingInfosPath = 'shipping_informations' . DS;
     private string $billingInfosPath = 'billing_informations' . DS;
     private string $paimentPath = 'paiment_informations' . DS;
@@ -16,7 +16,7 @@ class CheckoutPartials
 
     public function Paths() : CollectionInterface
     {
-        return new Collection(array_merge($this->userInfosPaths(), $this->progressBarPath(), $this->shippingInfosPaths(), $this->billingInfosPaths(), $this->discountPaths(), $this->paiementPaths(), $this->buttonPath(), $this->cartSummaryPath(), $this->modalsPaths()));
+        return new Collection(array_merge($this->userInfosPaths(), $this->progressBarPath(), $this->shippingInfosPaths(), $this->billingInfosPaths(), $this->discountPaths(), $this->paiementPaths(), $this->buttonPath(), $this->cartSummaryPath(), $this->modalsPaths(), $this->formsPath()));
     }
 
     private function cartSummaryPath() : array
@@ -24,6 +24,9 @@ class CheckoutPartials
         return [
             'cartSummaryPath' => $this->viewPath . $this->cartSummaryPath . '_card_summary.php',
             'cartSummaryContentPath' => $this->viewPath . $this->cartSummaryPath . '_cart_summary_data.php',
+            'texesPath' => $this->templatePath . 'checkoutTaxTemplate.php',
+            'cartSummaryTotalPath' => $this->viewPath . $this->cartSummaryPath . '_cartSummaryTotal.php',
+            'totalShippingPath' => $this->templatePath . 'totalShippingTemplate.php',
         ];
     }
 
@@ -39,11 +42,9 @@ class CheckoutPartials
         return [
             'mainUserTemplate' => $this->viewPath . $this->orderInfosPath . '_chk_user_info.php',
             'userDataPath' => $this->viewPath . $this->orderInfosPath . '_user_data.php',
-            'deliveryAddressPath' => $this->viewPath . $this->orderInfosPath . '_checkout_delivery_address.php',
-            'contactInfosPath' => $this->viewPath . $this->orderInfosPath . '_checkout_contact_infos.php',
+            'addAddressPath' => $this->viewPath . $this->orderInfosPath . '_checkout_add_address.php',
+            'contactInfosPath' => $this->templatePath . 'userContactInfosTemplate.php',
             'contactTitlePath' => $this->viewPath . $this->orderInfosPath . '_contact_title.php',
-            'cartSummaryTotalPath' => $this->viewPath . $this->orderInfosPath . '_cartSummaryTotal.php',
-            'texesPath' => $this->templatePath . 'checkoutTaxTemplate.php',
         ];
     }
 
@@ -87,8 +88,10 @@ class CheckoutPartials
     private function modalsPaths() : array
     {
         return [
-            'creditCardModalPath' => $this->viewPath . $this->modalPath . 'creditCardFormModal.php',
-            'deliveryAddressModalPath' => $this->viewPath . $this->modalPath . 'deliveryAdressModal.php',
+            'addAddressModalPath' => $this->templatePath . 'addAdressModal.php',
+            'changeEmailModalPath' => $this->templatePath . 'changeEmailTemplate.php',
+            'changeShippingModalPath' => $this->templatePath . 'changeShippingModeTemplate.php',
+            'userAddressModalPath' => $this->templatePath . 'userAddressModalTemplate.php',
         ];
     }
 
@@ -96,6 +99,16 @@ class CheckoutPartials
     {
         return [
             'buttonGroupPath' => $this->viewPath . $this->buttonPath . '_button_group.php',
+        ];
+    }
+
+    private function formsPath() : array
+    {
+        return [
+            'changeEmailformPath' => $this->templatePath . 'changeEmailFormTemplate.php',
+            'changeShippingModeformPath' => $this->templatePath . 'changeShippingModeFormTemplate.php',
+            'checkoutFormTemplatePath' => $this->templatePath . 'checkoutFormTemplate.php',
+            'creditCardModalPath' => $this->templatePath . 'creditCardFormModal.php',
         ];
     }
 }

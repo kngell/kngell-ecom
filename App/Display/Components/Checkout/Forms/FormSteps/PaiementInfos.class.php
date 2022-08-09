@@ -2,33 +2,40 @@
 
 declare(strict_types=1);
 
-class PaiementInfos extends AbstractCheckoutformSteps implements CheckoutFormStepInterface
+class PaiementInfos extends AbstractFormSteps implements CheckoutFormStepInterface
 {
+    protected ?CollectionInterface $pmtMode;
+    protected ?CollectionInterface $shippingClass;
     private string $title = 'Paiement Informations';
+    private string $btnNextText = 'Place Order';
 
-    public function __construct(protected ?object $frm, protected ?CartSummary $summary, protected ?object $obj, protected ?CollectionInterface $paths = null, protected ?ButtonsGroup $btns = null)
+    public function __construct(array $params = [])
     {
+        $this->properties($params);
     }
 
     public function display() : string
     {
-        $mainTemplate = $this->paths->offsetGet('mainBillingPath');
-        $data = $this->paths->offsetGet('paiementData');
-        if ((!file_exists($mainTemplate) || !file_exists($data))) {
-            throw new BaseException('Files Not found!', 1);
-        }
-        return $this->outputTemplate(file_get_contents($mainTemplate), file_get_contents($data));
+        return $this->outputTemplate($this->getTemplate('mainBillingPath'), $this->getTemplate('paiementData'));
     }
 
     private function outputTemplate(string $template = '', string $dataTemplate = '') : string
     {
         $temp = '';
+        /** @var CustomerEntity */
+        $en = $this->customer->getEntity();
+        list('name' => $method, 'price' => $price) = $this->shippingMethod($this->shippingClass);
         $temp = str_replace('{{userCartSummary}}', $this->summary->display($this), $template);
         $temp = str_replace('{{discountCode}}', $this->discountCode(), $temp);
         $temp = str_replace('{{data}}', $dataTemplate, $temp);
         $temp = str_replace('{{title}}', $this->titleTemplate($this->title), $temp);
+        $temp = str_replace('{{contact_email}}', $en->isInitialized('email') ? $en->getEmail() : '', $temp);
+        $temp = str_replace('{{address_de_livraion}}', $this->customerAddress(1), $temp);
+        $temp = str_replace('{{shipping_mode}}', $method, $temp);
+        $temp = str_replace('{{shipping_price}}', $this->money->getFormatedAmount($price, 2), $temp);
+        $temp = str_replace('{{addresse_de_facturation}}', $this->customerAddress(1), $temp);
         $temp = str_replace('{{paiementForm}}', $this->form(), $temp);
-        $temp = str_replace('{{buttons_group}}', $this->buttons(), $temp);
+        $temp = str_replace('{{buttons_group}}', $this->buttons($this->btnNextText), $temp);
         return $temp;
     }
 
@@ -36,25 +43,22 @@ class PaiementInfos extends AbstractCheckoutformSteps implements CheckoutFormSte
     {
         $i = 0;
         $html = '';
-        $temp = $this->paths->offsetGet('paiementFormPath');
-        $ccIcon = $this->paths->offsetGet('creditCardIconsPath');
-        $this->isFileexists($temp);
-        $this->isFileexists($ccIcon);
-        $temp = file_get_contents($temp);
-        $ccIcon = file_get_contents($ccIcon);
-        if ($this->obj->count() > 0) {
-            foreach ($this->obj->all() as $mode) {
+        $temp = $this->getTemplate('paiementFormPath');
+        $ccIcon = $this->getTemplate('creditCardIconsPath');
+        if ($this->pmtMode->count() > 0) {
+            foreach ($this->pmtMode->all() as $mode) {
                 if ($mode->status == 'on') {
                     $default = $mode->default == 1 ? true : false;
                     $template = str_replace('{{paiement_mode}}', $this->frm->input([
-                        RadioType::class => ['name' => 'pm_name', 'class' => ['radio__input', 'me-2']],
-                    ])->id('pm_name' . $i)
+                        RadioType::class => ['name' => 'plate_form', 'class' => ['radio__input', 'me-2']],
+                    ])->id('plate_form' . $i)
                         ->spanClass(['radio__radio'])
                         ->textClass(['radio__text'])
                         ->label($mode->pm_name)
                         ->checked($i == 0 ? $default : false)
                         ->wrapperClass(['radio-check__wrapper'])
                         ->labelClass(['radio'])
+                        ->value($mode->pm_id)
                         ->html(), $temp);
                     $template = str_replace('{{CreditCarIcons}}', $mode->pm_name == 'Credit Card' ? $ccIcon : '', $template);
                     $html .= $template;

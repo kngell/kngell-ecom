@@ -5,7 +5,11 @@ interface EventsInterface
 {
     public function getName() : string;
 
+    public function setName($name) : self;
+
     public function getObject(): object;
+
+    public function setObject(object $object) : self;
 
     public function setResults(object $results) : self;
 

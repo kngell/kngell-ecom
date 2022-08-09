@@ -3,6 +3,7 @@ import { BASE_URL, isIE } from "./config";
 function get_formData(data) {
   if (Object.prototype.hasOwnProperty.call(data, "frm")) {
     const arr_frm = data.frm;
+
     var formData;
     if (data.frm instanceof Array) {
       formData = new FormData(arr_frm[0][0]);
@@ -13,15 +14,17 @@ function get_formData(data) {
         }
       }
     } else {
+      // console.log(arr_frm[0]);
       formData = new FormData(arr_frm[0]);
+      // for (var value of formData.entries()) {
+      //   if (value[0] == "url" || value[0] == "csrftoken")
+      //     console.log(value[0] + " , " + value[1]);
+      // }
     }
   } else {
     formData = new FormData();
   }
 
-  // var formData = data.hasOwnProperty("frm")
-  //   ? new FormData(data.frm[0])
-  //   : new FormData();
   formData.append("frm_name", data.frm_name);
   formData.append("isIE", isIE());
   $.each(data, function (key, val) {
@@ -31,7 +34,6 @@ function get_formData(data) {
           for (const [k, v] of Object.entries(val)) {
             formData.append(k, JSON.stringify(v));
           }
-          // formData.append(key, JSON.stringify(val));
         } else if (key == "files") {
           for (let i = 0; i < val.length; i++) {
             formData.append(val[i].name, data.files[i]);
@@ -39,6 +41,15 @@ function get_formData(data) {
         } else {
           if (key != "params") {
             formData.append(key, JSON.stringify(val));
+            // if (val instanceof Object) {
+            //   for (const [k, v] of Object.entries(val)) {
+            //     formData.append(`${key}[]`, v);
+            //   }
+            //   console.log(key);
+
+            // } else {
+            //   formData.append(key, JSON.stringify(val));
+            // }
           }
         }
       } else if (val instanceof Array) {

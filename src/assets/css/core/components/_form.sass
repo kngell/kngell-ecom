@@ -11,7 +11,7 @@
     max-width: 100%
     margin: 0 auto
     border-radius: .35rem
-form
+form,.form
     border-radius: 1.25rem
     .form-title
         display: flex
@@ -62,7 +62,7 @@ form
                 border: 1px solid $green-light
         &__label, .select2-selection__placeholder
             position: absolute
-            top: 50%
+            top: calc(100% - 20px)
             left: 10px
             transform: translateY(-50%)
             font-weight: 500

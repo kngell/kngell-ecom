@@ -12,6 +12,7 @@
    <div class="form-step" id="payment-information" data-step="4">
       {{paiementInfos}}
    </div>
+   {{creditCard}}
    {{form_end}}
    {{formDiscount}}
 </div>

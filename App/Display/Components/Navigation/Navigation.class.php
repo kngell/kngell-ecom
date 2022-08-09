@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 class Navigation extends AbstractNavigation implements DisplayPagesInterface
 {
-    use DisplayTraits;
-
     public function __construct(NavigationPath $paths, ?object $settings = null, ?DisplaySearchBox $searchBox = null, ?array $cartItem = [], ?View $view = null)
     {
         parent::__construct($paths, $settings, $searchBox, $cartItem, $view);

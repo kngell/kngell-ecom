@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 abstract class AbstractAuthSystem
 {
-    protected FormComponent $frm;
+    use DisplayTraits;
+
+    protected FormBuilder $frm;
     protected CollectionInterface $paths;
     protected string $authTemplate;
     protected string $loginLabel = '<div>&nbspRemember Me&nbsp</div>';
     protected string $registerLabel = '<div>J\'accepte&nbsp;<a href="#">les termes&nbsp;</a>&amp;&nbsp;<a href="#">conditions</a> d\'utilisation</div>';
 
-    public function __construct(FormComponent $frm, AuthFilePath $paths)
+    public function __construct(FormBuilder $frm, AuthFilePath $paths)
     {
         $this->frm = $frm;
         $this->paths = $paths->Paths();
-        $this->isFileExist($this->paths->offsetGet('authTemplatePath'));
-        $this->authTemplate = file_get_contents($this->paths->offsetGet('authTemplatePath'));
+        $this->getTemplate('authTemplatePath');
         $this->frm->globalClasses([
             'wrapper' => [],
             'input' => ['input-box__input'],
@@ -33,10 +34,7 @@ abstract class AbstractAuthSystem
 
     protected function loginForm() : string
     {
-        if (!file_exists($this->paths->offsetGet('loginTemplatePath'))) {
-            throw new BaseException('No file exist on this location');
-        }
-        $loginTemplate = file_get_contents($this->paths->offsetGet('loginTemplatePath'));
+        $loginTemplate = $this->getTemplate('loginTemplatePath');
         $form = $this->frm->setTemplate($loginTemplate);
         $print = $form->getPrint();
         $form->form([
@@ -47,15 +45,15 @@ abstract class AbstractAuthSystem
         ]);
         $loginTemplate = str_replace('{{form_begin}}', $form->begin(), $loginTemplate);
         $loginTemplate = str_replace('{{email}}', $form->input($print->email(name:'email'))
-            ->placeholder('Email :')
+            ->placeholder(' ')
             ->class(['email'])
             ->id('email')
-            ->noLabel()
+            ->label('Email :')
             ->html(), $loginTemplate);
         $loginTemplate = str_replace('{{password}}', $form->input($print->password(name:'password'))
-            ->placeholder('Password :')
+            ->placeholder(' ')
             ->id('password')
-            ->noLabel()
+            ->Label('Password :')
             ->html(), $loginTemplate);
         $loginTemplate = str_replace('{{remamber_me}}', $form->input($print->checkbox(name:'remember_me'))
             ->labelClass(['checkbox'])
@@ -72,7 +70,7 @@ abstract class AbstractAuthSystem
 
     protected function registerForm() : string
     {
-        $registerTemplate = file_get_contents($this->paths->offsetGet('registerTemplatePath'));
+        $registerTemplate = $this->getTemplate('registerTemplatePath');
         $form = $this->frm->setTemplate($registerTemplate);
         $form->form([
             'id' => 'register-frm',
@@ -82,24 +80,24 @@ abstract class AbstractAuthSystem
         $registerTemplate = str_replace('{{form_begin}}', $form->begin(), $registerTemplate);
         $registerTemplate = str_replace('{{camera}}', ImageManager::asset_img('camera' . DS . 'camera-solid.svg'), $registerTemplate);
         $registerTemplate = str_replace('{{avatar}}', ImageManager::asset_img('users' . DS . 'avatar.png'), $registerTemplate);
-        $registerTemplate = str_replace('{{last_name}}', (string) $form->input([
+        $registerTemplate = str_replace('{{last_name}}', $form->input([
             TextType::class => ['name' => 'lastName'],
-        ])->placeholder('First Name :')->noLabel(), $registerTemplate);
-        $registerTemplate = str_replace('{{first_name}}', (string) $form->input([
+        ])->placeholder(' ')->label('Last Name :')->id('lastName')->html(), $registerTemplate);
+        $registerTemplate = str_replace('{{first_name}}', $form->input([
             TextType::class => ['name' => 'firstName'],
-        ])->placeholder('First Name :')->noLabel(), $registerTemplate);
-        $registerTemplate = str_replace('{{username}}', (string) $form->input([
+        ])->placeholder(' ')->label('First Name :')->id('firstName')->html(), $registerTemplate);
+        $registerTemplate = str_replace('{{username}}', $form->input([
             TextType::class => ['name' => 'userName'],
-        ])->placeholder('UserName')->noLabel(), $registerTemplate);
-        $registerTemplate = str_replace('{{email}}', (string) $form->input([
+        ])->placeholder(' ')->label('UserName')->id('username')->html(), $registerTemplate);
+        $registerTemplate = str_replace('{{email}}', $form->input([
             EmailType::class => ['name' => 'email', 'id' => 'reg_email'],
-        ])->placeholder('Email :')->noLabel(), $registerTemplate);
-        $registerTemplate = str_replace('{{password}}', (string) $form->input([
+        ])->placeholder(' ')->label('Email :')->html(), $registerTemplate);
+        $registerTemplate = str_replace('{{password}}', $form->input([
             PasswordType::class => ['name' => 'password', 'id' => 'reg_password'],
-        ])->placeholder('Password :')->noLabel(), $registerTemplate);
-        $registerTemplate = str_replace('{{cpassword}}', (string) $form->input([
+        ])->placeholder(' ')->label('Password :')->html(), $registerTemplate);
+        $registerTemplate = str_replace('{{cpassword}}', $form->input([
             PasswordType::class => ['name' => 'cpassword'],
-        ])->placeholder('Confirm Password :')->noLabel(), $registerTemplate);
+        ])->placeholder(' ')->label('Confirm Password :')->id('cpassword')->html(), $registerTemplate);
         $registerTemplate = str_replace('{{terms}}', (string) $form->input([
             CheckboxType::class => ['name' => 'terms', 'id' => 'terms'],
         ])->label($this->registerLabel)->labelClass(['checkbox'])->spanClass(['checkbox__box text-danger'])->req(), $registerTemplate);
@@ -112,7 +110,7 @@ abstract class AbstractAuthSystem
 
     protected function forgotForm() : string
     {
-        $template = file_get_contents($this->paths->offsetGet('forgotPwTemplatePath'));
+        $template = $this->getTemplate('forgotPwTemplatePath');
         $form = $this->frm->setTemplate($template);
         $form->form([
             'action' => '',

@@ -141,6 +141,10 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
      */
     public function remove(string $key): void;
 
+    public function removeByValue(mixed $value) : void;
+
+    public function updateValue(mixed $oldValue, mixed $NewValue) : void;
+
     /**
      * Removes duplicate entry from the collection items.
      *

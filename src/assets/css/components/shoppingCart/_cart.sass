@@ -1,0 +1,155 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+
+.title-wrapper
+    padding: 1rem 0
+    .title
+        color: $color-primary
+        font-size: 1.25rem
+    .horizontal-line
+        +horizontal-line($orange-in)
+.cart-row
+    background-color: $white-smoke
+    border-radius: 10px
+    border-top: 1px solid $gray-300
+    padding: .5rem 0
+    margin-top: .5rem
+    &__img
+        background-color: transparent
+    &__details
+        .title
+            font-size: 1.1rem
+            font-weight: 600
+        small
+            font-style: normal
+        .rating
+            display: flex
+            align-items: center
+            vertical-align: middle
+            &__text
+                font-size: .75rem
+                text-decoration: none
+                font-style: italic
+                color: $dark-yellow
+                transition: color .3s ease
+                opacity: .7
+                &:hover
+                    color: $color-second
+        .cart-qty
+            display: inline-flex
+            padding-top: .5rem
+            justify-content: flex-start
+            .qty-group
+                padding: 0
+                margin: 0
+                display: flex
+                flex-shrink: 1
+                align-items: center
+                .form_qty
+                    display: flex
+                    align-items: center
+                    .qty-up-icon
+                        &::before
+                            font: var(--fa-font-solid)
+                            content: "\f106"
+                            color: gray
+                    .qty-down-icon
+                        &::before
+                            font: var(--fa-font-solid)
+                            content: "\f107"
+                            color: gray
+                button
+                    width: 1.5rem
+                    text-align: center
+                    &:active
+                        transform: scale(0.97)
+                input
+                    width: 60px
+                    height: 100%
+                    border: 1px solid $gray-300
+                    text-align: center
+                    &:focus, &:hover
+                        outline: none
+                        border-color: $blue-light
+                        box-shadow: none
+                    &:focus::-webkit-input-placeholder
+                        opacity: 0
+            .deleteBtn,.save-add
+                width: 8rem
+                font-size: 0.875rem
+                padding: .125rem 1.125rem
+                background-color: $gray-100
+                margin: 0 .5rem
+                color: $color-primary
+                box-shadow: 0px 1px 2px rgba(0,0,0,.15)
+                transition: all .3s ease
+                &:hover
+                    color: $gray
+                    background-color: $gray-200
+                &:active
+                    transform: scale(0.97)
+            .deleteBtn
+                margin-left: 1rem
+    &__price
+        .price_wrapper
+            font-size: 1rem
+            font-weight: 600
+#wishlist
+    margin-bottom: 2.5rem!important
+    padding-top: 0!important
+
+#sub_total
+    .card-header
+        display: flex
+        flex-direction: column
+        padding: .125rem .325rem
+        font-size: .75rem
+        color: $green-light
+        text-align: center
+        .title,.nb-item
+            margin-bottom: 0
+        .nb-item
+            margin: 0
+    .card-body
+        .total-ht,.total-ttc
+            display: flex
+            justify-content: space-between
+            align-items: center
+            vertical-align: middle
+            color: $green-light
+        .total-ht
+            border-bottom: 1px dashed $purple-dark
+            padding-bottom: .5rem
+            margin: .5rem 0 1rem 0
+            font-size: 1rem
+            font-weight: 600
+        .total-ttc
+            border-bottom: 1px solid $purple-dark
+            font-size: 1.1rem
+            font-weight: 600
+        .transition
+            font-size: .75rem
+            font-style: normal
+            margin-bottom: 0
+            padding-bottom: .125rem
+        .cart-resume
+            padding: 0
+            .res-tax-item
+                padding: .125rem 0
+                font-size: .8rem
+                display: flex
+                justify-content: space-between
+                font-style: italic
+                .title
+                    text-transform: capitalize
+    .proceed
+        +dflex()
+        form
+            width: 100%
+        button
+            height: 2.5rem
+            +button($dark-yellow,$dark-yellow-light,.225rem,lowercase,0.125rem 1rem)
+            margin: 0 auto
+            vertical-align: middle
+            width: 100%
+            text-align: center

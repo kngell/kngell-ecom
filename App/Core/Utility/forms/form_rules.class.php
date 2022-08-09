@@ -50,7 +50,7 @@ class Form_rules
             'sh_name' => [
                 'display' => 'Shipping Class',
                 'required' => true,
-                'max' => 65,
+                'max' => 150,
                 'unique' => 'shipping_class',
             ],
         ];
@@ -157,8 +157,11 @@ class Form_rules
         return [
             'email' => [
                 'display' => 'Email',
+                'min' => 4,
+                'max' => 150,
                 'required' => true,
                 'valid_email' => true,
+                'unique' => 'users',
             ],
         ];
     }
@@ -275,7 +278,7 @@ class Form_rules
     // Checkout
     // =======================================================================
     // Infos contact
-    public static function user_infos()
+    public static function contact_infos()
     {
         return [
             'firstName' => [

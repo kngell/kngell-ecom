@@ -12,7 +12,9 @@ class RequireValidator extends CustomValidator
                 $value = '';
             }
         } else {
-            $value = $this->getModel()->getEntity()->{'get' . $this->getField()}();
+            $en = $this->getModel()->getEntity();
+            $getter = $en->getGetters($this->getField());
+            $value = $this->getModel()->getEntity()->{$getter}();
         }
 
         return !(empty($value) || $value == '[]');

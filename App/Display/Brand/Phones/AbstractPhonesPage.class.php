@@ -8,12 +8,12 @@ abstract class AbstractPhonesPage
     protected array|closure $products;
     protected ?ProductsManager $pm;
     protected ?stdClass $product;
-    protected ?FormComponent $frm;
+    protected ?FormBuilder $frm;
     protected ?object $userCart;
     protected ?CollectionInterface $paths;
     protected ?MoneyManager $money = null;
 
-    public function __construct(array|closure $products, ?FormComponent $frm, ?ProductsManager $pm, ?object $userCart = null, ?PhonesHomePagePaths $paths = null, ?MoneyManager $money = null)
+    public function __construct(array|closure $products, ?FormBuilder $frm, ?ProductsManager $pm, ?object $userCart = null, ?PhonesHomePagePaths $paths = null, ?MoneyManager $money = null)
     {
         list($this->products) = $this->invoke([$products]);
         $this->pm = $pm;
@@ -46,15 +46,15 @@ abstract class AbstractPhonesPage
         $template = $this->getTemplate('productFormPath');
         $form->setCsrfKey('add_to_cart_frm' . $product->pdt_id ?? 1);
         $template = str_replace('{{form_begin}}', $form->begin(), $template);
-        $template = str_replace('{{item}}', (string) $form->input([
+        $template = str_replace('{{item}}', $form->input([
             HiddenType::class => ['name' => 'item_id'],
-        ])->noLabel()->value($product->pdt_id), $template);
-        $template = str_replace('{{user}}', (string) $form->input([
+        ])->noLabel()->noWrapper()->value($product->pdt_id)->html(), $template);
+        $template = str_replace('{{user}}', $form->input([
             HiddenType::class => ['name' => 'user_id'],
-        ])->noLabel()->value('1'), $template);
-        $template = str_replace('{{button}}', (string) $form->input([
+        ])->noLabel()->noWrapper()->value('1')->html(), $template);
+        $template = str_replace('{{button}}', $form->input([
             ButtonType::class => ['type' => 'submit', 'class' => $class],
-        ])->content($title), $template);
+        ])->content($title)->noWrapper()->html(), $template);
         $template = str_replace('{{form_end}}', $form->end(), $template);
         return $template;
     }
@@ -74,14 +74,58 @@ abstract class AbstractPhonesPage
                 $htmlGallery .= $htmlItem;
             }
             $template = str_replace('{{imageGalleryTemplate}}', $htmlGallery, $template);
-            $template = str_replace('{{proceedToBuyForm}}', $this->proceedToBuy->createForm(''), $template);
-            $template = str_replace('{{addToCartForm}}', $this->addToCart->createForm('', $p), $template);
+            $template = str_replace('{{proceedToBuyForm}}', $this->proceedToBuy(), $template);
+            $template = str_replace('{{addToCartForm}}', $this->addToCart($p), $template);
             $template = str_replace('{{comparePrice}}', (string) $this->pm->getMoney()->getAmount($p->compare_price), $template);
             $template = str_replace('{{regularPrice}}', (string) $this->pm->getMoney()->getAmount($p->regular_price), $template);
             $template = str_replace('{{savings}}', (string) $this->money->getFormatedAmount(strval($p->compare_price - $p->regular_price)), $template);
             $template = str_replace('{{imageUser}}', ImageManager::asset_img('users/avatar.png'), $template);
             $template = str_replace('{{imageUser2}}', ImageManager::asset_img('users/default-female-avatar.jpg'), $template);
         }
+        return $template;
+    }
+
+    protected function proceedToBuy() : string
+    {
+        $form = $this->frm->form([
+            'action' => '',
+            'class' => ['Proceed_to_buy_frm'],
+        ]);
+        $class = ['btn', 'btn-danger', 'font-size-14', 'form-control'];
+        $template = $this->getTemplate('proceedToBuyFormPath');
+        $template = str_replace('{{form_begin}}', $form->begin('Proceed_to_buy_frm'), $template);
+        $template = str_replace('{{button}}', (string) $form->input([
+            ButtonType::class => ['type' => 'submit', 'class' => $class],
+        ])->content('Proceed to buy'), $template);
+        $template = str_replace('{{form_end}}', $form->end(), $template);
+        return $template;
+    }
+
+    protected function addTocart(object $product) : string
+    {
+        $form = $this->frm->form([
+            'action' => '',
+            'class' => ['add_to_cart_frm'],
+        ]);
+        $class = ['btn', 'btn-warning', 'font-size-14', 'form-control'];
+        $form->setCsrfKey('add_to_cart_frm' . $product->pdt_id ?? 1);
+        $template = $this->getTemplate('addToCartformPath');
+        $template = str_replace('{{form_begin}}', $form->begin(), $template);
+
+        $template = str_replace('{{item}}', (string) $form->input([
+            HiddenType::class => ['name' => 'item_id'],
+        ])->noLabel()->value($product->pdt_id), $template);
+        $template = str_replace('{{user}}', (string) $form->input([
+            HiddenType::class => ['name' => 'user_id'],
+        ])->noLabel()->value('1'), $template);
+        if (isset($product->pdt_id) && isset($product->user_cart) && in_array($product->pdt_id, $product->user_cart)) {
+            $class = ['btn', 'btn-success', 'font-size-14', 'form-control'];
+            $content = 'In the cart';
+        }
+        $template = str_replace('{{button}}', (string) $form->input([
+            ButtonType::class => ['type' => 'submit', 'class' => $class],
+        ])->content($content ?? 'Add to Cart'), $template);
+        $template = str_replace('{{form_end}}', $form->end(), $template);
         return $template;
     }
 

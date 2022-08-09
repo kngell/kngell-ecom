@@ -46,8 +46,11 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         return [$field, '='];
     }
 
-    protected function fieldValue(mixed $value) : array
+    protected function fieldValue(mixed $value, ?string $whereType = null) : array
     {
+        if ($whereType != null) {
+            return [$value, ''];
+        }
         $tbl = $this->tableSchema;
         if (is_array($value) && !empty($value)) {
             if (array_key_exists('tbl', $value)) {

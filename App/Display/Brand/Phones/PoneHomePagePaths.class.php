@@ -22,6 +22,8 @@ class PhonesHomePagePaths implements PathsInterface
             'specialPriceTemplate' => $this->templatePath . 'specialPriceTemplate.php',
             'imgGalleryTemplate' => $this->templatePath . 'imageGalleryTemplate.php',
             'productFormPath' => $this->templatePath . 'productFormTemplate.php',
+            'addToCartformPath' => $this->templatePath . 'addToCartFormTemplate.php',
+            'proceedToBuyFormPath' => $this->templatePath . 'productFormTemplate.php',
         ];
     }
 

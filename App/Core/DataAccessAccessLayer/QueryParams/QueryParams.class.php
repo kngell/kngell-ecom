@@ -25,6 +25,7 @@ class QueryParams extends AbstractQueryParams
             'findOneBy' => [$this->query_params['conditions'] ?? [],  $this->query_params['options'] ?? []],
             'findBy' => [$this->query_params['selectors'] ?? [], $this->query_params['conditions'] ?? [], $this->query_params['parameters'] ?? [], $this->query_params['options'] ?? []],
             'delete','update' => [$this->query_params['conditions'] ?? []],
+            'delete','update' => [$this->query_params['conditions'] ?? []]
         };
     }
 
@@ -85,11 +86,11 @@ class QueryParams extends AbstractQueryParams
                     if (!is_null($whereType)) {
                         list($key, $tbl) = $this->getField($key);
                         $key = $key . '|' . 'IN';
-                        $tbl == '' ? $this->tableSchema : '';
-                        $whereParams['tbl'] = $tbl;
+                        $whereParams['tbl'] = $tbl == '' ? $this->tableSchema : $tbl;
                     }
                     list($whereParams['field'], $whereParams['operator']) = $this->fieldOperator($key);
-                    list($whereParams['value'], $whereParams['tbl']) = $this->fieldValue($whereParams['value']);
+                    list($whereParams['value'], $table) = $this->fieldValue($whereParams['value'], $whereType);
+                    $whereParams['tbl'] = !array_key_exists('tbl', $whereParams) && !empty($table) ? $table : $whereParams['tbl'];
                     is_null($op) ? $this->query_params['conditions'] += $this->condition($whereParams) : $this->query_params['conditions'][$op] += $this->condition($whereParams);
                     $this->conditionBreak = [];
                 } else {

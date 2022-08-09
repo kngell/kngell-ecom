@@ -3,7 +3,7 @@
 declare(strict_types=1);
 class CountriesManager extends Model
 {
-    protected string $_colID = '';
+    protected string $_colID = 'id';
     protected string $_table = 'countries';
     protected bool $_flatDb = true;
     protected string $_language = 'fr';

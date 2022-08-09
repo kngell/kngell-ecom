@@ -4,7 +4,9 @@
       "AdminController": ["*"]
     },
     "UserAccountController": ["*"],
+    "LearningController": ["*"],
     "HomeController": ["*"],
+    "ShoppingCartController": ["*"],
     "ErrorsController": ["*"],
     "ClothingController": ["*"],
     "AdminController": ["login"],
@@ -27,7 +29,8 @@
       "resetpassword",
       "payment_success"
     ],
-    "CheckoutController": ["proceedtobuy"],
+    "CheckoutController": ["proceedtobuy", "index"],
+    "CheckoutProcessController": ["*"],
     "PaymentgatewayController": ["getStripekeys"],
     "TestController": ["*"]
   },

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class NavigationPath
+class NavigationPath implements PathsInterface
 {
     private string $navPath = VIEW . 'client' . DS . 'components' . DS . 'navigation' . DS;
     private string $templatePath = APP . 'Display' . DS . 'Components' . DS . 'Navigation' . DS . 'Templates' . DS;

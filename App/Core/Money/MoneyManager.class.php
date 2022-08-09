@@ -69,6 +69,11 @@ class MoneyManager
         return Money::of($p, 'EUR', new CustomContext(2), RoundingMode::UP)->getMinorAmount()->toInt();
     }
 
+    public function intFromMoney(Money $money) : int
+    {
+        return $money->getMinorAmount()->toInt();
+    }
+
     public function roundedDown() : int
     {
         return RoundingMode::DOWN;

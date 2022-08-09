@@ -42,3 +42,10 @@ PageDisplayingEvent:
 UserCartChangeEvent:
   - callback: DeleteCacheFileListener
     priority: 0
+PaymentEvent:
+  - callback: saveOrderDetailsListener
+    priority: 2
+  - callback: clearCustomerSessionListener
+    priority: 1
+  - callback: displayOrderResultListener
+    priority: 0

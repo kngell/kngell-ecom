@@ -21,23 +21,19 @@ module.exports = {
       dependOn: "css/librairies/frontlib",
     },
     //Phones Products Home sass
-    "css/brand/phones/home": {
-      import: ["css/brand/phones/_index.sass"],
+    "css/brand/phones/home/home": {
+      import: ["css/brand/phones/home/_index.sass"],
       dependOn: "css/librairies/frontlib",
     },
-    // Checkout
-    "css/components/checkout/checkout": {
-      import: ["css/components/checkout/checkout.sass"],
+    //Shopping Caart
+    "css/brand/phones/shoppingCart/shoppingCart": {
+      import: ["css/brand/phones/shoppingCart/shoppingCart.sass"],
       dependOn: "css/librairies/frontlib",
     },
+
     // Learning
     "css/learn/learn": {
       import: ["css/learn/learn.sass"],
-      dependOn: "css/librairies/frontlib",
-    },
-    // Todo
-    "css/components/todoList/todoList": {
-      import: ["css/components/todoList/todoList.sass"],
       dependOn: "css/librairies/frontlib",
     },
   },

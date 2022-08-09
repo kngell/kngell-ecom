@@ -4,7 +4,7 @@ declare(strict_types=1);
 class AuthManager extends Model
 {
     public static $currentLoggedInUser = null;
-    protected $_colID = 'userID';
+    protected $_colID = 'user_id';
     protected $_table = 'users';
     private $_isLoggedIn = false;
     private $_confirm;

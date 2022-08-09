@@ -10,4 +10,5 @@ package-lock.json
 /temp
 /public
 /session_dir
+/App/Core/Env
 

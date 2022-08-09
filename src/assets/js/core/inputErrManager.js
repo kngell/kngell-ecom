@@ -9,30 +9,51 @@ class Input_Manager {
     myform.on("focus", "input,textarea, .ck, .note-editor", function () {
       $(this).removeClass("is-invalid");
       $(this).parents(".input-box").children("div.invalid-feedback").html("");
+      $("label[for='" + $(this).attr("id") + "']").css("top", "");
     });
   }
-  error = (form, InputErr) => {
-    var arrErr = [];
+  findLabel = (el) => {
+    const idVal = el.id;
+    const labels = document.getElementsByTagName("label");
+    for (const label of labels) {
+      if (label.htmlFor === idVal) {
+        return label;
+      }
+    }
+  };
+  error = (form, InputErr, valeur = null) => {
+    let arrErr = [];
     for (const [key, value] of Object.entries(InputErr)) {
       if (key == "terms") {
         const terms = document.getElementById(key);
-        var div = eL
+        let div = eL
           .uPToClass(terms, "input-box")
           .querySelector(".invalid-feedback");
         div.classList.add("form-text", "d-block");
         div.innerHTML = value;
       } else {
-        var input = form.find("#" + key).addClass("is-invalid");
-        console.log($("#" + key));
+        const input = form.find("#" + key).addClass("is-invalid");
         input
           .parents(".input-box")
           .children("div.invalid-feedback")
           .html(value);
+        const label = $("label[for='" + input.attr("id") + "']");
+        if (input.val().length > 0) {
+          label.css("top", "");
+        } else {
+          label.css("top", valeur + "%");
+        }
       }
       arrErr.push(key);
     }
-
     return arrErr;
+  };
+  inputHidden = (el, name, value, form) => {
+    let element = document.createElement(el);
+    element.type = "hidden";
+    element.value = value;
+    element.name = name;
+    form.append(element);
   };
 }
 export default new Input_Manager();

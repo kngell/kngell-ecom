@@ -138,7 +138,6 @@ class Crud extends AbstractCrud implements CrudInterface
             if ($this->dataMapper->numrow() == 1) {
                 return $this->dataMapper->numrow();
             }
-
             return 0;
         } catch (\Throwable $th) {
             throw $th;

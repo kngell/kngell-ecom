@@ -12,7 +12,7 @@ class VisitorsManager extends Model
         parent::__construct($this->_table, $this->_colID);
     }
 
-    public function manageVisitors(array $params = [])
+    public function manageVisitors(array $params = []) : self
     {
         $ipData = H_visitors::getIpData($params['ip'] ?? '91.173.88.22');
         if ($this->cookie->exists(VISITOR_COOKIE_NAME)) {
@@ -44,6 +44,12 @@ class VisitorsManager extends Model
             return $save;
         }
         return false;
+    }
+
+    public function getAllVisitors() : CollectionInterface
+    {
+        $this->table()->return('object');
+        return new Collection($this->getAll()->get_results());
     }
 
     private function getVisitorInfos(string $ip) : self

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 class UsersManager extends Model
 {
-    protected $_colID = 'userID';
+    protected $_colID = 'user_id';
     protected $_table = 'users';
     protected $_colIndex = '';
     protected $_colContent = '';

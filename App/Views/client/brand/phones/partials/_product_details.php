@@ -1,59 +1,29 @@
 <section id="product" class="py-3">
     <div class="container w-75">
         <div class="row product-details">
-            <?php $p = $this->getProperty('p_details'); ?>
             <div class="col-sm-6 pt-2">
                 <div class="product-image-box text-center pt-3 px-3rounded">
-                    <img src="<?= isset($p->media) ? $p->media[0] : ImageManager::asset_img('products/product-540x60.jpg') ?>"
-                        alt="Product" class="img-fluid">
+                    <img src="{{image}}" alt="{{title}}" class="img-fluid">
                 </div>
                 <!-- begin product-gallery -->
-                <?php if (isset($p->media) && count($p->media) > 1):?>
                 <div class="product-gallery d-flex justify-content-center mb-1 mx-auto owl-carousel owl-theme">
-                    <?php for ($i = 1; $i < count($p->media); $i++) {?>
-                    <div class="product-gallery-item">
-                        <div class="product-img">
-                            <a href="javascript: void(0);" class="">
-                                <img src="<?=isset($p->media[$i]) ? $p->media[$i] : ImageManager::asset_img('products/product-540x60.jpg')?>"
-                                    class="img-fluid img-thumbnail p-2" style="max-width: 60px;" alt="Product-img">
-                            </a>
-                        </div>
-                    </div>
-                    <?php }?>
+                    {{imageGalleryTemplate}}
                 </div>
-                <?php endif; ?>
-
                 <!-- end product-gallery -->
                 <div class="row pt-3 font-size-16 font-baloo mb-3">
                     <div class="col">
-                        <form action="">
-                            <button type="submit" class="btn btn-danger font-size-14 form-control">Proceed to
-                                buy</button>
-                        </form>
+                        {{proceedToBuyForm}}
                     </div>
                     <div class="col">
-                        <form class="add_to_cart_frm">
-                            <input type="hidden" name="item_id" value="<?= $p->pdtID ?? 1 ?>">
-                            <input type="hidden" name="user_id" value="1">
-                            <?php $pdtID = $p->pdtID ?? 1?>
-                            <?= $this->token->csrfInput('csrftoken', 'add_to_cart_frm'); ?>
-                            <?php
-                            if (isset($p->pdtID) && isset($this->user_cart) && in_array($p->pdtID, $this->user_cart)) {
-                                echo ' <button type="submit" class="btn btn-success font-size-14 form-control">In the cart</button>';
-                            } else {
-                                echo '<button type="submit" class="btn btn-warning font-size-14 form-control">Add to
-                                Cart</button>';
-                            }
-                            ?>
-                        </form>
+                        {{addToCartForm}}
                     </div>
                 </div>
 
             </div>
             <div class="col-sm-6 pt-5 pb-4">
-                <h5 class="font-baloo font-size-20"><?= $p->title ?? 'Unknown' ?>
+                <h5 class="font-baloo font-size-20">{{title}}
                 </h5>
-                <small>By <?= $p->item_brand ?? 'Brand' ?></small>
+                <small>By&nbsp;{{brand}}</small>
                 <div class="d-flex">
                     <div class="rating text-warning font-size-12">
                         <span><i class="fas fa fa-star"></i></span>
@@ -70,23 +40,20 @@
                 <table class="my-3">
                     <tr class="font-rale font-size-14">
                         <td>M.R.P : </td>
-                        <td><strike><?=$this->getProperty('pm')->getMoney()->getAmount($p->compare_price)?>
+                        <td><strike>{{comparePrice}}
                             </strike></td>
                     </tr>
                     <tr class="font-rale font-size-14">
                         <td>Deal Price :</td>
                         <td class="font-size-20 text-danger">
-                            $<span><?= $this->getProperty('pm')->getMoney()->getAmount($p->regular_price) ?? 0 ?></span><small
-                                class="text-dark font-size-12">&nbsp;&nbsp;inclusive of
+                            $<span>{{regularPrice}}</span><small class="text-dark font-size-12">&nbsp;&nbsp;inclusive of
                                 all
                                 taxes</small>
                         </td>
                     </tr>
-                    <?php $save = $p->compare_price - $p->regular_price?>
                     <tr class="font-rale font-size-14">
                         <td>You Save : </td>
-                        <td><span
-                                class="font-size-16 text-danger"><?=$this->getProperty('pm')->getMoney()->getAmount($save)?></span>
+                        <td><span class="font-size-16 text-danger">{{savings}}</span>
                         </td>
                     </tr>
                 </table>
@@ -261,8 +228,7 @@
                                 <ul class="list-none comment-list mt-4">
                                     <li class="d-flex flex-row">
                                         <div class="comment-img me-3">
-                                            <img src="<?=ImageManager::asset_img('users/avatar.png')?>"
-                                                style="height:60px" alt="User" class="rounded">
+                                            <img src="{{imageUser}}" style="height:60px" alt="User" class="rounded">
                                         </div>
                                         <div class="comment-block">
                                             <div class="rating-wrap float-end">
@@ -287,8 +253,7 @@
                                     </li>
                                     <li class="d-flex flex-row">
                                         <div class="comment-img me-3">
-                                            <img src="<?=ImageManager::asset_img('users/default-female-avatar.jpg')?>"
-                                                style="height:60px" alt="" class="rounded">
+                                            <img src="{{imageUser2}}" style="height:60px" alt="" class="rounded">
                                         </div>
                                         <div class="comment-block">
                                             <div class="rating-wrap float-end">

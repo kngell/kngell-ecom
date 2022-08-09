@@ -94,7 +94,7 @@ trait ModelTrait
     {
         $props = YamlFile::get('model_properties');
         if ($this->_flatDb === true) {
-            $props['repository'] = FileStorageRepository::class;
+            $props['repository'] = FileStorageRepositoryFactory::class;
         }
         return $props;
     }

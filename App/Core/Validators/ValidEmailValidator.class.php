@@ -5,7 +5,8 @@ class ValidEmailValidator extends CustomValidator
 {
     public function runValidation()
     {
-        $value = $this->getModel()->getEntity()->{'get' . ucwords($this->getField())}();
+        $getter = $this->getModel()->getEntity()->getGetters($this->getField());
+        $value = $this->getModel()->getEntity()->{$getter}();
         if (!(!empty($value) && filter_var($value, FILTER_VALIDATE_EMAIL) !== false)) {
             return false;
         }

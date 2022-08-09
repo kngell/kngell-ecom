@@ -1,5 +1,5 @@
 get: # Http Get ===========================================
-  "":
+  "/":
     controller: home
     method: index
     namespace: Client/brand
@@ -7,6 +7,10 @@ get: # Http Get ===========================================
     controller: home
     method: index
     namespace: Client/brand
+  card:
+    controller: learning
+    method: index
+    namespace: Client/components/checkout/partials
   todo:
     controller: home
     method: todo
@@ -23,6 +27,13 @@ get: # Http Get ===========================================
     controller: learning
     method: index
     namespace: Client
+  cart:
+    controller: shopping_cart
+    method: index
+    namespace: Client/components
+  proceed_to_checkout:
+    controller: checkout
+    method: index
   admin/{controller}/{method}:
     namespace: Admin
   admin/{controller}/{method}/{id:[\da-f]+}:
@@ -67,6 +78,16 @@ post: # Http Post method =======================================================
   add_item_into_cart:
     controller: user_cart
     method: add
+  proceed_to_checkout:
+    controller: checkout
+    method: index
+    namespace: Client/components
   activation/activate/{token:[\da-f]+}:
     controller: activate_user_with_ajax
     method: activate
+  /{controller}/{method}/{id:[\da-f]+}:
+    namespace: Ajax
+  /{controller}/{method}:
+    namespace: Ajax
+  client/{controller}/{method}:
+    namespace: Client

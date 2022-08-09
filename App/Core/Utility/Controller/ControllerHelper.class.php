@@ -38,6 +38,18 @@ final class ControllerHelper
         return $template;
     }
 
+    public function getAddressShowMethod(array $data = []) : string
+    {
+        if (isset($data['address_selector'])) {
+            return match ($data['address_selector']) {
+                'address-book-wrapper' => 'addrBookAndText',
+                'adresse-de-livraison' => 'singleAddressHtml',
+                default => 'singleAddressText'
+            };
+        }
+        return 'singleAddressText';
+    }
+
     public function AssignErrors($source, $errors)
     {
         $frm_errors = $errors;
@@ -54,5 +66,14 @@ final class ControllerHelper
             }
         }
         return $a_errors;
+    }
+
+    public function jsonDecode($json, $assoc = true)
+    {
+        $json = str_replace("\n", '\\n', $json);
+        $json = str_replace("\r", '', $json);
+        $json = preg_replace('/([{,]+)(\s*)([^"]+?)\s*:/', '$1"$3":', $json);
+        $json = preg_replace('/(,)\s*}$/', '}', $json);
+        return json_decode($json, $assoc);
     }
 }

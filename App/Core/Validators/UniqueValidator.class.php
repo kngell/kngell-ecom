@@ -6,16 +6,18 @@ class UniqueValidator extends CustomValidator
     public function runValidation()
     {
         $field = (is_array($this->getField())) ? $this->getField()[0] : $this->getField();
-        $value = $this->getModel()->getEntity()->{'get' . ucwords($this->getField())}();
-        $this->getModel()->getQueryParams()->reset();
-        $query_params = $this->getModel()->table()->where([$field => $value])->return('class');
-        $other = $this->getModel()->getAll($query_params);
+        $en = $this->getModel()->getEntity();
+        $getter = $en->getGetters($this->getField());
+        $value = $en->{$getter}();
+        $this->getModel()->table()->where([$field => $value])->return('class');
+        $other = $this->getModel()->getAll();
+        $table_id = $this->getModel()->getTableSchemaID() ?? null;
         if ($other->count() <= 0) {
             return true;
         }
-        if (( new ReflectionProperty($this->getModel()->getEntity(), $this->getModel()->getEntity()->getColId()))->isInitialized($this->getModel()->getEntity())) {
+        if (( new ReflectionProperty($en, $en->getColId('id', true)))->isInitialized($en)) {
             foreach ($other->get_results() as $item) {
-                if (isset($table_id) && $item->$table_id == $this->getModel()->getEntity()->getColId()) {
+                if (isset($table_id) && $item->$table_id == $en->{$en->getGetters($en->getColId())}()) {
                     return true;
                 }
             }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 class FormBuilder extends AbstractFormBuilder
 {
     use FormBuilderTrait;
-    use FormalizerTrait;
     use SessionTrait;
 
     protected array $inputObject = [];
@@ -20,6 +19,7 @@ class FormBuilder extends AbstractFormBuilder
     protected RequestHandler $request;
     protected Token $token;
     protected GlobalVariablesInterface $globals;
+    protected FormBuilderBlueprint $print;
     private object|null $dataRepository = null;
     private ContainerInterface $container;
 
@@ -146,7 +146,9 @@ class FormBuilder extends AbstractFormBuilder
         $id = $alertid != '' ? $alertid : 'alertErr';
         $alertHtml = '<div class="' . $id . '"></div>' . PHP_EOL;
         if ($this->addCsrf) {
-            $alertHtml .= $this->csrfForm($this->csrfKey == '' ? $this->formAttr['id'] : $this->csrfKey);
+            $frmID = isset($this->formAttr['id']) ? $this->formAttr['id'] : '';
+            $key = $this->csrfKey != '' ? $this->csrfKey : 'alertErr';
+            $alertHtml .= $this->csrfForm($frmID != '' ? $frmID : $key);
         }
         return sprintf('<form %s>', $this->renderHtmlElement($this->formAttr)) . PHP_EOL . $alertHtml;
     }
@@ -311,25 +313,6 @@ class FormBuilder extends AbstractFormBuilder
         return true;
     }
 
-    /**
-     * Set the value of csrfKey.
-     *
-     * @return  self
-     */
-    public function setCsrfKey(string $csrfKey) : self
-    {
-        $this->csrfKey = $csrfKey;
-        return $this;
-    }
-
-    /**
-     * Get the value of csrfKey.
-     */
-    protected function getCsrfKey() : string
-    {
-        return $this->csrfKey;
-    }
-
     protected function getStream()
     {
         $ct = $this->globals->getServer('CONTENT_TYPE');
@@ -352,6 +335,7 @@ class FormBuilder extends AbstractFormBuilder
         $this->token = $this->container->make(Token::class);
         $this->request = $this->container->make(RequestHandler::class);
         $this->globals = $this->container->make(GlobalVariablesInterface::class);
+        $this->print = $this->container->make(FormBuilderBlueprint::class);
     }
 
     /**

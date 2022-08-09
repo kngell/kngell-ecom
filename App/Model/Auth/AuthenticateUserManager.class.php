@@ -106,7 +106,7 @@ class AuthenticateUserManager extends Model
                     $sessionToken = $this->cookie->get(TOKEN_NAME);
                 }
             } else {
-                $sessionToken = $session->getEntity()->{'getSessionToken'}();
+                $sessionToken = $session->getEntity()->{$session->getEntity()->getGetters('session_token')}();
                 if (!$this->cookie->exists(TOKEN_NAME)) {
                     $this->cookie->set($sessionToken, TOKEN_NAME);
                 } else {

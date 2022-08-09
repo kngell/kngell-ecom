@@ -1,7 +1,6 @@
 export default class Logreg {
-  constructor(editors = {}) {
+  constructor() {
     this.isLoad = false;
-    this.editors = editors;
   }
   check = () => {
     return this;

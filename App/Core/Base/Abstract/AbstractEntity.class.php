@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 abstract class AbstractEntity
 {
-    protected ReflectionClass $reflect;
-
     public function regenerateField(string $fieldName) : string
     {
         return lcfirst(implode('', array_map('ucfirst', explode('_', $fieldName))));
@@ -36,12 +34,9 @@ abstract class AbstractEntity
         return '';
     }
 
-    protected function reflectionInstance()
+    protected function reflectionInstance() : ReflectionClass
     {
-        if (!isset($this->reflect)) {
-            return $this->reflect = new ReflectionClass($this::class);
-        }
-        return $this->reflect;
+        return CustomReflection::getInstance()->reflectionInstance($this::class);
     }
 
     private function CamelCaseToSeparator($value, $separator = ' ')

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class LoginEvent extends Event
+class LoginEvent extends Event implements EventsInterface
 {
     /**
      * Construct.

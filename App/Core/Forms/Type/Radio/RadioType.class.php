@@ -134,7 +134,8 @@ class RadioType extends AbstractAttr implements FormBuilderTypeInterface
     public function renderInputOptions(array $attr, $options = null, mixed $displayLabel = null): bool|string
     {
         $checked = isset($attr['checked']) && $attr['checked'] == true ? 'checked' : '';
-        return '<input type="' . $attr['type'] . '" name="' . $attr['name'] . '" id="' . $attr['id'] . '" class="' . implode(' ', $attr['class']) . '" ' . $checked . ' />' . "\n";
+        $value = isset($this->attr['value']) ? 'value="' . $this->attr['value'] . '" ' : '';
+        return '<input type="' . $attr['type'] . '" name="' . $attr['name'] . '" id="' . $attr['id'] . '" class="' . implode(' ', $attr['class']) . '" ' . $value . $checked . ' />' . "\n";
     }
 
     /**

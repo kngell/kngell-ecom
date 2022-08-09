@@ -136,7 +136,8 @@ final class BaseConstants
         // -----------------------------------------------------------------------
         defined('IP_KEY') or define('IP_KEY', '4eb97a89cdfdaf7a911e1c0a9b01dc78b72f85d8fe297572e7fb549d9d3a0c33');
         defined('EMAIL_KEY') or define('EMAIL_KEY', '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');
-        defined('STRIPE_KEY_SECRET') or define('STRIPE_KEY_SECRET', 'pk_live_51JAMcpIZVSgv0hIYqwCMnEb9Ckh67H5avSa8wmLN7NEjahRzd1PPLstUvkZCml55amgoUcRgIhdmqUXjn0WaKHTa00yAddbFfW');
+        defined('STRIPE_KEY_PUBLIC') or define('STRIPE_KEY_PUBLIC', 'pk_test_51JAMcpIZVSgv0hIYCDKtWkhUAHzYr3vayiJDyX9qcIoXvge1uqGKi4Fl2yFK1jZcgb866eeisJ3pDApDtwdcaHm300c0CJJuIP');
+        defined('STRIPE_KEY_SECRET') or define('STRIPE_KEY_SECRET', 'sk_test_51JAMcpIZVSgv0hIYWXulqzJEod2dzT6Y2ax3NuUKLy0tlFgbTC1rvgqi6FoVoCwTg6NVdEM0RNTRLEM9146PN9hJ001eb0IL6h');
 
         // -----------------------------------------------------------------------
         // PAYPAL

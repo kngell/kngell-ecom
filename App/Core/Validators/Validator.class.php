@@ -13,7 +13,7 @@ class Validator extends AbstractValidator
     {
         foreach ($items as $item => $rules) {
             $display = $rules['display'];
-            $value = $item !== 'terms' ? $obj->getEntity()->{'get' . ucwords($item)}() : $this->getTerms($obj);
+            $value = $item !== 'terms' ? $obj->getEntity()->{$obj->getEntity()->getGetters($item)}() : $this->getTerms($obj);
             if (isset($value)) {
                 foreach ($rules as $rule => $rule_value) {
                     if ($rule === 'required' && (empty($value) || $value == '[]')) {
