@@ -14,8 +14,8 @@ abstract class AbstractAddressBookPage
     protected ?string $template;
     protected ?ResponseHandler $response;
     protected bool $noManageForm = false;
-    private int $deliveryAddr = 1;
-    private string $billingAddr = 'on';
+    private string $deliveryAddr = 'Y';
+    private string $billingAddr = 'Y';
     private SessionInterface $session;
 
     public function __construct(?AddressBookPath $paths = null, ?Customer $customer = null, ?FormBuilder $frm = null, ?ResponseHandler $response = null)
@@ -28,9 +28,9 @@ abstract class AbstractAddressBookPage
         $this->response = $response;
     }
 
-    protected function addressBookContent(string $type = 'all') : array
+    protected function addressBookContent(string $type = 'all', string $frmID = '') : array
     {
-        return [$this->addressHtml('chk-frm'), $this->addressHtml(), $this->addressText($type)];
+        return [$this->addressHtml('chk-frm', $frmID), $this->addressHtml(), $this->addressText($type)];
     }
 
     protected function addressText(string $type = 'all') : string

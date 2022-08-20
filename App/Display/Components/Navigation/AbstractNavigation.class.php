@@ -41,7 +41,9 @@ abstract class AbstractNavigation
         } else {
             $connexion = $this->userDropDownMenu();
         }
-        return str_replace('{{connectedUser}}', $connexion, $this->getTemplate('conectPath'));
+        $template = str_replace('{{connectedUser}}', $connexion, $this->getTemplate('conectPath'));
+        $template = str_replace('{{wishlist}}', $this->cartItem['whishlistItmes'], $template);
+        return $template;
     }
 
     protected function navBrand() : string
@@ -54,8 +56,8 @@ abstract class AbstractNavigation
         $menu = array_filter($this->menu->all(), function ($item) {
             return $item != 'log_reg_menu';
         }, ARRAY_FILTER_USE_KEY);
+        $menu_html = '';
         if (is_array($menu) && count($menu) > 0) {
-            $menu_html = '';
             foreach ($menu as $name => $link) {
                 $active = '';
                 if ($name === array_key_first($menu)) {

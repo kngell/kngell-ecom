@@ -70,4 +70,6 @@ interface DataMapperInterface
      * @throws throwable
      */
     public function getLasID(): int;
+
+    public function count() : int;
 }

@@ -16,7 +16,7 @@ class UploaderFactory
         $paths = [];
         foreach ($this->filesAry as $fileAry) {
             if (empty($fileAry['name'])) {
-                $mediakey = $model->getEntity()->getFieldWithDoc('media');
+                $mediakey = $model->getEntity()->getColId('media');
                 if ($mediakey == 'profileImage') {
                     $paths[] = 'users' . US . 'avatar.png';
                 }

@@ -11,6 +11,11 @@ trait CheckoutGetterAndSetterTrait
         return $this->cardSubTotal;
     }
 
+    public function getTotalItem() : int
+    {
+        return $this->totalItems;
+    }
+
     /**
      * Get the value of TTC.
      */
@@ -22,9 +27,9 @@ trait CheckoutGetterAndSetterTrait
     /**
      * Get the value of cartItems.
      */
-    public function getCartItems() : array
+    public function getUserItems() : array
     {
-        return $this->cartItems;
+        return $this->userItems;
     }
 
     /**
@@ -32,9 +37,9 @@ trait CheckoutGetterAndSetterTrait
      *
      * @return  self
      */
-    public function setCartItems(array $cartItems) : self
+    public function setUserItems(array $userItems) : self
     {
-        $this->cartItems = $cartItems;
+        $this->userItems = $userItems;
         return $this;
     }
 

@@ -13,12 +13,12 @@ trait AddressBookTraits
             $addr .= $address->zip_code . ', ';
             $addr .= $address->ville . ', ';
             $addr .= $address->region . ', ';
-            $addr .= $address->pays;
+            $addr .= $address->pays['name'];
         }
         return $this->response->htmlDecode($addr);
     }
 
-    protected function addressHtml(?string $el = null) : string
+    protected function addressHtml(?string $el = null, string $frmID = '') : string
     {
         $html = '';
         $this->element($el);
@@ -26,7 +26,7 @@ trait AddressBookTraits
         $customerEntity = $this->customer->getEntity();
         if ($customerEntity->isInitialized('address')) {
             foreach ($customerEntity->getAddress() as $address) {
-                $temp = str_replace('{{active}}', $address->principale === 1 ? 'card--active' : '', $this->template);
+                $temp = str_replace('{{active}}', $address->principale === 'Y' ? 'card--active' : '', $this->template);
                 $temp = str_replace('{{id}}', $this->AddressInputId($address->ab_id), $temp);
                 $temp = str_replace('{{prenom}}', $customerEntity->getFirstName() ?? '', $temp);
                 $temp = str_replace('{{nom}}', $customerEntity->getLastName() ?? '', $temp);
@@ -35,11 +35,11 @@ trait AddressBookTraits
                 $temp = str_replace('{{code_postal}}', $address->zip_code ?? '', $temp);
                 $temp = str_replace('{{ville}}', $address->ville ?? '', $temp);
                 $temp = str_replace('{{region}}', $address->region ?? '', $temp);
-                $temp = str_replace('{{pays}}', $address->pays ?? '', $temp);
+                $temp = str_replace('{{pays}}', $address->pays['name'] ?? '', $temp);
                 $temp = str_replace('{{telephone}}', $customerEntity->getPhone() ?? '', $temp);
-                $temp = str_replace('{{formModify}}', $this->formManageOptions('Modifier', $address), $temp);
-                $temp = str_replace('{{formErase}}', $this->formManageOptions('Supprimer', $address), $temp);
-                $temp = str_replace('{{FormSelect}}', $this->formManageOptions('Selectionner', $address), $temp);
+                $temp = str_replace('{{formModify}}', $this->manageOptions('Modifier', $address, $frmID), $temp);
+                $temp = str_replace('{{formErase}}', $this->manageOptions('Supprimer', $address, $frmID), $temp);
+                $temp = str_replace('{{FormSelect}}', $this->manageOptions('Selectionner', $address, $frmID), $temp);
                 $html .= $temp;
             }
         }
@@ -62,7 +62,7 @@ trait AddressBookTraits
         ])->noLabel()->noWrapper()->value($id)->html();
     }
 
-    protected function formManageOptions(string $str, ?object $obj = null) : string
+    protected function manageOptions(string $str, ?object $obj = null, string $frmID = '') : string
     {
         $class = match ($str) {
             'Modifier' => 'modify',
@@ -70,17 +70,18 @@ trait AddressBookTraits
             'Selectionner' => 'select'
         };
         $frmHtml = $this->frmBegin($class, $obj);
+        $attr = $this->noManageForm ? ['form' => $frmID . ($frmID != '' ? '_' . $str : '')] : [];
         $frmHtml .= $this->frm->input([
             HiddenType::class => ['name' => 'ab_id'],
-        ])->noLabel()->noWrapper()->value($obj->ab_id ?? '')->html();
+        ])->noLabel()->noWrapper()->value($obj->ab_id ?? '')->attr($attr)->html();
         $frmHtml .= $this->frm->input([
-            ButtonType::class => ['type' => 'button', 'class' => [$class]],
-        ])->noLabel()->noWrapper()->content($str != 'Selectionner' ? $str : '')->html();
+            ButtonType::class => ['type' => 'submit', 'class' => [$class]],
+        ])->noLabel()->noWrapper()->content($str != 'Selectionner' ? $str : '')->attr($attr)->html();
         $frmHtml .= $this->frmEnd();
         return $frmHtml;
     }
 
-    private function frmBegin(string $class, ?object $obj = null) :  string
+    private function frmBegin(string $class, ?object $obj) :  string
     {
         if ($this->noManageForm === false) {
             $this->frm->form([

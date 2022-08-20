@@ -81,23 +81,23 @@ abstract class AbstractAuthSystem
         $registerTemplate = str_replace('{{camera}}', ImageManager::asset_img('camera' . DS . 'camera-solid.svg'), $registerTemplate);
         $registerTemplate = str_replace('{{avatar}}', ImageManager::asset_img('users' . DS . 'avatar.png'), $registerTemplate);
         $registerTemplate = str_replace('{{last_name}}', $form->input([
-            TextType::class => ['name' => 'lastName'],
-        ])->placeholder(' ')->label('Last Name :')->id('lastName')->html(), $registerTemplate);
+            TextType::class => ['name' => 'last_name'],
+        ])->placeholder(' ')->label('Last Name :')->id('last_name')->req()->html(), $registerTemplate);
         $registerTemplate = str_replace('{{first_name}}', $form->input([
-            TextType::class => ['name' => 'firstName'],
-        ])->placeholder(' ')->label('First Name :')->id('firstName')->html(), $registerTemplate);
+            TextType::class => ['name' => 'first_name'],
+        ])->placeholder(' ')->label('First Name :')->id('first_name')->req()->html(), $registerTemplate);
         $registerTemplate = str_replace('{{username}}', $form->input([
-            TextType::class => ['name' => 'userName'],
-        ])->placeholder(' ')->label('UserName')->id('username')->html(), $registerTemplate);
+            TextType::class => ['name' => 'user_name'],
+        ])->placeholder(' ')->label('UserName')->id('user_name')->html(), $registerTemplate);
         $registerTemplate = str_replace('{{email}}', $form->input([
             EmailType::class => ['name' => 'email', 'id' => 'reg_email'],
-        ])->placeholder(' ')->label('Email :')->html(), $registerTemplate);
+        ])->placeholder(' ')->label('Email :')->req()->html(), $registerTemplate);
         $registerTemplate = str_replace('{{password}}', $form->input([
             PasswordType::class => ['name' => 'password', 'id' => 'reg_password'],
-        ])->placeholder(' ')->label('Password :')->html(), $registerTemplate);
+        ])->placeholder(' ')->label('Password :')->req()->html(), $registerTemplate);
         $registerTemplate = str_replace('{{cpassword}}', $form->input([
             PasswordType::class => ['name' => 'cpassword'],
-        ])->placeholder(' ')->label('Confirm Password :')->id('cpassword')->html(), $registerTemplate);
+        ])->placeholder(' ')->label('Confirm Password :')->id('cpassword')->req()->html(), $registerTemplate);
         $registerTemplate = str_replace('{{terms}}', (string) $form->input([
             CheckboxType::class => ['name' => 'terms', 'id' => 'terms'],
         ])->label($this->registerLabel)->labelClass(['checkbox'])->spanClass(['checkbox__box text-danger'])->req(), $registerTemplate);

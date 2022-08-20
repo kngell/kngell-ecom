@@ -54,7 +54,10 @@ class CheckoutNavigationController extends Controller
                 'firstName' => 'chk-firstName',
                 'lastName' => 'chk-lastName',
             ]);
-            $this->updateAddress($data, 'shipping');
+            $this->dispatcher->dispatch(new CheckoutNavigationEvent(object: $this, name: '', params: [
+                'data' => $data,
+                'addrType' => 'shipping',
+            ]));
         }
         $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Veuillez créer un compte ou vous connecter pour continuer!')]);
     }
@@ -62,10 +65,11 @@ class CheckoutNavigationController extends Controller
     private function validateBillingAddress(array $data = [])
     {
         if ($data['ab_id'] != 'undefined') {
-            $this->updateAddress($data, 'billing');
-            $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Something goes wrong!')]);
-        } else {
-            $this->jsonResponse(['result' => 'success', 'msg' => '']);
+            $this->dispatcher->dispatch(new CheckoutNavigationEvent(object: $this, name: '', params: [
+                'data' => $data,
+                'addrType' => 'billing',
+            ]));
         }
+        $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Something goes wrong!')]);
     }
 }

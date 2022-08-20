@@ -50,6 +50,11 @@ class Collection implements CollectionInterface
         return array_keys($this->items);
     }
 
+    public function shuffle() : static
+    {
+        return new static(shuffle($this->items));
+    }
+
     /**
      * Run a map over each items.
      *
@@ -352,12 +357,33 @@ class Collection implements CollectionInterface
 
     public function offsetExists(mixed $key): bool
     {
-        return isset($this->items[$key]);
+        return array_key_exists($key, $this->items) && isset($this->items[$key]);
+    }
+
+    public function valueExists(mixed $value, string $keyValue = '') : bool
+    {
+        if ($keyValue != '') {
+            foreach ($this->items as $key => $val) {
+                if (property_exists($val, $keyValue) && is_object($value)) {
+                    if ($val->$keyValue === $value->$keyValue) {
+                        return true;
+                    }
+                }
+            }
+        }
+        $key = array_search($value, $this->items, true);
+        if ($key === false) {
+            return false;
+        }
+        return true;
     }
 
     public function offsetGet(mixed $key): mixed
     {
-        return $this->items[$key];
+        if ($this->has($key)) {
+            return $this->items[$key];
+        }
+        return null;
     }
 
     public function offsetSet(mixed $key, mixed $value): void
@@ -382,7 +408,7 @@ class Collection implements CollectionInterface
     /**
      * Aliase of $this->size method.
      *
-     * @return void
+     * @return int
      */
     public function count(): int
     {

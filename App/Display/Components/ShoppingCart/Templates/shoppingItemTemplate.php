@@ -12,7 +12,7 @@
             <span><i class="fas fa fa-star"></i></span>
             <span><i class="fas fa fa-star"></i></span>
             <span><i class="fas fa fa-star"></i></span>
-            <span><i class="far fa-star"></i></span>
+            <span><i class="fa-solid fa-star-half-stroke"></i></span>
          </div>
          <a href="#" class="px-2 rating__text">20,534 ratings</a>
       </div>

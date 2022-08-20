@@ -12,7 +12,7 @@ class CartManager extends Model
         parent::__construct($this->_table, $this->_colID);
     }
 
-    public function addUserItem() : array
+    public function addUserItem() : self
     {
         if ($this->cookie->exists(VISITOR_COOKIE_NAME)) {
             $this->table(null, ['COUNT|cart_id|nbItems'])->where([
@@ -21,13 +21,12 @@ class CartManager extends Model
             ])->return('current');
             $userCart = new Collection(current($this->getAll()->get_results()));
             if ($userCart->offsetGet('nbItems') == 0) {
-                $this->assign([
+                return $this->assign([
                     'user_id' => $this->cookie->get(VISITOR_COOKIE_NAME),
                 ])->save();
-                return ['nbItems' => 1];
             }
         }
-        return ['nbItems' => 0];
+        return $this;
     }
 
     public function getUserCart() : CollectionInterface

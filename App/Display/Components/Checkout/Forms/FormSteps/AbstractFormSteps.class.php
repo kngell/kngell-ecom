@@ -22,12 +22,17 @@ abstract class AbstractFormSteps
     protected ?AddressBookPage $addressBook;
     protected Money $HT;
     protected Money $TTC;
-    protected array $cartItems = [];
+    protected array $userItems = [];
+    protected int $totalItems;
+    protected ?CollectionInterface $obj;
     protected CollectionInterface $finalTaxes;
+    protected CollectionInterface $shippingClass;
+    protected ?CollectionInterface $pmtMode;
     protected string $cardSubTotal = '';
 
-    public function __construct()
+    public function __construct(array $params = [])
     {
+        $this->properties($params);
     }
 
     protected function customerAddress(int $addrType = 1, $addreMode = 'text') : string

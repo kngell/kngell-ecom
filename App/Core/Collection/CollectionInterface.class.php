@@ -36,6 +36,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
 
     public function avg();
 
+    public function shuffle() : static;
+
     /**
      * Calculates the sum of values within the specified array.
      *
@@ -201,6 +203,8 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
 
     public function offsetExists(mixed $offset): bool;
 
+    public function valueExists(mixed $value) : bool;
+
     public function offsetGet(mixed $offset): mixed;
 
     public function offsetSet(mixed $key, mixed $value): void;
@@ -212,7 +216,7 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
     /**
      * Aliase of $this->size method.
      *
-     * @return void
+     * @return int
      */
     public function count(): int;
 }

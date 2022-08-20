@@ -1,14 +1,14 @@
 import { csrftoken, frm_name } from "corejs/config";
 //Get visitors Data
 export const get_visitors_data = () => {
-  // e.preventDefault();
   return new Promise((resolve, reject) => {
-    let data = {
-      ip: $("#ip_address").val(),
-      csrftoken: csrftoken,
-      frm_name: frm_name,
-    };
-    if (data) {
+    const ip = $("#ip_address");
+    if (ip.length) {
+      let data = {
+        ip: ip.val(),
+        csrftoken: csrftoken,
+        frm_name: frm_name,
+      };
       resolve(data);
     } else {
       reject("no data");

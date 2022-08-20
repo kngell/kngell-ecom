@@ -41,11 +41,30 @@ PageDisplayingEvent:
     priority: 0
 UserCartChangeEvent:
   - callback: DeleteCacheFileListener
+    priority: 1
+  - callback: DisplayUserCartListener
+    priority: 0
+CustomerAddressChangeEvent:
+  - callback: UpdateCustomerSessionAddressListener
+    priority: 1
+  - callback: DisplayCustomerAddressListener
+    priority: 0
+CustomerAddressDeleteEvent:
+  - callback: DeleteCustomerSessionAddressListener
+    priority: 1
+  - callback: DisplayCustomerAddressListener
+    priority: 0
+CheckoutNavigationEvent:
+  - callback: UpdateCustomerSessionAddressListener
+    priority: 1
+  - callback: DisplayCustomerAddressListener
     priority: 0
 PaymentEvent:
-  - callback: saveOrderDetailsListener
+  - callback: SaveOrderDetailsListener
+    priority: 3
+  - callback: ClearUserCartListener
     priority: 2
-  - callback: clearCustomerSessionListener
+  - callback: ClearCustomerSessionListener
     priority: 1
-  - callback: displayOrderResultListener
+  - callback: DisplayOrderResultListener
     priority: 0

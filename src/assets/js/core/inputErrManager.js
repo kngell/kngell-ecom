@@ -55,5 +55,24 @@ class Input_Manager {
     element.name = name;
     form.append(element);
   };
+  clearForm = (myFormElement, select2 = null) => {
+    $("#" + select2).empty();
+    $(myFormElement)
+      .find(":input")
+      .each(function (i, elem) {
+        switch (elem.type) {
+          case "password":
+          case "select-multiple":
+          case "select-one":
+          case "text":
+          case "textarea":
+            $(elem).val("");
+            break;
+          case "checkbox":
+          case "radio":
+            elem.checked = false;
+        }
+      });
+  };
 }
 export default new Input_Manager();

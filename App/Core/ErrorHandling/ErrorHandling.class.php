@@ -67,7 +67,7 @@ class ErrorHandling
         if (self::isMode()['mode'] == 'dev' && self::isMode()['mode'] != 'prod') {
             list($srcCode, $snippet) = self::srcCode($exception->getFile(), $exception->getLine(), 'highlight');
             $stacktrace = self::$trace;
-            self::render('errors/index', ['exception' => $exception, 'snippet' => $snippet, 'srcCode' => $srcCode, 'stacktrace' => $stacktrace]);
+            self::render('error', ['exception' => $exception, 'snippet' => $snippet, 'srcCode' => $srcCode, 'stacktrace' => $stacktrace]);
         } else {
             $logFile = LOG_DIR . '/error-' . date('Y-m-d') . '-.log';
             ini_set('log_errors', 'On');

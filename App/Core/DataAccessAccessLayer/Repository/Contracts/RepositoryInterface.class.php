@@ -10,26 +10,26 @@ interface RepositoryInterface
      * Create or inert into a database
      * --------------------------------------------------------------------------------------------------.
      * @param array $fields
-     * @return int
+     * @return DataMapperInterface
      */
-    public function create(array $fields = []) : int;
+    public function create(array $fields = []) : DataMapperInterface;
 
     /**
      * Update
      * --------------------------------------------------------------------------------------------------.
      * @param array $fields
      * @param array $conditions
-     * @return int|null
+     * @return DataMapperInterface|null
      */
-    public function update(array $conditions) : ?int;
+    public function update(array $conditions) : ?DataMapperInterface;
 
     /**
      * Delete from database
      * --------------------------------------------------------------------------------------------------.
      * @param array $conditions
-     * @return int
+     * @return DataMapperInterface
      */
-    public function delete(array $conditions = []) : int;
+    public function delete(array $conditions = []) : DataMapperInterface;
 
     /**
      * --------------------------------------------------------------------------------------------------
@@ -104,15 +104,6 @@ interface RepositoryInterface
     public function findByIdAndUpdate(array $fields = [], int $id = 0) : bool;
 
     /**
-     * Search data with pagination
-     *--------------------------------------------------------------------------------------------------.
-     * @param array $args
-     * @param object $request
-     * @return array
-     */
-    public function findWithSearchAndPagin(array $args, Object $request) : array;
-
-    /**
      * find and return self for chanability
      *--------------------------------------------------------------------------------------------------.
      * @param int $id
@@ -128,4 +119,6 @@ interface RepositoryInterface
      * @return object
      */
     public function get_tableColumn(array $options): object;
+
+    public function countRecords(array $conditions, ?string $fields): int;
 }

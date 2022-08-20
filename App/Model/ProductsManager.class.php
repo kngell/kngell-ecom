@@ -11,9 +11,9 @@ class ProductsManager extends Model
         parent::__construct($this->_table, $this->_colID);
     }
 
-    public function getProducts(mixed $brand = 2) : array
+    public function getProducts(int $brand) : CollectionInterface
     {
-        $query_params = $this->table()
+        $this->table()
             ->leftJoin('product_categorie', ['pdt_id', 'cat_id'])
             ->leftJoin('categories', ['categorie'])
             ->leftJoin('brand', ['br_name'])
@@ -21,7 +21,23 @@ class ProductsManager extends Model
             ->where(['br_id' => [$brand, 'categories']])
             ->groupBy(['pdt_id DESC' => 'product_categorie'])
             ->return('object');
+        return new Collection($this->getAll()->get_results());
+    }
+
+    public function getSingleProduct(string $slug) : ?object
+    {
+        $this->table()
+            ->leftJoin('product_categorie', ['pdt_id', 'cat_id'])
+            ->leftJoin('categories', ['categorie'])
+            ->leftJoin('brand', ['br_name'])
+            ->on(['pdt_id',  'pdt_id'], ['cat_id', 'cat_id'], ['br_id', 'br_id'])
+            ->where(['slug' => [$slug, 'products']])
+            ->groupBy(['pdt_id DESC' => 'products'])
+            ->return('object');
         $pdt = $this->getAll();
-        return $pdt->count() > 0 ? $pdt->get_results() : false;
+        if ($pdt->count() === 1) {
+            return current($pdt->get_results());
+        }
+        return null;
     }
 }

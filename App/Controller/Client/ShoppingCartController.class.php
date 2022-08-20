@@ -20,13 +20,6 @@ class ShoppingCartController extends Controller
         // $this->setLayout('clothes');
         // echo $this->route_params;
         $this->pageTitle('Shopping Cart');
-        $this->render('shoppingCart' . DS . 'shoppingCart', $this->shoppingCart());
-    }
-
-    private function shoppingCart() : array
-    {
-        return $this->container(ShoppingCartPage::class, [
-            'cartItems' => $this->userCart(),
-        ])->displayAll();
+        $this->render('shoppingCart' . DS . 'shoppingCart', $this->displayShoppingCart());
     }
 }

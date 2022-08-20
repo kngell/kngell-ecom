@@ -86,6 +86,17 @@ class Model extends AbstractModel
         return $this->find();
     }
 
+    public function getAllByIndex(mixed $id, string $return = '') : ?self
+    {
+        $this->table()->where([$this->getColIndex() => $id])->return($return == '' ? 'class' : $return);
+        return $this->getAll();
+    }
+
+    public function getAllWithSearchAndPagin(array $args) : self
+    {
+        return $this->findWithSearchAndPagin($args);
+    }
+
     public function getUniqueId(string $colid_name = '', string $prefix = '', string $suffix = '', int $token_length = 24) : mixed
     {
         $output = $prefix . $this->token->generate($token_length) . $suffix;

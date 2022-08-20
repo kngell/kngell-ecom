@@ -87,7 +87,7 @@ trait StripeGetSetTrait
     /**
      * Get the value of paymentMethod.
      */
-    public function getPaymentMethod() : CollectionInterface
+    public function getPaymentMethod() : ?CollectionInterface
     {
         return $this->paymentMethod;
     }
@@ -97,7 +97,7 @@ trait StripeGetSetTrait
      *
      * @return  self
      */
-    public function setPaymentMethod(CollectionInterface $paymentMethod) :self
+    public function setPaymentMethod(?CollectionInterface $paymentMethod) :self
     {
         $this->paymentMethod = $paymentMethod;
         return $this;

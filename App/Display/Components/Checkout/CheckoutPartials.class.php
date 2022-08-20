@@ -92,6 +92,7 @@ class CheckoutPartials
             'changeEmailModalPath' => $this->templatePath . 'changeEmailTemplate.php',
             'changeShippingModalPath' => $this->templatePath . 'changeShippingModeTemplate.php',
             'userAddressModalPath' => $this->templatePath . 'userAddressModalTemplate.php',
+            'succesMsgModalPath' => $this->templatePath . 'successMsgModalTemplate.php',
         ];
     }
 

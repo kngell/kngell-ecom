@@ -1,0 +1,49 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+
+#main-site
+    .products-features
+        .features-title
+            .horizontal-line
+                +horizontal-line($orange-in)
+        .row
+            .products-item
+                cursor: pointer
+                margin-bottom: 2rem
+                img
+                    width: 100%
+                    height: 350px
+                    box-sizing: border-box
+                    transition: .3s all
+                    object-fit: cover
+                    object-position: top center
+                &:hover
+                    img
+                        opacity: .7
+                    .buy-btn
+                        transform: translateY(0)
+                        opacity: 1
+                .buy-btn
+                    +button($dark-in,$gray-dark-in)
+                    background: $orange-in
+                    transform: translateY(20px)
+                    opacity: 0
+                    transition: .3s all
+                .star
+                    padding: 10px 0
+                    i
+                        font-size: .8rem
+                        color: goldenrod
+            > nav
+                > ul
+                    >li:nth-child(n)
+                        &:hover
+                            > a
+                                background-color: $orange-in
+                                color: $white-smoke
+                    > li.page-item.active > a
+                        background-color: $dark-color!important
+                        color: $white-smoke
+                .pagination
+                    a
+                        color: $dark-color

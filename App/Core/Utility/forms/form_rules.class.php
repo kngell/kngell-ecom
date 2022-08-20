@@ -64,21 +64,21 @@ class Form_rules
                 'required' => true,
                 'display' => '',
             ],
-            'firstName' => [
+            'first_name' => [
                 'required' => true,
                 'min' => 2,
                 'max' => 64,
                 'display' => 'Firstname',
                 'Valid_string' => true,
             ],
-            'lastName' => [
+            'last_name' => [
                 'required' => true,
                 'min' => 2,
                 'max' => 64,
                 'display' => 'Lastname',
                 'Valid_string' => true,
             ],
-            'userName' => [
+            'user_name' => [
                 'display' => 'Username',
                 'required' => true,
                 'unique' => $table_users ? 'users' : 'users_related_profile',

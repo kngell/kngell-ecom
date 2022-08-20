@@ -3,7 +3,7 @@
       <div class="user_data">
          {{title}}
          {{contactContent}}
-         <div class="card add-address">
+         <div class="card add-address {{display_style}}">
             <div class="card-body">
                {{deliveryAddressTitle}}
                <div class="address-content delivery-address-content">

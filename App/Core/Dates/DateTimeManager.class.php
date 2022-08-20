@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use DateTime;
+
 class DateTimeManager
 {
     public function monthList() : CollectionInterface
@@ -53,5 +55,10 @@ class DateTimeManager
         }
 
         return date($dateformat, strtotime(date('Y-m-d', $dayx) . ' -1 day'));
+    }
+
+    public function getFromInterface(DateTimeInterface $dateTimeInterface): DateTime
+    {
+        return new DateTime('@' . $dateTimeInterface->getTimestamp(), $dateTimeInterface->getTimezone());
     }
 }

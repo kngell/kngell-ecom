@@ -6,17 +6,21 @@ use Brick\Money\Money;
 
 class CartSummary extends AbstractFormSteps implements CheckoutFormStepInterface
 {
+    use CartSummaryTrait;
     private array $taxesProducts = [];
     private Money $shippingAmount;
     private string $cartSummary = '';
     private string $cardContent = '';
 
-    public function __construct(?object $obj, ?CollectionInterface $shippingClass = null, ?MoneyManager $money = null, ?CollectionInterface $paths = null)
+    public function __construct(?CollectionInterface $obj, ?CollectionInterface $shippingClass = null, ?MoneyManager $money = null, ?CollectionInterface $paths = null)
     {
-        $this->obj = $obj;
-        $this->shippingClass = $shippingClass;
-        $this->paths = $paths;
-        $this->money = $money;
+        parent::__construct([
+            'obj' => $obj,
+            'shippingClass' => $shippingClass,
+            'money' => $money,
+            'paths' => $paths,
+        ]);
+        $this->shippingAmount = $this->money->getCustomAmt('0', 2);
         $this->cartSummary();
     }
 
@@ -34,6 +38,7 @@ class CartSummary extends AbstractFormSteps implements CheckoutFormStepInterface
         $uCartSummary = str_replace('{{CartSummaryTotal}}', $this->cardSubTotal, $uCartSummary);
         $uCartSummary = str_replace('{{button}}', $this->cartSummaryButton($step), $uCartSummary);
         $this->cartSummary = $uCartSummary;
+        $this->totalItems = $this->obj->count();
     }
 
     protected function cartSummaryTotal() : string
@@ -69,7 +74,7 @@ class CartSummary extends AbstractFormSteps implements CheckoutFormStepInterface
         foreach ($this->obj as $product) {
             if ($product->cart_type == 'cart') {
                 $HT = $product->regular_price * $product->item_qty;
-                $this->taxesProducts[] = $this->filterTaxe($HT, $product, $this->getAllTaxes($this->obj));
+                $this->taxesProducts[] = $this->filterTaxe($HT, $product, $this->getAllTaxes($this->obj), $product->item_qty);
                 $uCartSummaryContent = str_replace('{{image}}', $this->media($product), $temp);
                 $uCartSummaryContent = str_replace('{{Quantity}}', strval($product->item_qty), $uCartSummaryContent);
                 $uCartSummaryContent = str_replace('{{title}}', $product->title ?? '', $uCartSummaryContent);
@@ -78,7 +83,6 @@ class CartSummary extends AbstractFormSteps implements CheckoutFormStepInterface
                 $uCartSummaryContent = str_replace('{{separator}}', $sep && ($product->color != null || $product->p_size != null) ? ' / ' : '', $uCartSummaryContent);
                 $uCartSummaryContent = str_replace('{{size}}', $product->size ?? '', $uCartSummaryContent);
                 $uCartSummaryContent = str_replace('{{price}}', strval($this->money->getFormatedAmount(strval($HT))) ?? '', $uCartSummaryContent);
-                $this->cartItems[] = ['id' => $product->item_id, 'HT' => $HT];
                 $template .= $uCartSummaryContent;
             }
         }
@@ -89,7 +93,7 @@ class CartSummary extends AbstractFormSteps implements CheckoutFormStepInterface
     {
         $temp = '';
         /** @var CollectionInterface */
-        $shippingMode = $this->getShippingClassObj($this->shippingClass);
+        $shippingMode = !empty($this->userItems) ? $this->getShippingClassObj($this->shippingClass) : null;
         if (!is_null($shippingMode)) {
             $temp = str_replace('{{shipping}}', $this->totalShippingContent($shippingMode), $template);
         }

@@ -23,9 +23,9 @@ class QueryParams extends AbstractQueryParams
         $this->getSelectors();
         return match ($repositoryMethod) {
             'findOneBy' => [$this->query_params['conditions'] ?? [],  $this->query_params['options'] ?? []],
-            'findBy' => [$this->query_params['selectors'] ?? [], $this->query_params['conditions'] ?? [], $this->query_params['parameters'] ?? [], $this->query_params['options'] ?? []],
+            'findBy','findBySearch' => [$this->query_params['selectors'] ?? [], $this->query_params['conditions'] ?? [], $this->query_params['parameters'] ?? [], $this->query_params['options'] ?? []],
             'delete','update' => [$this->query_params['conditions'] ?? []],
-            'delete','update' => [$this->query_params['conditions'] ?? []]
+            'delete','update' => [$this->query_params['conditions'] ?? []],
         };
     }
 
@@ -56,19 +56,14 @@ class QueryParams extends AbstractQueryParams
     public function on(...$params) : self
     {
         $this->key('options');
-        if (!array_key_exists('join_on', $this->query_params['options'])) {
-            $this->query_params['options']['join_on'] = [];
-        }
-        //$args = func_get_args();
         $tableIndex = 0;
-        //$on = '';
         foreach ($params as $key => $join_params) {
             if (is_array($join_params) && !empty($join_params)) {
                 foreach ($join_params as $k => $arg) {
                     if (is_array($arg)) {
                         $this->getParams($k, $arg);
                     } else {
-                        $this->getJoinOptions($tableIndex + $k, $arg);
+                        $this->getJoinOptions($k, $arg, $key, $k + $tableIndex);
                     }
                 }
                 $tableIndex++;
@@ -184,20 +179,23 @@ class QueryParams extends AbstractQueryParams
         return $this->aryParams($params, 'parameters');
     }
 
-    public function recursive(string $parentID, string $id) : self
+    public function recursiveQuery(self $query_recursive)
+    {
+        list($selectors, $conditions, $parameters, $options) = $query_recursive->params('findBy');
+        $this->query_params['options']['recursive'] = $query_recursive->build();
+        $this->query_params['options']['recursive']['selectors'] = $selectors;
+        $this->query_params['options']['recursive']['conditions'] = $conditions;
+        $this->query_params['options']['recursive']['parameters'] = $parameters;
+        $this->query_params['options']['recursive']['options'] = $options;
+        return $this;
+    }
+
+    public function recursive(string $parentID, string $id, array $tbl_recursive = []) : self
     {
         $this->key('options');
         $this->query_params['options']['recursive']['parentID'] = $parentID;
         $this->query_params['options']['recursive']['id'] = $id;
         $this->recursiveCount();
-        return $this;
-    }
-
-    private function reset() : self
-    {
-        $this->query_params = [];
-        $this->conditionBreak = [];
-        $this->braceOpen = '';
         return $this;
     }
 

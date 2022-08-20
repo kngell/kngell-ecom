@@ -200,7 +200,7 @@ export function select2AjaxParams(data) {
     delay: 250,
     dataType: "json",
     data: function (params) {
-      formData.append("searchTerm", params.term);
+      formData.append("search_term", params.term);
       return formData;
     },
     processResults: function (response) {

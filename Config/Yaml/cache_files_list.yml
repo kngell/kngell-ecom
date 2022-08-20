@@ -1,7 +1,10 @@
 # list of all cached files
 phones_products: phones_products
+clothes_products: clothes_products
+single_clophes: single_clophes
 user_cart: user_cart_items
 shipping_class: shipping_class
 paiement_mode: paiement_mode_list
 visitors: visitors
 user_address: user_addree_list
+sliders: sliders

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 class BillingInfos extends AbstractFormSteps implements CheckoutFormStepInterface
 {
-    protected ?CollectionInterface $shippingClass;
     private string $stepTitle = 'Billing Address';
 
     public function __construct(array $params)
     {
-        $this->properties($params);
+        parent::__construct($params);
     }
 
     public function display() : string

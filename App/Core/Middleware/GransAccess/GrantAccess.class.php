@@ -77,7 +77,7 @@ class GrantAccess
     {
         $current_user_acls = ['Guest'];
         $grantAccess = false;
-        if ($this->session->exists(CURRENT_USER_SESSION_NAME) && $this->loggedInUser != null) {
+        if ($this->session->exists(CURRENT_USER_SESSION_NAME) && $this->loggedInUser != false) {
             $current_user_acls[] = 'LoggedIn';
             foreach ($this->aclGroup as $a) {
                 $current_user_acls[] = $a;

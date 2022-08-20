@@ -17,9 +17,9 @@ class AddressBookPage extends AbstractAddressBookPage implements DisplayPagesInt
         ];
     }
 
-    public function all() : array
+    public function all(string $frmID = '') : array
     {
-        list($hemltChk, $htmlModals, $text) = $this->addressBookContent();
+        list($hemltChk, $htmlModals, $text) = $this->addressBookContent('all', $frmID);
         return [
             $this->addressBookHtml($hemltChk),
             $this->addressBookHtml($htmlModals),
@@ -27,9 +27,9 @@ class AddressBookPage extends AbstractAddressBookPage implements DisplayPagesInt
         ];
     }
 
-    public function delivery() : array
+    public function delivery(string $frmID = '') : array
     {
-        list($hemltChk, $htmlModals, $text) = $this->addressBookContent('delivery');
+        list($hemltChk, $htmlModals, $text) = $this->addressBookContent('delivery', $frmID);
         return [
             $this->addressBookHtml($hemltChk),
             $this->addressBookHtml($htmlModals),
@@ -37,9 +37,9 @@ class AddressBookPage extends AbstractAddressBookPage implements DisplayPagesInt
         ];
     }
 
-    public function billing() : array
+    public function billing(string $frmID = '') : array
     {
-        list($hemltChk, $htmlModals, $text) = $this->addressBookContent('billing');
+        list($hemltChk, $htmlModals, $text) = $this->addressBookContent('billing', $frmID);
         return [
             $this->addressBookHtml($hemltChk),
             $this->addressBookHtml($htmlModals),

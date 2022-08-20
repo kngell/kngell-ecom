@@ -199,6 +199,14 @@ class RequestHandler extends GlobalVariables
     }
 
     /**
+     * @return bool
+     */
+    public function isAjax(): bool
+    {
+        return !empty($this->getServer('HTTP_X_REQUESTED_WITH')) && strtolower($this->getServer('HTTP_X_REQUESTED_WITH')) === 'xmlhttprequest';
+    }
+
+    /**
      * Add slashes
      * ========================================================.
      * @param mixed $data

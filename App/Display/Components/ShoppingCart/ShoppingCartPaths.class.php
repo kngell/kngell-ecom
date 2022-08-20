@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 class ShoppingCartPaths implements PathsInterface
 {
-    private string $partialsPath = VIEW . 'client' . DS . 'components' . DS . 'shoppingCart' . DS . 'partials' . DS;
+    private string $viewPath = VIEW . 'client' . DS . 'components' . DS . 'shoppingCart' . DS . 'partials' . DS;
     private string $templatePath = APP . 'Display' . DS . 'Components' . DS . 'ShoppingCart' . DS . 'Templates' . DS;
 
     public function Paths(): CollectionInterface
     {
-        return new Collection(array_merge($this->templatesPath(), $this->partialsPath()));
+        return new Collection(array_merge($this->templatesPath(), $this->viewPath()));
     }
 
     private function templatesPath() : array
@@ -21,16 +21,19 @@ class ShoppingCartPaths implements PathsInterface
             'shoppingDelFormPath' => $this->templatePath . 'shoppingItemDelFormTemplate.php',
             'cartTaxTemplate' => $this->templatePath . 'shoppingCartTaxesTemplate.php',
             'proceedTobuyFormPath' => $this->templatePath . 'proceedToBuyFormTemplate.php',
+            'whishlistCollectionPath' => $this->templatePath . 'whishlistItemCollectionTemplate.php',
+            'whishlistItemPath' => $this->templatePath . 'whishlistItemTemplate.php',
 
         ];
     }
 
-    private function partialsPath() : array
+    private function viewPath() : array
     {
         return [
-            'shoppingCartPath' => $this->partialsPath . '_shopping_cart.php',
-            'emptycartPath' => $this->partialsPath . '_empty_shopping_cart.php',
-            'shoppingCartsubtotalPath' => $this->partialsPath . '_shopping_cart_subTotal.php',
+            'shoppingCartPath' => $this->viewPath . '_shopping_cart.php',
+            'emptycartPath' => $this->viewPath . '_empty_shopping_cart.php',
+            'shoppingCartsubtotalPath' => $this->viewPath . '_shopping_cart_subTotal.php',
+            'whishlistPath' => $this->viewPath . '_shopping_whishlist.php',
         ];
     }
 }

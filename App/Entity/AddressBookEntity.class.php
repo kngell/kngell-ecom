@@ -14,7 +14,7 @@ class AddressBookEntity extends Entity
     private string $ville;
     private string $region;
     private string $pays;
-    private int $principale;
+    private string $principale;
     private string $saveForLater;
     private string $billingAddr;
     private DateTimeInterface $createdAt;
@@ -237,7 +237,7 @@ class AddressBookEntity extends Entity
     /**
      * Get the value of principale.
      */
-    public function getPrincipale() : int
+    public function getPrincipale() : string
     {
         return $this->principale;
     }
@@ -247,7 +247,7 @@ class AddressBookEntity extends Entity
      *
      * @return  self
      */
-    public function setPrincipale(int $principale) : self
+    public function setPrincipale(string $principale) : self
     {
         $this->principale = $principale;
         return $this;

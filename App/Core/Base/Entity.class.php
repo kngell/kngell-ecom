@@ -102,20 +102,11 @@ class Entity extends AbstractEntity
 
     public function assign(array $params) : self
     {
-        foreach ($params as $field => $value) {
-            if (is_string($field)) {
-                $prop = $this->regenerateField($field);
-                $method = $this->getSetter($field);
-                if (method_exists($this, $method)) {
-                    $type = $this->reflectionInstance()->getProperty($prop)->getType()->getName();
-                    $result = match ($type) {
-                        'DateTimeInterface' => $this->$method(new DateTimeImmutable($value)),
-                            'string' => is_array($value) ? $this->$method((string) $value[0]) : $this->$method((string) $value),
-                            'int' => $this->$method((int) $value),
-                            default => $this->$method($value)
-                    };
-                }
-            }
+        $attrs = $this->getAllAttributes();
+        if (count($params) < count($attrs)) {
+            return $this->assingParams($attrs, $params);
+        } else {
+            return $this->assingEntity($attrs, $params);
         }
         return $this;
     }

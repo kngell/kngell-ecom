@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 abstract class Controller extends AbstractController
 {
+    use DatabaseCacheTrait;
+    use MethodsForDisplayingPageTrait;
     use ControllerTrait;
 
     public function __construct(array $params = [])
@@ -27,6 +29,15 @@ abstract class Controller extends AbstractController
         } else {
             throw new Exception;
         }
+    }
+
+    public function isInitialized(string $field) : bool
+    {
+        $rp = $this->reflectionInstance()->getProperty($field);
+        if ($rp->isInitialized($this)) {
+            return true;
+        }
+        return false;
     }
 
     public function render(string $viewName, array $context = []) : ?string
@@ -56,6 +67,11 @@ abstract class Controller extends AbstractController
         }
     }
 
+    public function jsonResponse(array $resp) : void
+    {
+        $this->response->jsonResponse($resp);
+    }
+
     protected function before() : void
     {
         $this->container(Middleware::class)->middlewares(middlewares: $this->callBeforeMiddlewares(), contructorArgs:[])
@@ -83,11 +99,6 @@ abstract class Controller extends AbstractController
                 return 2;
                 break;
         }
-    }
-
-    protected function jsonResponse(array $resp) : void
-    {
-        $this->response->jsonResponse($resp);
     }
 
     protected function redirect(string $url, bool $replace = true, int $responseCode = 303)

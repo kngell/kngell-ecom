@@ -1,0 +1,23 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+// @use "plugins/flexadmin/scss/variables" as *
+#product
+    .product-details
+        display: flex
+        flex-wrap: wrap
+        .product-image-box
+            max-width: 100%
+        .product-gallery
+            padding-bottom: 10px
+            list-style: none
+            .product-gallery-item
+                +dflex()
+                .product-img
+                    img
+                        width: 70px
+                        height: 70px
+                        object-fit: cover
+                        object-position: center center
+                        .active
+                            img
+                                border: 1px solid var(--highlight)

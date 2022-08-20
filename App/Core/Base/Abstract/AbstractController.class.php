@@ -26,6 +26,7 @@ abstract class AbstractController
     protected array $cachedFiles;
     protected array $route_params = [];
     protected array $frontEndComponents = [];
+    protected array $select2Field = [];
 
     // public function getComment() : CommentsInterface
     // {

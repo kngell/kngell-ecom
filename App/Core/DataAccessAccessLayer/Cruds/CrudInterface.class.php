@@ -29,9 +29,9 @@ interface CrudInterface
      * --------------------------------------------------------------------------------------------------
      * Insert in data base successfully or not.
      * @param array $fields
-     * @return int
+     * @return DataMapperInterface
      */
-    public function create(array $fields = []) : int;
+    public function create(array $fields = []): DataMapperInterface;
 
     /**
      * --------------------------------------------------------------------------------------------------
@@ -49,17 +49,17 @@ interface CrudInterface
      * Update data.
      * @param array $fields
      * @param array $conditions
-     * @return int
+     * @return DataMapperInterface
      */
-    public function update(array $fields = [], array $conditions = []) : int;
+    public function update(array $fields = [], array $conditions = []) : DataMapperInterface;
 
     /**
      * --------------------------------------------------------------------------------------------------
      * Delete data.
      * @param array $conditions
-     * @return int
+     * @return DataMapperInterface
      */
-    public function delete(array $conditions = []) :int;
+    public function delete(array $conditions = []) :DataMapperInterface;
 
     /**
      * --------------------------------------------------------------------------------------------------

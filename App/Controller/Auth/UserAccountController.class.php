@@ -5,6 +5,23 @@ declare(strict_types=1);
 class UserAccountController extends Controller
 {
     use UserAccountTrait;
+    use MethodsForDisplayingPageTrait;
+
+    public function __construct(array $params = [])
+    {
+        parent::__construct($params);
+    }
+
+    public function myAccountShowPage(array $args = []) : void
+    {
+        $this->pageTitle('Account - User Account Manager');
+        $this->view()->addProperties(['name' => 'User Account']);
+        $params = [
+            'records_per_page' => 3,
+            'additional_conditions' => [],
+        ];
+        $this->render('user_account' . DS . 'account', $this->displayUerAccount($params));
+    }
 
     public function index(array $args = [])
     {

@@ -36,38 +36,14 @@ class Crud extends AbstractCrud implements CrudInterface
     /**
      *@inheritDoc
      */
-    public function getSchema(): string
-    {
-        return (string) $this->tableSchema;
-    }
-
-    /**
-     *@inheritDoc
-     */
-    public function getSchemaID(): string
-    {
-        return (string) $this->tableSchemaID;
-    }
-
-    /**
-     *@inheritDoc
-     */
-    public function lastID(): int
-    {
-        return $this->dataMapper->getLasID();
-    }
-
-    /**
-     *@inheritDoc
-     */
-    public function create(array $fields = []): int
+    public function create(array $fields = []): DataMapperInterface
     {
         try {
             $arg = ['table' => $this->getSchema(), 'type' => 'insert', 'fields' => $fields];
             $query = $this->queryBuilder->buildQuery($arg)->insert();
             $this->dataMapper->persist($query, $this->dataMapper->buildQueryParameters($fields));
             if ($this->dataMapper->numrow() == 1) {
-                return $this->lastID();
+                return $this->dataMapper->results([], __FUNCTION__);
             }
         } catch (Throwable $th) {
             throw $th;
@@ -90,15 +66,16 @@ class Crud extends AbstractCrud implements CrudInterface
                 'conditions' => $conditions,
                 'params' => $params,
                 'extras' => $options,
+                'recursive_query' => array_key_exists('recursive', $options) ? $this->recursive_query($options) : '',
             ];
             $query = $this->queryBuilder->buildQuery($arg)->select();
             $this->dataMapper->persist($query, $this->dataMapper->buildQueryParameters($arg['conditions'], $params));
             if ($this->dataMapper->numrow() > 0) {
-                return $this->dataMapper->results($options);
+                return $this->dataMapper->results($options, __FUNCTION__);
             }
             return $this->dataMapper;
         } catch (\Throwable $th) {
-            throw $th;
+            throw new DataAccessLayerException($th->getMessage());
         }
     }
 
@@ -112,7 +89,7 @@ class Crud extends AbstractCrud implements CrudInterface
             $query = $this->queryBuilder->buildQuery($arg)->showColumn();
             $this->dataMapper->persist($query, $this->dataMapper->buildQueryParameters([], []));
             if ($this->dataMapper->numrow() > 0) {
-                return $this->dataMapper->results($options);
+                return $this->dataMapper->results($options, __FUNCTION__);
             }
         } catch (\Throwable $th) {
             throw $th;
@@ -124,7 +101,7 @@ class Crud extends AbstractCrud implements CrudInterface
      * =====================================================================.
      *@inheritDoc
      */
-    public function update(array $fields = [], array $conditions = []): int
+    public function update(array $fields = [], array $conditions = []): DataMapperInterface
     {
         try {
             $arg = [
@@ -136,7 +113,7 @@ class Crud extends AbstractCrud implements CrudInterface
             $query = $this->queryBuilder->buildQuery($arg)->update();
             $this->dataMapper->persist($query, $this->dataMapper->buildQueryParameters($conditions, $fields));
             if ($this->dataMapper->numrow() == 1) {
-                return $this->dataMapper->numrow();
+                return $this->dataMapper->results([], __FUNCTION__);
             }
             return 0;
         } catch (\Throwable $th) {
@@ -149,7 +126,7 @@ class Crud extends AbstractCrud implements CrudInterface
      * =====================================================================.
      *@inheritDoc
      */
-    public function delete(array $conditions = []): int
+    public function delete(array $conditions = []): DataMapperInterface
     {
         try {
             $arg = [
@@ -159,11 +136,7 @@ class Crud extends AbstractCrud implements CrudInterface
             ];
             $query = $this->queryBuilder->buildQuery($arg)->delete();
             $this->dataMapper->persist($query, $this->dataMapper->buildQueryParameters($conditions));
-            if ($this->dataMapper->numrow() >= 1) {
-                return $this->dataMapper->numrow();
-            }
-
-            return 0;
+            return $this->dataMapper->results([], __FUNCTION__);
         } catch (\Throwable $th) {
             throw $th;
         }

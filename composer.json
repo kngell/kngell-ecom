@@ -43,7 +43,7 @@
     "symfony/http-foundation": "^6.0",
     "tijsverkoyen/css-to-inline-styles": "^2.2",
     "pelago/emogrifier": "^6.0",
-    "stefangabos/world_countries": "^2.6"
+    "league/iso3166": "^4.0"
   },
   "require-dev": {
     "symfony/var-dumper": "^6.0",

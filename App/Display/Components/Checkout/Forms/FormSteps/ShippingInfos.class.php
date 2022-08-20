@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 class ShippingInfos extends AbstractFormSteps implements CheckoutFormStepInterface
 {
-    protected ?CollectionInterface $shippingClass;
     private string $title = 'Shipping Method';
 
     public function __construct(array $params = [])
     {
-        $this->properties($params);
+        parent::__construct($params);
     }
 
     public function display() : string

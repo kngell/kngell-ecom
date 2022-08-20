@@ -1,4 +1,5 @@
 {{principale}}
+{{billing_addr}}
 <div class="form-title">
    <h4 class="mt-2 mb-3 card-sub-title">Adresse de Livraison</h4>
 </div>
@@ -32,5 +33,10 @@
       {{u_comment}}
    </div>
 </div>
+<div class="row">
+   {{useforBilling}}
+</div>
 <!-- end row -->
-{{save_for_later}}
+<div class="row">
+   {{save_for_later}}
+</div>

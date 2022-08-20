@@ -1,0 +1,19 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+.description
+    .size
+        display: block
+        padding: 5px 10px
+    .quantity
+        width: 50px
+        height: 40px
+        padding-left: 10px
+        fontsize: 1rem
+        margin-right: 10px
+        &:focus
+            outline: none
+    .buy-btn
+        +button($dark-in,$gray-dark-in)
+        background: $orange-in
+        opacity: 1
+        transition: .3s all

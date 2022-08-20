@@ -7,7 +7,7 @@ class Bs_Modal {
   _init = () => {
     const p = this;
     return new Promise((resolve, reject) => {
-      let my_modal = [];
+      let my_modal = new Array();
       p.modals.forEach((modal, i) => {
         const el = document.getElementById(modal);
         my_modal[modal] = Modal.getOrCreateInstance(el, {
@@ -15,7 +15,11 @@ class Bs_Modal {
         });
         my_modal[modal]["selector"] = el;
       });
-      resolve(my_modal);
+      if (my_modal instanceof Array) {
+        resolve(my_modal);
+      } else {
+        reject("not an array");
+      }
     });
   };
 }

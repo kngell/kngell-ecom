@@ -6,17 +6,16 @@ class RegisterUserManager extends Model
 {
     private string $_colID = 'userID';
     private string $_table = 'users';
-    private string $_matchingTestColumn = 'password';
+    // private string $_matchingTestColumn = 'password';
 
     public function __construct()
     {
-        parent::__construct($this->_table, $this->_colID, $this->_matchingTestColumn);
+        parent::__construct($this->_table, $this->_colID);
     }
 
     public function register() : ?self
     {
         try {
-            $this->getQueryParams()->reset();
             /** @var UsersEntity */
             $entity = $this->getEntity()->assign([
                 'salt' => $this->getUniqueId('salt'),

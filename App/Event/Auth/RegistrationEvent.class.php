@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 class RegistrationEvent extends Event implements EmailSenderEventInterface
 {
-    public function __construct(object $object, ?string $eventName = null)
+    public function __construct(object $object, ?string $eventName = null, array $params = [])
     {
-        parent::__construct($object, $eventName == null ? $this::class : $eventName);
+        parent::__construct($object, $eventName == null ? $this::class : $eventName, $params);
     }
 
     /**
      * Get the value of emailConfig.
      */
-    public function getEmailConfig() : EmailSenderConfiguration
+    public function getEmailConfig() : EmailConfigurationEnv
     {
-        /** @var EmailSenderConfiguration */
-        $emailconfig = Container::getInstance()->make(EmailSenderConfiguration::class);
-        $emailconfig->setSubject('Email Verification!');
-        $emailconfig->setFrom('', 'K\'nGELL Ingenierie Logistique');
+        list($emailconfig) = $this->getParams();
         return $emailconfig;
     }
 }

@@ -18,6 +18,6 @@ class CheckoutController extends Controller
     protected function indexPage(array $data = []) : void
     {
         $this->pageTitle('Checkout Page');
-        $this->render('checkout' . DS . 'checkout', $this->checkoutPage());
+        $this->render('checkout' . DS . 'checkout', $this->displayCheckoutPage());
     }
 }

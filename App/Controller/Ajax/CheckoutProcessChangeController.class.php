@@ -33,18 +33,24 @@ class CheckoutProcessChangeController extends Controller
     public function getAddress(array $args = []) : void
     {
         $data = $this->isValidRequest();
+        $this->dispatcher->dispatch(new CheckoutNavigationEvent(object: $this, name: '', params: [
+            'data' => $data,
+        ]));
         $this->updateAddress((array) $data, 'billing');
         $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Something goes wrong!')]);
     }
 
     public function autoFillInput(array $args = []) : void
     {
-        /** @var AddressBookManager */
-        $model = $this->model(AddressBookManager::class)->assign($this->isValidRequest());
-        $model = $model->assign((array) $model->getDetails());
+        $data = $this->isValidRequest();
+        /** @var CustomerEntity */
+        $customerEntity = unserialize($this->session->get(CHECKOUT_PROCESS_NAME));
         /** @var CollectionInterface */
-        $address = $model->getEntity()->getInitializedAttributes();
-        if (!empty($address)) {
+        $address = $customerEntity->getAddress()->filter(function ($addr) use ($data) {
+            return $addr->ab_id == $data['ab_id'];
+        });
+        if ($address->count() === 1) {
+            $address = $this->response->htmlDecodeArray((array) $address->pop());
             $this->jsonResponse(['result' => 'success', 'msg' => $address]);
         }
         $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Something goes wrong!')]);
@@ -55,26 +61,43 @@ class CheckoutProcessChangeController extends Controller
         /** @var AddressBookManager */
         $model = $this->model(AddressBookManager::class)->assign($data = $this->isValidRequest());
         $this->isIncommingDataValid(m: $model, ruleMethod:'address_book');
-        $id = $model->getEntity()->{$model->getEntity()->getGetters($model->getEntity()->getColId())}();
-        if ($resp = $model->save()) {
-            /** @var CustomerEntity */
-            $customerEntity = unserialize($this->session->get(CHECKOUT_PROCESS_NAME));
-            $model = $model->assign((array) $model->getDetails($id)); //
-            $address = (object) $model->getEntity()->getInitializedAttributes();
-
-            $customerEntity->updateAddress($address);
-            $this->session->set(CHECKOUT_PROCESS_NAME, serialize($customerEntity));
-            list($html, $text) = $this->container(AddressBookPage::class)->delivery();
-            $customerEntity->setShipTo($text);
-            $this->session->set(CHECKOUT_PROCESS_NAME, serialize($customerEntity));
-            $this->jsonResponse(['result' => 'success', 'msg' => [$data['addr'] => $html]]);
+        if ($resp = $model->saveAddress('users', $this->session->get(CURRENT_USER_SESSION_NAME)['id'])) {
+            $this->dispatcher->dispatch(new CustomerAddressChangeEvent(object: $this, name: '', params: [
+                'addressBookManager' => $model,
+                'data' => $data,
+            ]));
         }
         $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Something goes wrong!')]);
+    }
+
+    public function delete(array $args = []) : void
+    {
+        /** @var AddressBookManager */
+        $model = $this->model(AddressBookManager::class)->assign($data = $this->isValidRequest());
+        if ($resp = $model->delete()) {
+            $this->dispatcher->dispatch(new CustomerAddressDeleteEvent(object: $this, name: '', params: [
+                'addressBookManager' => $model,
+                'data' => $data,
+            ]));
+        }
     }
 
     public function changeShipping(array $args = []) : void
     {
         $this->changeShippingClass();
+    }
+
+    private function addressType(AddressBookManager $m) : string
+    {
+        /** @var AddressBookEntity */
+        $en = $m->getEntity();
+        if ($en->getPrincipale() == 'Y') {
+            return 'shipping';
+        }
+        if ($en->getBillingAddr() == 'Y') {
+            return 'billing';
+        }
+        return 'all';
     }
 
     private function getAddressmethod(array $args, object $address) : array

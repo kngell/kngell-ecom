@@ -17,7 +17,12 @@ $this->start('head'); ?>
          </section>
          <!-- extra elements -->
          <section id="extras-features">
-            <?= $modals ?? ''?>
+            <div class="modals">
+               <?= $modals ?? ''?>
+            </div>
+            <div class="forms-elements">
+               <?= $forms_elements ?? ''?>
+            </div>
          </section>
       </div>
    </div>

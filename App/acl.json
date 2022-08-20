@@ -50,8 +50,7 @@
     "CommentsController": ["*"],
     "AssetsController": ["*"],
     "UsersController": ["profile", "payment"],
-    "CheckoutController": ["*"],
-    "ProductController": ["*"]
+    "CheckoutController": ["*"]
   },
   "admin": {
     "denied": {},

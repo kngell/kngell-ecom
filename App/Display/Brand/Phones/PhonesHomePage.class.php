@@ -2,11 +2,23 @@
 
 declare(strict_types=1);
 
-class PhonesHomePage extends AbstractPhonesPage implements DisplayPagesInterface
+class PhonesHomePage extends AbstractBrandPage implements DisplayPagesInterface
 {
-    public function __construct(array|closure $products, ?FormBuilder $frm, ?ProductsManager $pm, ?object $userCart = null, ?PhonesHomePagePaths $paths = null, ?MoneyManager $money = null)
+    use PhonesHomePageTraits;
+
+    public function __construct(CollectionInterface|closure $products, ?FormBuilder $frm = null, ?object $userCart = null, CollectionInterface|Closure $slider = null, ?PhonesHomePagePaths $paths = null, ?MoneyManager $money = null)
     {
-        parent::__construct($products, $frm, $pm, $userCart, $paths, $money);
+        parent::__construct([
+            'products' => $products,
+            'frm' => $frm,
+            'userCart' => $userCart,
+            'slider' => $slider,
+            'paths' => $paths->Paths(),
+            'money' => $money,
+        ]);
+        $this->slider = $this->slider != null ? $this->slider->filter(function ($sld) {
+            return $sld->page_slider === 'index_phone';
+        }) : null;
     }
 
     public function displayAll(): array
@@ -21,24 +33,12 @@ class PhonesHomePage extends AbstractPhonesPage implements DisplayPagesInterface
         ], $this->userCart->displayAll());
     }
 
-    public function displaySingle(): array
+    public function displayTopSalesSetion() : string
     {
-        return [
-            'singleProduct' => $this->singleProduct(),
-            'topSales' => $this->displayTopSalesSetion(),
-        ];
-    }
-
-    private function singleProduct() : string
-    {
-        if (count((array) $this->product) !== 0) {
-            $template = $this->getTemplate('productDetailsPath');
-            return $this->outputSingleProduct($template, $this->product);
-        } else {
-            return '<div class="text-center text-lead py-5">
-            <h5>This product was not found</h5>
-            </div>';
-        }
+        $topSalesTemplate = $this->getTemplate('topSalesPath');
+        $productTemplate = $this->getTemplate('topSalesTemplatePath');
+        $productTemplate = str_replace('{{singleProductTemplate}}', $this->getTemplate('productTemplatePath'), $productTemplate);
+        return $this->iteratedOutput($topSalesTemplate, $productTemplate);
     }
 
     private function displayBlogArea() : string
@@ -55,10 +55,12 @@ class PhonesHomePage extends AbstractPhonesPage implements DisplayPagesInterface
         $bannerAreaTemplate = $this->getTemplate('bannerAreaPath');
         $imgTemplate = $this->getTemplate('bannerTemplatePath');
         $html = '';
-        if (isset($this->slider['image']) && is_array($this->slider['image'])) {
-            foreach ($this->slider['image'] as $image) {
-                $imgTemplate = str_replace('{{image}}', $image, $imgTemplate);
-                $imgTemplate = str_replace('{{image}}', $image, $imgTemplate);
+        if ($this->slider->count() === 1) {
+            $slider = $this->slider->pop();
+            $medias = unserialize($slider->media);
+            foreach ($medias as $image) {
+                $imgTemplate = str_replace('{{image}}', ImageManager::asset_img($image), $imgTemplate);
+                $imgTemplate = str_replace('{{title}}', $slider->slider_title, $imgTemplate);
                 $html .= $imgTemplate;
             }
         }
@@ -82,17 +84,9 @@ class PhonesHomePage extends AbstractPhonesPage implements DisplayPagesInterface
         return $bannerAddTemplate;
     }
 
-    private function displayTopSalesSetion() : string
-    {
-        $topSalesTemplate = $this->getTemplate('topSalesPath');
-        $productTemplate = $this->getTemplate('topSalesTemplatePath');
-        $productTemplate = str_replace('{{singleProductTemplate}}', $this->getTemplate('productTemplatePath'), $productTemplate);
-        return $this->iteratedOutput($topSalesTemplate, $productTemplate);
-    }
-
     private function displaySpecialPriceSection() : string
     {
-        $brandButton = $this->specialPriceButton();
+        $brandButton = $this->categoriesButton();
         $specialTemplate = $this->getTemplate('specialPricePath');
         $productTemplate = $this->getTemplate('specialPriceTemplate');
         $specialTemplate = str_replace('{{brandButton}}', !empty($brandButton) ? implode('', $brandButton) : '', $specialTemplate);
@@ -101,13 +95,13 @@ class PhonesHomePage extends AbstractPhonesPage implements DisplayPagesInterface
         return $this->iteratedOutput($specialTemplate, $productTemplate);
     }
 
-    private function specialPriceButton() :  array
+    private function categoriesButton() :  array
     {
         $brandButton = [];
-        if (isset($this->products) && $this->products != false) {
+        if ($this->products->count() > 0) {
             $brands = array_unique(array_map(function ($prod) {
                 return $prod->categorie;
-            }, $this->products));
+            }, $this->products->all()));
             sort($brands);
             if (isset($brands)) {
                 $brandButton = array_map(function ($brand) {
@@ -121,8 +115,8 @@ class PhonesHomePage extends AbstractPhonesPage implements DisplayPagesInterface
     private function iteratedOutput(string $template, string $productTemplate) : string
     {
         $html = '';
-        if (is_array($this->products) && count($this->products) > 0) {
-            shuffle($this->products);
+        if ($this->products->count() > 0) {
+            $this->products->shuffle();
             foreach ($this->products as $product) {
                 $html .= $this->outputProduct($productTemplate, $product);
             }

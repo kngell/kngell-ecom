@@ -170,4 +170,12 @@ class CartEntity extends Entity
         $this->updatedAt = $updatedAt;
         return $this;
     }
+
+    public function delete(?string $field = null) : self
+    {
+        if (isset($this->$field)) {
+            unset($this->$field);
+        }
+        return $this;
+    }
 }

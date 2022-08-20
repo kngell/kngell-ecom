@@ -19,7 +19,11 @@ class UserCartItemsForm extends ClientFormBuilder implements ClientFormBuilderIn
             'class' => ['font-size-14', 'font-rale'],
             'id' => 'shopping-cart',
         ]);
+        $dataRepository = $dataRepository->filter(function ($item) {
+            return $item->cart_type === 'cart';
+        });
         $this->template = str_replace('{{form_begin}}', $form->begin(), $this->template);
+        $this->template = str_replace('{{route}}', '/cart', $this->template);
         $this->template = str_replace('{{NumberOfItems}}', (string) $dataRepository->count(), $this->template);
         $this->template = str_replace('{{form_end}}', $form->end(), $this->template);
         return $this->template;

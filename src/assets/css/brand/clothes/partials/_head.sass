@@ -1,0 +1,16 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+.head-promotions
+    +background('img/back.jpg',top center)
+    width: 100%
+    height: 95vh
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: flex-start
+    .title
+        .second-title
+            .title-left
+                color: coral
+        button,button:focus
+            +button($dark-in,$gray-dark-in)

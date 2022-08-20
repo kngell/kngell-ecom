@@ -13,12 +13,12 @@ class CheckoutPaymentsController extends Controller
 
     public function pay(array $args = []) : void
     {
+        $data = $this->isValidRequest();
         $payment = $this->container(PaymentServicesFactory::class, [
             'params' => $this->isValidRequest(),
         ])->create()->customer()->createPayment()->confirmPayment();
         if ($payment->ok()) {
-            $this->dispatcher->dispatch(new PaymentEvent(object: $payment));
-            $this->jsonResponse(['result' => 'success', 'msg' => $payment]);
+            $this->dispatcher->dispatch(new PaymentEvent(object: $payment, name: '', params: [$this]));
         }
         $this->jsonResponse(['result' => 'error', 'msg' => 'Something goes wrong']);
     }

@@ -1,9 +1,5 @@
 import { Call_controller } from "corejs/form_crud";
-import bs_modal from "corejs/bootstrap_modal";
 class ChangeShippingMode {
-  constructor(element) {
-    this.element = element;
-  }
   _init = (variables) => {
     this.var = variables;
     return this;
@@ -56,4 +52,4 @@ class ChangeShippingMode {
     );
   };
 }
-export default new ChangeShippingMode($("#main-site"));
+export default new ChangeShippingMode();

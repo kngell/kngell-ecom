@@ -17,6 +17,7 @@ class CheckoutPage extends AbstractCheckout implements DisplayPagesInterface
             'progressBar' => $this->getTemplate('progressBarPath'),
             'checkoutForm' => $this->checkoutForm(),
             'modals' => implode('', $this->modals()),
+            'forms_elements' => implode('', $this->formsElements()),
         ];
     }
 
@@ -39,8 +40,6 @@ class CheckoutPage extends AbstractCheckout implements DisplayPagesInterface
         $template = str_replace('{{paiementInfos}}', (new PaiementInfos($this->params()))->display(), $template);
         $template = str_replace('{{creditCard}}', $this->creditcardModal(), $template);
         $template = str_replace('{{form_end}}', $this->frm->end(), $template);
-        $template = str_replace('{{formDiscount}}', $this->discountForm('discount-frm', '#', $this->frm), $template);
-
         return $template;
     }
 
@@ -54,7 +53,26 @@ class CheckoutPage extends AbstractCheckout implements DisplayPagesInterface
             $this->addAddressModal(),
             $this->changeEmailModal(),
             $this->changeShippingModeModal(),
+            // $this->popupMessagesModal(),
         ];
+    }
+
+    protected function formsElements() : array
+    {
+        $this->frm->globalClasses([
+            'wrapper' => [],
+        ]);
+        return [
+            $this->formElements('discount-frm', '#', $this->frm),
+            $this->formElements('manage_frm_Modifier', '#', $this->frm),
+            $this->formElements('manage_frm_Supprimer', '#', $this->frm),
+            $this->formElements('manage_frm_Selectionner', '#', $this->frm),
+        ];
+    }
+
+    protected function popupMessagesModal() : string
+    {
+        return $this->getTemplate('succesMsgModalPath');
     }
 
     protected function addressBookModal() : string

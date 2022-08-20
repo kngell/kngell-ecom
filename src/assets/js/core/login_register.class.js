@@ -2,7 +2,6 @@ import { Call_controller } from "corejs/form_crud";
 import input from "corejs/inputErrManager";
 import { readurl } from "corejs/profile_img";
 import { csrftoken, frm_name } from "corejs/config";
-// import modal from "corejs/bootstrap_modal";
 
 class Login_And_Register {
   constructor(element, header) {
@@ -64,7 +63,6 @@ class Login_And_Register {
         frm_name: phpLR.loginfrm.attr("id"),
       };
       Call_controller(data, (response) => {
-        console.log(response);
         if (response.result === "success") {
           phpLR.loginfrm.find("#email").val(response.msg.email);
           phpLR.loginfrm.find("#password").val(response.msg.password);
@@ -95,10 +93,11 @@ class Login_And_Register {
       $(this).parents(".input-box").children(".invalid-feedback").empty();
     });
     //Register form
+
     phpLR.regfrm.on("submit", function (e) {
       e.preventDefault();
       e.stopPropagation();
-      phpLR.regfrm.find("#register-btn").val("Please wait...");
+      phpLR.regfrm.find("#reg_singin").html("Please wait...");
       var inputData = {
         url: "ajaxRegister",
         frm: phpLR.regfrm,
@@ -107,19 +106,19 @@ class Login_And_Register {
         frm_name: $(this).attr("id"),
       };
       Call_controller(inputData, (response) => {
-        phpLR.regfrm.find("#register-btn").val("Enregistrer");
+        phpLR.regfrm.find("#reg_singin").html("Register");
         if (response.result == "success") {
+          console.log(response.msg);
           phpLR.regbox
             .find(".upload-profile-image .img")
             .attr("src", "/public\\assets\\img\\users/avatar.png");
           phpLR.regfrm.get(0).reset();
-          phpLR.regfrm.find("#regAlert").html(response.msg);
+          phpLR.regfrm.find(".alertErr").html(response.msg);
         } else {
           if (response.result == "error-field") {
-            console.log(response);
             input.error(phpLR.regfrm, response.msg);
           } else {
-            phpLR.regfrm.find("#regAlert").html(response.msg);
+            phpLR.regfrm.find("#alertErr").html(response.msg);
           }
         }
       });

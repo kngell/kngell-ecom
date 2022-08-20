@@ -19,10 +19,5 @@ module.exports = {
       import: ["js/components/todoList/todoList"],
       dependOn: "js/librairies/frontlib",
     },
-    //Phones Products Home sass
-    "js/brand/phones/home/home": {
-      import: ["js/brand/phones/home/index"],
-      dependOn: "js/librairies/frontlib",
-    },
   },
 };

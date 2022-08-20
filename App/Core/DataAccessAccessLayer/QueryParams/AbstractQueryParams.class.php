@@ -19,6 +19,14 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         return (isset($this->query_params['conditions']) && $this->query_params['conditions'] != []) ? true : false;
     }
 
+    public function reset() : self
+    {
+        $this->query_params = [];
+        $this->conditionBreak = [];
+        $this->braceOpen = '';
+        return $this;
+    }
+
     protected function separator(mixed $separator, mixed $key) : string
     {
         if (is_string($separator) && is_numeric($key) && in_array(strtoupper($separator), self::SEPARATOR)) {
@@ -130,9 +138,6 @@ abstract class AbstractQueryParams implements QueryParamsInterface
             $this->braceOpen = '';
             return ')';
         }
-        // if (!empty($this->braceOpen) && ((is_numeric($key) || in_array($separator, self::SEPARATOR)) || !empty($this->conditionBreak))) {
-
-        // }
         return '';
     }
 
@@ -148,7 +153,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         return $whereParams;
     }
 
-    protected function getJoinOptions(string|int $key, string $arg) : string
+    protected function getJoinOptions(string|int $key, string $arg, int $position, int $index) : void
     {
         $tbl = '';
         $field = '';
@@ -157,14 +162,11 @@ abstract class AbstractQueryParams implements QueryParamsInterface
             $tbl = $parts[1];
             $field = $parts[0];
         } elseif (is_numeric($key)) {
-            $tbl = $this->query_params['options']['table'][$key];
+            $tbl = $this->query_params['options']['table'][$index];
             $field = $arg;
         }
         if ($tbl != '' & $field != '') {
-            if (!array_key_exists($tbl, $this->query_params['options']['join_on'])) {
-                $this->query_params['options']['join_on'][$tbl] = [];
-            }
-            return $this->query_params['options']['join_on'][$tbl][] = $tbl . '.' . $field;
+            $this->query_params['options']['join_on'][$position][$key] = $tbl . '.' . $field;
         }
     }
 

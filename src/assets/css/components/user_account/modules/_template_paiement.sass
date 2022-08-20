@@ -1,0 +1,66 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+#main-site
+    .moyens-de-paiement
+        .accordion
+            .accordion-item
+                .accordion-header
+                    .accordion-button
+                        padding: 0 1.25rem
+                    .credit-card-entete
+                        width: 100%!important
+                        color: $dark-color
+                        font-size: .9rem
+                        font-weight: 500
+                        .cc-left-side
+                            display: flex
+                            flex-direction: row
+                            align-items: center
+                            .cc-ls-item
+                                margin-right: 1rem
+                            &:last-child
+                                margin-right: 0
+                            .cc-img
+                                font-size: 2rem
+                                color: $visa-color
+                        .cc-right-side
+                            display: flex
+                            flex-direction: row
+                            align-items: center
+                            height: 100%
+                            padding-left: .5rem
+                .accordion-body
+                    .cc-content-wrapper
+                        font-size: .9rem
+                        .cc-name-title
+                            font-size: 0.75rem
+                            font-weight: 600
+                        .cc-name-text
+                            font-size: 0.75rem
+                            text-transform: uppercase
+                        .cc-invoice-wrapper
+                            width: 100%
+                            display: flex
+                            flex-direction: column
+                            align-items: flex-start
+                            .cc-invoice-title
+                                font-weight: 600
+                            .cc-invoice-text
+                                padding-left: 0
+                                font-size: 0.75rem
+                    .cc-paiement-manage
+                        .cc-replace
+                            align-self: flex-end
+                            font-size: 0.9rem
+                            .cc-replace-link
+                                text-decoration: none
+                                font-style: italic
+                                transition: .3s
+                                &:hover
+                                    font-weight: 400
+                        .btn
+                            +btn-main(.3rem 1rem,5px,$gray-light,$dark-color,$gray-dark)
+                            +box-shadow(0px 2px 3px rgba($dark-light, 0.6))
+                            margin-right: .75rem
+                            &:last-child
+                                margin-right: 0

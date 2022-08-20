@@ -1,0 +1,57 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+#main-site
+    .wrapper
+        display: flex
+        margin: 2.5rem
+        .mini-profile-wrapper
+            flex: 1
+            .mini-profile
+                border-top: 3px solid $color-blue
+                .mini-profile-header
+                    position: relative
+                    height: 118.8px
+                    .mini-profile-cover-photo
+                        position: absolute
+                        top: 0
+                        left: 0
+                        width: 100%
+                        height: 100%
+                        border-radius: 8px
+                        +background("img/profile-cover.png")
+                        background-size: cover
+                        background-position: center center
+                        opacity: 0.2
+                    .mini-profile-author
+                        padding: 1rem 0 0 0
+                        .mini-profile-photo
+                            +box-definition(80px,80px,50%,$purple-color,null)
+                            img
+                                border-radius: 50%
+                        .mini-profile-name
+                            padding: 1rem 0 0 1rem
+                            .name
+                                font-size: 1.1rem
+                                margin-bottom: 0
+                            .email
+                                font-size: .9rem
+                .mini-profile-body
+                    .mini-profile-title
+                        .mini-profile-link
+                            text-decoration: none
+                            .title
+                                color: $dark-color
+                                font-size: 1.1rem
+                    .mini-profile-details
+                        font-size: .9rem
+                        .single-details-item
+                            display: flex
+                            justify-content: flex-start
+                            &__button
+                                display: flex
+                                vertical-align: middle
+                                text-decoration: none
+                                &:active
+                                    transform: scale(0.97)
+                                .details-title
+                                    margin-right: .75rem

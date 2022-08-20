@@ -6,13 +6,6 @@ use Throwable;
 
 class DataMapper extends AbstractDataMapper implements DataMapperInterface
 {
-    private PDOStatement $_query;
-
-    private int $_count = 0;
-    private $_results;
-    private $bind_arr = [];
-    private DatabaseConnexionInterface $_con;
-
     /**
      * Set Database connection
      * ===================================================================.
@@ -120,18 +113,6 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
     }
 
     /**
-     * Get numberof row
-     * ============================================================.
-     *@inheritDoc
-     */
-    public function numrow(): int
-    {
-        if ($this->_query) {
-            return $this->_count = $this->_query->rowCount();
-        }
-    }
-
-    /**
      * Execute
      * =============================================================.
      *@inheritDoc
@@ -158,30 +139,14 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
      * =======================================================================.
      *@inheritDoc
      */
-    public function results(array $options = []) : self
+    public function results(array $options = [], string $method = '') : self
     {
         if ($this->_query) {
-            $this->_results = $this->select_result($this->_query, $options);
+            $this->_results = match ($method) {
+                'read','showColumns' => $this->select_result($options),
+                'create','update','delete' => $this->c_u_d_result(),
+            };
             return $this;
-        }
-    }
-
-    /**
-     *  Get las insert ID
-     * ======================================================================.
-     *   *@inheritDoc
-     */
-    public function getLasID(): int
-    {
-        try {
-            if ($this->_con->open()) {
-                $lastID = $this->_con->open()->lastInsertId();
-                if (!empty($lastID)) {
-                    return intval($lastID);
-                }
-            }
-        } catch (Throwable $th) {
-            throw $th;
         }
     }
 
@@ -221,22 +186,6 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
         if ($this->_query) {
             return $this->_query->fetchColumn();
         }
-    }
-
-    public function count()
-    {
-        return $this->_count;
-    }
-
-    public function get_results()
-    {
-        return $this->_results;
-    }
-
-    public function set_results(mixed $results) : self
-    {
-        $this->_results = $results;
-        return $this;
     }
 
     public function cleanSql(string $sql)

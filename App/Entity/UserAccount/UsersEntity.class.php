@@ -18,7 +18,7 @@ class UsersEntity extends Entity
     /** @var DateTimeInterface */
     private DateTimeInterface $registerDate;
     /** @var DateTimeInterface */
-    private DateTimeInterface $updateAt;
+    private DateTimeInterface $updatedAt;
     /** @media */
     private string $profileImage;
     private string $salt;
@@ -156,9 +156,9 @@ class UsersEntity extends Entity
     /**
      * Get the value of updateAt.
      */
-    public function getUpdateAt() : DateTimeInterface
+    public function getUpdatedAt() : DateTimeInterface
     {
-        return $this->updateAt;
+        return $this->updatedAt;
     }
 
     /**
@@ -166,9 +166,9 @@ class UsersEntity extends Entity
      *
      * @return  self
      */
-    public function setUpdateAt(DateTimeInterface $updateAt) : self
+    public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
-        $this->updateAt = $updateAt;
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 

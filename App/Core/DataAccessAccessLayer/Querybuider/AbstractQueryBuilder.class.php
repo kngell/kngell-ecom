@@ -35,6 +35,19 @@ abstract class AbstractQueryBuilder
     /** @var string */
     protected string $sql = '';
 
+    public function baseQuery() : array
+    {
+        list($sql, $query) = match (true) {
+            array_key_exists('join_rules', $this->key['extras']) => $this->recursiveQuery($this->join($this->key['selectors'], $this->key['extras'])),
+            default => $this->recursiveQuery($this->mainQuery()),
+        };
+        $sql .= $this->where();
+        $sql .= $this->groupBy();
+        $sql .= $this->orderBy();
+        $sql .= $this->queryOffset();
+        return [$sql, $query];
+    }
+
     protected function isValidQueryType(string $type) : bool
     {
         if (in_array($type, self::QUERY_TYPES)) {
@@ -82,13 +95,13 @@ abstract class AbstractQueryBuilder
         }
         $all_tables = $options['table'];
         foreach ($options['join_rules'] as $index => $join_rule) {
-            $withParams = array_key_exists('params', $options['join_on'][$all_tables[$index + 1]]) ? true : false;
+            $withParams = array_key_exists('params', $options['join_on']) ? true : false; //[$all_tables[$index + 1]]
             $braceOpen = $withParams ? ' (' : '';
             $braceClose = $withParams ? ') ' : '';
             if (is_numeric($index)) {
                 $sql .= ' ' . $join_rule . ' ' . $all_tables[$index + 1];
-                $i = count($options['join_on'][$all_tables[$index]]) - 1;
-                $sql .= ' ON ' . $braceOpen . '(' . $options['join_on'][$all_tables[$index + 1]][0] . ' = ' . $options['join_on'][$all_tables[$index]][$i] . ')';
+                // $i = count($options['join_on'][$all_tables[$index]]) - 1;
+                $sql .= ' ON ' . $braceOpen . '(' . $options['join_on'][$index][0] . ' = ' . $options['join_on'][$index][1] . ')';
             }
         }
         if (array_key_exists('params', $options['join_on'])) {
@@ -116,6 +129,9 @@ abstract class AbstractQueryBuilder
 
     protected function recursiveQuery(string $query) : array
     {
+        if (array_key_exists('recursive_query', $this->key) && !empty($this->key['recursive_query'])) {
+            return [$query, $this->key['recursive_query']];
+        }
         $q = $query;
         $options = $this->key['extras'];
         $selectors = $this->key['selectors'];
@@ -196,22 +212,25 @@ abstract class AbstractQueryBuilder
         return $groupBy . '';
     }
 
-    protected function orderBy()
+    protected function orderBy() : string
     {
+        $sql = '';
         if (isset($this->key['extras']['orderby']) && $this->key['extras']['orderby'] != '') {
-            $this->sql .= is_array($this->key['extras']['orderby']) ? ' ORDER BY ' . implode(', ', $this->key['extras']['orderby']) . ' ' : ' ORDER BY ' . $this->key['extras']['orderby'];
+            $sql .= is_array($this->key['extras']['orderby']) ? ' ORDER BY ' . implode(', ', $this->key['extras']['orderby']) . ' ' : ' ORDER BY ' . $this->key['extras']['orderby'];
         }
+        return $sql;
     }
 
-    protected function queryOffset()
+    protected function queryOffset() : string
     {
-        // Append the limit and offset statement for adding pagination to the query
+        $sql = '';
         if (isset($this->key['params']['limit']) && isset($this->key['params']['offset']) && $this->key['params']['offset'] != -1) {
-            $this->sql .= ' LIMIT :offset, :limit';
+            $sql .= ' LIMIT :offset, :limit';
         }
         if (isset($this->key['params']['limit']) && !isset($this->key['params']['offset'])) {
-            $this->sql .= ' LIMIT :limit';
+            $sql .= ' LIMIT :limit';
         }
+        return $sql;
     }
 
     protected function isQueryTypeValid(string $type) : bool

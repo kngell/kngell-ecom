@@ -1,0 +1,19 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+.collection
+    +background('img/banner/2.jpg',top center)
+    width: 100%
+    height: 60vh
+    background-attachment: fixed
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: flex-start
+    .container
+        h4
+            color: $gray-in
+        h1
+            color: $white-smoke
+        button
+            +button($dark-in,$gray-dark-in)
+            background: $orange-in

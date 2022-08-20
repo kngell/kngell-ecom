@@ -30,7 +30,7 @@
                         <span><i class="fas fa fa-star"></i></span>
                         <span><i class="fas fa fa-star"></i></span>
                         <span><i class="fas fa fa-star"></i></span>
-                        <span><i class="far fa-star"></i></span>
+                        <span><i class="fa-solid fa-star-half-stroke"></i></span>
                     </div>
                     <a href="#" class="px-2 font-rale font-size-14 text-decoration-none">20534 Ratings | 1000+ answered
                         questions</a>

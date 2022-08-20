@@ -6,6 +6,8 @@ import _chk_addressModal from "./partials/_chk_addressModal";
 import _chk_shipping_modeChange from "./partials/_chk_shipping_modeChange";
 import variables from "./partials/_chk_init_variables";
 import { csrftoken, frm_name } from "corejs/config";
+import { popperOffsets } from "@popperjs/core";
+// import _chk_success_msg from "./partials/_chk_success_msg";
 // import _credit_card from "../credit_card/_card";
 class Checkout {
   constructor(element) {
@@ -31,18 +33,28 @@ class Checkout {
     /** Change Email */
     _chk_change_emailModal._init(variables)._changeEmail();
     /** Modify Addresses */
-    chg_addr._autoFillAddAddressModalInput();
-    chg_addr._add_deliveryAddress();
+    chg_addr._modifyAddress();
+    chg_addr._add_Address();
     chg_addr._changebillingAddress();
     chg_addr._save_changes();
-    chg_addr._address_navigation();
+    chg_addr._active_address();
     chg_addr._close_addressBookModal();
-    chg_addr._update_selectedAddress();
+    chg_addr._update_navigationAddress();
+    chg_addr._reset_modals();
+    chg_addr._delete_address();
     /** Chande Shipping Mode */
     _chk_shipping_modeChange._init(variables)._changeShipping();
 
     /** Chck Card holder */
     phpCkt.element.querySelector("#cc_holder").value = phpCkt.name;
+
+    variables.modalWrapper.on(
+      "click",
+      ".buttons-grps .close-btn",
+      function (e) {
+        window.location.reload();
+      }
+    );
     /**
      * reset Invalid Input
      */
@@ -53,6 +65,7 @@ class Checkout {
      * Init stripe JS
      * ========================================================================
      */
+
     const stripeApi = new StripeAPI({
       api_key: variables.chkWrapper.querySelector("#stripe_key").value,
       cardHolder: phpCkt.name,
@@ -63,6 +76,7 @@ class Checkout {
       cardError: phpCkt.cardError,
       baseClasses: "form-control custom-font",
     })._init();
+
     /** pay logic */
     phpCkt.form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -73,8 +87,23 @@ class Checkout {
           frm: $(this),
           paymentMethod: mod,
         };
+        phpCkt.cardButton.innerText = "Please wait...";
         Call_controller(data, (response) => {
-          console.log(response);
+          phpCkt.cardButton.innerText = "Pay";
+          if (response.result == "success") {
+            variables.bs_modals.then((modal) => {
+              modal["payment-box"].hide();
+              variables.modalWrapper.append(response.msg);
+              const sucess_popup = document.querySelector(".popup-modal");
+              const sucess_popup_btn_close = document.querySelector(
+                ".popup-modal .close-btn"
+              );
+              sucess_popup.classList.add("active");
+              sucess_popup_btn_close.addEventListener("click", () => {
+                sucess_popup.classList.remove("active");
+              });
+            });
+          }
         });
       });
     });
@@ -145,6 +174,7 @@ class Checkout {
               ? shModeName.parentNode.querySelector(".radio__text").innerText
               : "",
           addr: phpCkt._addr_url(idx),
+          addrType: phpCkt._addrType(idx),
         };
         const additionalData = {
           lastName: variables.contact.lastName.value,
@@ -171,6 +201,9 @@ class Checkout {
               variables.chkWrapper.querySelector(
                 ".shipping_method .price"
               ).innerHTML = response.msg.price;
+              variables.chkWrapper.querySelector(
+                ".modal-title .price"
+              ).innerHTML = response.msg.ttc;
               variables.chkWrapper
                 .querySelectorAll(".total")
                 .forEach((total) => {
@@ -258,12 +291,23 @@ class Checkout {
         if (elem.id === "checkout-billing-address-id-1") {
           return variables.chkWrapper.querySelector(
             ".card--active input[name=ab_id]"
-          )
-            ? variables.chkWrapper.querySelector(
-                ".card--active input[name=ab_id]"
-              ).value
-            : "";
+          ).value;
+        } else {
+          return variables.modalWrapper
+            .find("#modal-box-change-address .card--active input[name=ab_id]")
+            .val();
         }
+      }
+    };
+    phpCkt._addrType = (idx) => {
+      switch (idx) {
+        case 2:
+          return "billing";
+          break;
+
+        default:
+          return "delivery";
+          break;
       }
     };
     // phpCkt.pay.addEventListener("click", () => {

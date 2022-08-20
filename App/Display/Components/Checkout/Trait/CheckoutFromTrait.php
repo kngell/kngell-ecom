@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 trait CheckoutFromTrait
 {
-    protected function discountForm(string $id, string $action, FormBuilder $frm) : string
+    protected function formElements(string $id, string $action, FormBuilder $frm) : string
     {
         $frmHtml = '';
         $frm->form([
@@ -70,13 +70,17 @@ trait CheckoutFromTrait
         ];
     }
 
-    protected function AddAdressContent() : string
+    protected function AddAdressContent(string $delivery = 'N', string $billing = 'N') : string
     {
         $addAddress = $this->getTemplate('addAddressPath');
 
         $addAddress = str_replace('{{principale}}', $this->frm->input([
             HiddenType::class => ['name' => 'principale', 'class' => ['principale']],
-        ])->noLabel()->noWrapper()->id('principale')->value(1)->html(), $addAddress);
+        ])->noLabel()->noWrapper()->id('principale')->value($delivery)->html(), $addAddress);
+
+        $addAddress = str_replace('{{billing_addr}}', $this->frm->input([
+            HiddenType::class => ['name' => 'billing_addr', 'class' => ['billing_addr']],
+        ])->noLabel()->noWrapper()->id('billing_addr')->value($billing)->html(), $addAddress);
 
         $addAddress = str_replace('{{pays}}', $this->frm->input([
             SelectType::class => ['name' => 'pays', 'class' => ['input-box__select', 'select_country']],
@@ -106,9 +110,13 @@ trait CheckoutFromTrait
             TextAreaType::class => ['name' => 'u_comment', 'class' => ['input-box__textarea']],
         ])->Label('Commentaires, notes ...')->id('u_comment')->attr(['form' => 'user-ckeckout-frm'])->rows(2)->LabelClass(['input-box__label'])->placeholder(' ')->html(), $addAddress);
 
+        $addAddress = str_replace('{{useforBilling}}', $this->frm->input([
+            CheckBoxType::class => ['name' => 'use_for_billing'],
+        ])->Label('Utiliser cette address pour la facturation')->id('use_for_billing')->class(['checkbox__input'])->spanClass(['checkbox__box'])->LabelClass(['checkbox'])->wrapperClass(['mt-2'])->placeholder(' ')->html(), $addAddress);
+
         $addAddress = str_replace('{{save_for_later}}', $this->frm->input([
             CheckBoxType::class => ['name' => 'save_for_later'],
-        ])->Label('Sauvegarder ces informations pour la prochaine fois')->id('save-for-later')->class(['checkbox__input'])->spanClass(['checkbox__box'])->LabelClass(['checkbox'])->wrapperClass(['mt-2'])->req()->placeholder(' ')->html(), $addAddress);
+        ])->Label('Sauvegarder pour la prochaine fois')->id('save_for_later')->class(['checkbox__input'])->spanClass(['checkbox__box'])->LabelClass(['checkbox'])->wrapperClass(['mt-2'])->placeholder(' ')->html(), $addAddress);
 
         return $addAddress;
     }

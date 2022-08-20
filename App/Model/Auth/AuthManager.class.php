@@ -48,15 +48,17 @@ class AuthManager extends Model
         return false;
     }
 
-    public static function currentUser()
+    public static function currentUser() : self
     {
         $session = Container::getInstance()->make(SessionInterface::class);
         if ($session->exists(CURRENT_USER_SESSION_NAME)) {
             $id = $session->get(CURRENT_USER_SESSION_NAME)['id'];
             if (self::$currentLoggedInUser === null) {
-                self::$currentLoggedInUser = Container::getInstance()->make(self::class, [
+                /** @var AuhtManager */
+                $user = Container::getInstance()->make(self::class, [
                     'user' => (int) $id,
                 ]);
+                self::$currentLoggedInUser = $user->assign((array) $user);
             }
         }
         return self::$currentLoggedInUser;

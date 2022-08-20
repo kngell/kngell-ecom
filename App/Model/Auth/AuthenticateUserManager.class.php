@@ -70,7 +70,7 @@ class AuthenticateUserManager extends Model
         $rem_cookie = '';
         if ($remember_me != false) {
             if ($session->count() === 1) {
-                if (!( new ReflectionProperty($session->getEntity(), $session->getEntity()->getFields('rememberMeCookie')))->isInitialized($session->getEntity())) {
+                if (!$session->getEntity()->isInitialized('remember_me_cookie')) {
                     return $this->rememberCookie();
                 }
                 return $session->getEntity()->{'getRememberMeCookie'}();
@@ -85,7 +85,7 @@ class AuthenticateUserManager extends Model
         $rem_cookie = '';
         if (!$this->cookie->exists(REMEMBER_ME_COOKIE_NAME)) {
             $this->userSession->getQueryParams();
-            $rem_cookie = $this->userSession->getUniqueId('rememberMeCookie');
+            $rem_cookie = $this->userSession->getUniqueId('remember_me_cookie');
             $this->cookie->set($rem_cookie, REMEMBER_ME_COOKIE_NAME);
         } else {
             $rem_cookie = $this->cookie->get(REMEMBER_ME_COOKIE_NAME);
@@ -97,7 +97,7 @@ class AuthenticateUserManager extends Model
     {
         $sessionToken = '';
         if ($session->count() === 1) {
-            if (!( new ReflectionProperty($session->getEntity(), $session->getEntity()->getFields('sessionToken')))->isInitialized($session->getEntity())) {
+            if (!$session->getEntity()->isInitialized('session_token')) {
                 if (!$this->cookie->exists(TOKEN_NAME)) {
                     $session->getQueryParams();
                     $sessionToken = $session->getUniqueId('session_token');

@@ -14,5 +14,4 @@
    </div>
    {{creditCard}}
    {{form_end}}
-   {{formDiscount}}
 </div>

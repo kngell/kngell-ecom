@@ -1,0 +1,119 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+#main-site
+    .transaction-commandes
+        .accordion
+            &__button
+                display: block
+                width: 100%
+                padding: .5rem
+                border: none
+                border-radius: .5rem
+                outline: none
+                cursor: pointer
+                background: $white-variant
+                text-align: left
+                transition: background .2s
+                &::after
+                    content: '\25be'
+                    float: right
+                    transform: scale(1.5)
+                .title
+                    font-size: 0.8rem
+                    text-transform: uppercase
+                    font-weight: 500
+                .text
+                    font-size: .9rem
+                &--active
+                    background: $gray-light
+                    &::after
+                        content: '\25b4'
+                &--active + .accordion__content
+                    display: block
+                .right-side
+                    +dflex()
+                    .details
+                        a
+                            text-decoration: none
+                            .order-details, .invoice
+                                font-style: italic
+                                transition: .5s ease
+                                &:hover
+                                    font-size: 1rem
+                                    font-weight: 400
+                                    filter: brightness(150%)
+                                    font-style: normal
+                        ul
+                            margin-bottom: 0
+                        .separator
+                            color: $color-primary
+            &__content
+                // overflow: hidden
+                // max-height: 0
+                // transition: all .2s ease-in-out
+                display: none
+                overflow: auto
+                background: $white-bg
+                .delivery-infos,.delivery-actions
+                    margin-top: .6rem
+                    .card-title
+                        font-size: 1rem
+                        margin-bottom: 0
+                    .livraison-status
+                        font-size: .8rem
+                .delivery-actions,.item-management
+                    padding-right: 0
+                    .btn
+                        +btn-main(.1rem,3px,$gray-light,$dark-color,$gray-dark)
+                        border: 1px solid rgba($dark-light,.7)
+                        display: block
+                        outline: none
+                        font-size: .8rem
+                .item-infos
+                    margin-top: .5rem
+                    .item-img-wrapper
+                        width: 130px
+                        padding-right: 0
+                    .item-descr
+                        padding-left: 0
+                        position: relative
+                        .item-descr-title
+                            .item-title
+                                text-decoration: none
+                                color: $color-primary
+                                font-size: .8rem
+                                &:hover
+                                    filter: brightness(150%)
+                        .item-descr-text
+                            .text
+                                text-transform: uppercase
+                        .shop-button
+                            position: absolute
+                            bottom: 5px
+                            width: 100%
+                            .re-buy,.browse-article
+                                border: 1px solid rgba($dark-light,.7)
+                                width: 10rem
+                                font-size: .8rem
+                            .re-buy
+                                +btn-main(.3rem .5rem,3px,$color-yellow,$dark-color,$dark-yellow)
+                            .browse-article
+                                +btn-main(.3rem .5rem,3px,$gray-light,$dark-color,$gray-dark)
+
+                    .item-management
+                        display: flex
+                        justify-content: flex-end
+                        flex-direction: column
+                        &::before
+                            content: ""
+                        &::after
+                            content: ""
+                        .item-return
+                            width: 100%
+                            margin-bottom: .5rem
+                        .btn
+                            +btn-main(.1rem,3px,$gray-light,$dark-color,$gray-dark)
+                            border: 1px solid rgba($dark-light,.7)
+                            display: block
+                            outline: none
+                            font-size: .8rem

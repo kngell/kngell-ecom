@@ -8,7 +8,8 @@ class UserInfos extends AbstractFormSteps implements CheckoutFormStepInterface
 
     public function __construct(array $params = [])
     {
-        $this->properties($params);
+        parent::__construct($params);
+
         $this->frm->globalClasses([
             'wrapper' => [],
             'input' => ['input-box__input'],
@@ -38,6 +39,7 @@ class UserInfos extends AbstractFormSteps implements CheckoutFormStepInterface
             $temp = str_replace('{{title}}', $this->titleTemplate($this->title), $temp);
             $temp = str_replace('{{contactContent}}', $this->contactInfosformElements($obj), $temp);
             $temp = str_replace('{{discountCode}}', $this->discountCode(), $temp);
+            $temp = str_replace('{{display_style}}', !AuthManager::isUserLoggedIn() ? 'hide' : 'show', $temp);
             $temp = str_replace('{{deliveryAddressTitle}}', $this->deliveryAddressTitle(), $temp);
             $temp = str_replace('{{deliveryAddress}}', $this->deliveryAdress(), $temp);
             $temp = str_replace('{{buttons_group}}', $this->buttons(), $temp);
@@ -48,7 +50,7 @@ class UserInfos extends AbstractFormSteps implements CheckoutFormStepInterface
     private function deliveryAdress() : string
     {
         if (AuthManager::isUserLoggedIn()) {
-            list($htmlChk, $htmlModal, $text) = $this->addressBook->all();
+            list($htmlChk, $htmlModal, $text) = $this->addressBook->all('manage_frm');
             return $htmlChk;
         }
         return '';

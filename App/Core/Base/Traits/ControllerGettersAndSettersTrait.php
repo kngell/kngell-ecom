@@ -77,6 +77,104 @@ trait ControllerGettersAndSettersTrait
         return $this->view_instance->getPageTitle();
     }
 
+    /**
+     * Set the value of commentOutput.
+     *
+     * @return  self
+     */
+    public function setCommentsArg(mixed $commentOutput) : self
+    {
+        $this->customProperties['comments'] = $commentOutput;
+        return $this;
+    }
+
+    public function frontComponents(array $froncComponents = []) : self
+    {
+        $this->frontEndComponents = $froncComponents;
+        return $this;
+    }
+
+    /**
+     * Get the value of request.
+     */
+    public function getRequest() : RequestHandler
+    {
+        return $this->request;
+    }
+
+    /**
+     * Set the value of request.
+     *
+     * @return  self
+     */
+    public function setRequest(RequestHandler $request) : self
+    {
+        $this->request = $request;
+        return $this;
+    }
+
+    /**
+     * Get the value of response.
+     */
+    public function getResponse() : ResponseHandler
+    {
+        return $this->response;
+    }
+
+    /**
+     * Set the value of response.
+     *
+     * @return  self
+     */
+    public function setResponse(ResponseHandler $response) : self
+    {
+        $this->response = $response;
+        return $this;
+    }
+
+    /**
+     * Get the value of helper.
+     */
+    public function getHelper() : ControllerHelper
+    {
+        return $this->helper;
+    }
+
+    /**
+     * Set the value of helper.
+     *
+     * @return  self
+     */
+    public function setHelper(ControllerHelper $helper) : self
+    {
+        $this->helper = $helper;
+        return $this;
+    }
+
+    /**
+     * Get the value of url.
+     */
+    public function getUrl() : string
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set the value of url.
+     *
+     * @return  self
+     */
+    public function setUrl(string $url) : self
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    protected function reflectionInstance() : ReflectionClass
+    {
+        return CustomReflection::getInstance()->reflectionInstance($this::class);
+    }
+
     protected function getController() : string
     {
         return $this->controller;

@@ -26,9 +26,9 @@ class Repository extends AbstractRepository implements RepositoryInterface
      * Create new entrie
      * ====================================================================.
      * @param array $fields
-     * @return int
+     * @return DataMapperInterface
      */
-    public function create(array $fields = []) :int
+    public function create(array $fields = []) : DataMapperInterface
     {
         try {
             return $this->em->getCrud()->create($this->fields());
@@ -41,9 +41,9 @@ class Repository extends AbstractRepository implements RepositoryInterface
      * Delete from data base
      * ====================================================================.
      * @param array $conditions
-     * @return int|null
+     * @return DataMapperInterface|null
      */
-    public function delete(array $conditions = []) : int
+    public function delete(array $conditions = []) : DataMapperInterface
     {
         try {
             return $this->em->getCrud()->delete($conditions);
@@ -52,7 +52,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
         }
     }
 
-    public function update(array $conditions) : ?int
+    public function update(array $conditions) : ?DataMapperInterface
     {
         try {
             return $this->em->getCrud()->update($this->fields($conditions), $conditions);
@@ -206,49 +206,6 @@ class Repository extends AbstractRepository implements RepositoryInterface
     }
 
     /**
-     * Search with pagination
-     *====================================================================.
-     * @param array $arg
-     * @param object $request
-     * @return array
-     */
-    public function findWithSearchAndPagin(array $args, Object $request): array
-    {
-        list($conditions, $totalRecords) = $this->getCurrentQueryStatus($request, $args);
-        /** @var Sortable */
-        $sorting = new Sortable($args['sort_columns']);
-        /** @var Paginator */
-        $pagin = new Paginator($totalRecords, $args['records_per_page'], $request->query->getInt('page', 1));
-        $parameters = ['limit' => $args['records_per_page'], 'offset' => $pagin->getOffset()];
-        $optionnals = ['orderby' => $sorting->getColumn() . ' ' . $sorting->getDirection()];
-
-        if ($request->query->getAlnum($args['filter_alias'])) {
-            $searchRequest = $request->query->getAlnum($args['filter_alias']);
-            if (is_array($args['filter_by'])) {
-                for ($i = 0; $i < count($args['filter_by']); $i++) {
-                    $searchCond = [$args['filter_by'][$i] => $searchRequest];
-                }
-            }
-            $results = $this->findBySearch($args['filter_by'], $searchCond);
-        } else {
-            $queryCond = array_merge($args['additional_conditions'], $conditions);
-            $results = $this->findBy($args['selectors'], $queryCond, $parameters, $optionnals);
-        }
-
-        return [
-            $results->get_results(),
-            $pagin->getPage(),
-            $pagin->getTotalPages(),
-            $totalRecords,
-            $sorting->sortDirection(),
-            $sorting->sortDescAsc(),
-            $sorting->getClass(),
-            $sorting->getColumn(),
-            $sorting->getDirection(),
-        ];
-    }
-
-    /**
      * Find and retur self
      *====================================================================.
      * @param int $id
@@ -269,27 +226,13 @@ class Repository extends AbstractRepository implements RepositoryInterface
         }
     }
 
-    private function getCurrentQueryStatus(Object $request, array $args)
+    public function countRecords(array $conditions = [], ?string $fields = ''): int
     {
-        $totalRecords = 0;
-        $req = $request->query;
-        $status = $req->getAlnum($args['query']);
-        $searchResults = $req->getAlnum($args['filter_alias']);
-        if ($searchResults) {
-            for ($i = 0; $i < count($args['filter_by']); $i++) {
-                $conditions = [$args['filter_by'][$i] => $searchResults];
-                $totalRecords = $this->em->getCrud()->countRecords($conditions, $args['filter_by'][$i]);
-            }
-        } elseif ($status != '') {
-            $conditions = [$args['query'] => $status];
-            $totalRecords = $this->em->getCrud()->countRecords($conditions);
-        } else {
-            $conditions = [];
-            $totalRecords = $this->em->getCrud()->countRecords($conditions);
+        $this->isArray($conditions);
+        try {
+            return $this->em->getCrud()->countRecords($conditions);
+        } catch (\Throwable $th) {
+            throw $th;
         }
-        return [
-            $conditions,
-            $totalRecords,
-        ];
     }
 }

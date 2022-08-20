@@ -40,6 +40,7 @@ final class AppHelper
             'ListenerProviderInterface' => ListenerProvider::class,
             'TreeBuilderInterface' => TreeBuilder::class,
             'CollectionInterface' => Collection::class,
+            'ContainerInterface' => Container::class,
         ];
     }
 

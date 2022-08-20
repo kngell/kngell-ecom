@@ -138,6 +138,5 @@ class Home {
     });
   };
 }
-document.addEventListener("DOMContentLoaded", function () {
-  new Home($("#main-site"))._init();
-});
+
+export default new Home($("#main-site"))._init();

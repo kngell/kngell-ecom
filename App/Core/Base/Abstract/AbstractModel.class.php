@@ -20,6 +20,16 @@ abstract class AbstractModel
         return $this->getQueryParams()->table($tbl, $columns);
     }
 
+    // public function recursiveTable(?string $tbl = null, mixed $columns = null, ?string $recursive = 'table_join') : QueryParams
+    // {
+    //     return (new QueryParams($this->tableShema))->table($tbl, $columns, $recursive);
+    // }
+
+    public function tableRecursive(?string $tbl = null, mixed $columns = null) : QueryParams
+    {
+        return $this->getQueryParams()->table($tbl, $columns, 'table_recursive');
+    }
+
     public function getQueryParams() : QueryParams
     {
         return $this->queryParams;

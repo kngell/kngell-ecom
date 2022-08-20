@@ -4,6 +4,7 @@ class InitializeVariables {
     this.element = element;
   }
   _init = () => {
+    this.mainWrapper = this.element.find(".page-content");
     this.wrapper = this.element.find(".form-wrapper");
     this.modalWrapper = this.element.find("#extras-features");
     this.changeEmailBox = this.modalWrapper.find("#modal-box-email");
@@ -16,6 +17,7 @@ class InitializeVariables {
       "modal-box-email",
       "modal-box-shipping",
       "payment-box",
+      // "sucess_msg_modal",
     ])._init();
     this.changeShippoingBox = this.modalWrapper.find("#modal-box-shipping");
     this.changeShippingForm = this.modalWrapper.find("#shipping-select-frm");
@@ -26,7 +28,7 @@ class InitializeVariables {
     this.modifyAddressButton = this.modalWrapper.find(".modify");
     this.url_addr;
     this.delivery_addr;
-
+    this.addrType;
     this.frmJQ = this.element.find("#checkout-frm");
     this.form = document.querySelector("[data-multi-step]");
     this.prevBtns = document.querySelectorAll(".btn-prev");
@@ -44,6 +46,10 @@ class InitializeVariables {
       email: document.getElementById("chk-email"),
       user_id: document.getElementById("chk-user_id"),
     };
+    // this.sucess_popup = document.querySelector(".popup-modal");
+    // this.sucess_popup_btn_close = document.querySelector(
+    //   ".popup-modal .close-btn"
+    // );
     return this;
   };
 }

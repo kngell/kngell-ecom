@@ -67,26 +67,27 @@ abstract class AbstractCheckout
         ];
     }
 
-    protected function addressBookContent() : string
+    protected function addressBookContent(string $frmID = '') : string
     {
-        list($htmlChk, $htmlModal, $text) = $this->addressBook->setCustomer($this->customer)->all();
+        list($htmlChk, $htmlModal, $text) = $this->addressBook->setCustomer($this->customer)->all($frmID);
         return $htmlModal;
     }
 
     protected function userCheckoutSesstion() : void
     {
         if (AuthManager::isUserLoggedIn()) {
-            /** @var CustomerEntity */
-            $en = $this->customer->getEntity();
+
+            /** @var SessionInterface */
             $session = Container::getInstance()->make(SessionInterface::class);
-            if (!$session->exists(CHECKOUT_PROCESS_NAME)) {
-                $en->setBillTo($this->getCustomerAddress($en, 'bill'));
-                $en->setShipTo($this->getCustomerAddress($en, 'ship'));
-                $en->setShippingMethod($this->shippingMethod($this->shippingClass));
-                $en->setCartSummary($this->sessionCart($this->cartSummary));
-                $en->setPromo('');
-                $session->set(CHECKOUT_PROCESS_NAME, serialize($en));
-            }
+
+            /** @var CustomerEntity */
+            $en = !$session->exists(CHECKOUT_PROCESS_NAME) ? $this->customer->getEntity() : unserialize($session->get(CHECKOUT_PROCESS_NAME));
+            $en->setBillTo($this->getCustomerAddress($en, 'bill'));
+            $en->setShipTo($this->getCustomerAddress($en, 'ship'));
+            $en->setShippingMethod($this->shippingMethod($this->shippingClass));
+            $en->setCartSummary($this->sessionCart($this->cartSummary));
+            $en->setPromo('');
+            $session->set(CHECKOUT_PROCESS_NAME, serialize($en));
         }
     }
 
@@ -98,11 +99,11 @@ abstract class AbstractCheckout
             $customerAddress = $addresses->filter(function ($addr) use ($type) {
                 if ($type != null) {
                     if ($type == 'ship') {
-                        $addr->principale == 1 ? $addr->billing_addr = 'on' : '';
-                        return $addr->principale == 1;
+                        $addr->principale == 'Y' ? $addr->billing_addr = 'Y' : '';
+                        return $addr->principale == 'Y';
                     }
                     if ($type == 'bill') {
-                        return $addr->billing_addr == 'on';
+                        return $addr->billing_addr == 'Y';
                     }
                 } else {
                     throw new BaseException('Addresse type not spécified!');

@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 class PaiementInfos extends AbstractFormSteps implements CheckoutFormStepInterface
 {
-    protected ?CollectionInterface $pmtMode;
-    protected ?CollectionInterface $shippingClass;
     private string $title = 'Paiement Informations';
     private string $btnNextText = 'Place Order';
 
     public function __construct(array $params = [])
     {
-        $this->properties($params);
+        parent::__construct($params);
     }
 
     public function display() : string

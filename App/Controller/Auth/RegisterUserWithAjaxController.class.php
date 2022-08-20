@@ -13,10 +13,18 @@ class RegisterUserWithAjaxController extends Controller
             'password' => 'reg_password',
         ]);
         $model = $this->uploadFiles($model);
-        if ($model->validationPasses()) {
-            $model->setLastID($model->register()->count());
-            $this->dispatcher->dispatch(new RegistrationEvent($model->getEntity()));
-            $this->jsonResponse(['result' => 'success', 'msg' => '']);
-        }
+        $model->setLastID($model->register()->count());
+        $this->dispatcher->dispatch(new RegistrationEvent($model->getEntity(), null, $this->params()));
+        $this->jsonResponse(['result' => 'success', 'msg' => $this->helper->showMessage('success', 'Bienvenu!<br>Vous pouvez vous connecter!')]);
+    }
+
+    private function params() : array
+    {
+        /** @var EmailConfigurationEnv */
+        $emailConfig = $this->container(EmailConfigurationEnv::class);
+        $emailConfig->setSubject('Email Vérification.');
+        $emailConfig->setFrom('contact@kngell.com', 'K\'ngell Ingénierie Logistique');
+        $emailConfig->setEmailClass(WelcomeEmail::class);
+        return [$emailConfig];
     }
 }

@@ -39,6 +39,52 @@ abstract class AbstractEntity
         return CustomReflection::getInstance()->reflectionInstance($this::class);
     }
 
+    protected function assingParams(array $attrs, array $params) : self
+    {
+        foreach ($params as $field => $value) {
+            $field = $this->regenerateField($field);
+            if (is_string($field) && in_array($field, $attrs)) {
+                $this->updateEntity($field, $value);
+            }
+        }
+        return $this;
+    }
+
+    protected function assingEntity(array $attrs, array $params) :  self
+    {
+        foreach ($attrs as $attr) {
+            $attr = $this->getOriginalField($attr);
+            if (array_key_exists($attr, $params) && $params[$attr] !== null) {
+                $value = $params[$attr];
+                $attr = $this->regenerateField($attr);
+                $this->updateEntity($attr, $value);
+            }
+        }
+        return $this;
+    }
+
+    private function updateEntity(string $field, mixed $value)
+    {
+        $method = $this->getSetter($field);
+        if (method_exists($this, $method)) {
+            $type = $this->reflectionInstance()->getProperty($field)->getType()->getName();
+            $result = match ($type) {
+                'DateTimeInterface' => $this->$method($this->dateTimeFormat($field, $value)),
+                'string' => is_array($value) ? $this->$method((string) $value[0]) : $this->$method((string) $value),
+                'int' => $this->$method((int) $value),
+                default => $this->$method($value)
+            };
+        }
+    }
+
+    private function dateTimeFormat(string $field, mixed $value) : DateTimeInterface
+    {
+        if (is_string($value)) {
+            return new DateTime($value);
+        }
+        return $value;
+    }
+
     private function CamelCaseToSeparator($value, $separator = ' ')
     {
         if (!is_scalar($value) && !is_array($value)) {

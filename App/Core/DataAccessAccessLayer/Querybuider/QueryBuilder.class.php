@@ -45,14 +45,7 @@ class QueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
     public function select():string
     {
         if ($this->isValidQueryType('select')) {
-            list($this->sql, $query) = match (true) {
-                array_key_exists('join_rules', $this->key['extras']) => $this->recursiveQuery($this->join($this->key['selectors'], $this->key['extras'])),
-                default => $this->recursiveQuery($this->mainQuery()),
-            };
-            $this->sql .= $this->where();
-            $this->sql .= $this->groupBy();
-            $this->sql .= $this->orderBy();
-            $this->sql .= $this->queryOffset();
+            list($this->sql, $query) = $this->baseQuery();
             if (array_key_exists('recursive', $this->key['extras'])) {
                 $this->sql = $this->recursive($query, $this->sql);
             }

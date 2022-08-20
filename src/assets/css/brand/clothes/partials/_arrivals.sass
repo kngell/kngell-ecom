@@ -1,0 +1,55 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+.new-arrivals
+    .arrival-item
+        position: relative
+        img
+            width: 100%
+            height: 100%
+            object-fit: cover
+            object-position: center center
+        &__details
+            position: absolute
+            width: 100%
+            height: 100%
+            top: 0
+            left: 0
+            transition: .3s ease
+        button
+            display: inline-block
+            font-size: 14px
+            font-weight: 500
+            color: $marron-color
+            text-transform: uppercase
+            border-bottom: 1px solid $marron-color
+            padding: 2.5px
+            transform: translateY(70px)
+            transition: .3s ease
+            &:hover
+                color: $white-smoke
+                border-bottom: 1px solid $white-smoke
+        &:hover
+            .arrival-item__details
+                cursor: pointer
+                background-color: rgba($white-green,.6)
+        &:nth-child(1)
+            .arrival-item__details
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: flex-start
+                text-align: start
+        &:nth-child(2)
+            .arrival-item__details
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: center
+                text-align: center
+        &:nth-child(3)
+            .arrival-item__details
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: flex-end
+                text-align: end

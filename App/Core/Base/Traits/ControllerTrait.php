@@ -5,23 +5,6 @@ declare(strict_types=1);
 trait ControllerTrait
 {
     /**
-     * Set the value of commentOutput.
-     *
-     * @return  self
-     */
-    public function setCommentsArg(mixed $commentOutput) : self
-    {
-        $this->customProperties['comments'] = $commentOutput;
-        return $this;
-    }
-
-    public function frontComponents(array $froncComponents = []) : self
-    {
-        $this->frontEndComponents = $froncComponents;
-        return $this;
-    }
-
-    /**
      * Get the value of commentOutput.
      */
     public function outputComments() : array
@@ -29,14 +12,6 @@ trait ControllerTrait
         return array_filter($this->customProperties, function ($prop) {
             return in_array($prop, ['comments']);
         }, ARRAY_FILTER_USE_KEY);
-    }
-
-    public function getSettings() : object
-    {
-        if (!$this->cache->exists('settings')) {
-            $this->cache->set('settings', $this->container(SettingsManager::class)->getSettings());
-        }
-        return $this->cache->get('settings');
     }
 
     public function container(?string $class = null, array $args = []) : object
@@ -47,21 +22,19 @@ trait ControllerTrait
         return Application::getInstance();
     }
 
-    public function userCart()
+    public function selectItem(CartManager|int $m) : CollectionInterface
     {
-        if (!$this->cache->exists($this->cachedFiles['user_cart'])) {
-            $this->cache->set($this->cachedFiles['user_cart'], $this->model(CartManager::class)->getUserCart());
-        }
-        return $this->cache->get($this->cachedFiles['user_cart']);
-    }
-
-    public function displayUserCart() : array
-    {
-        return  $this->container(DisplayUserCart::class, [
-            'userCart' => function () {
-                return $this->userCart();
-            },
-        ])->displayAll();
+        /** @var CollectionInterface */
+        $shopping_cart = $this->getUserCart();
+        $shopping_cart = $shopping_cart->filter(function ($sc) use ($m) {
+            if (is_int($m)) {
+                return $sc->item_id === $m;
+            }
+            /** @var CartEntity */
+            $en = $m->getEntity();
+            return $sc->item_id === $en->getItemId();
+        });
+        return $shopping_cart;
     }
 
     protected function isIncommingDataValid(object $m, string $ruleMethod, array $newKeys = []) : void
@@ -82,7 +55,8 @@ trait ControllerTrait
                 $paths[] = $uploader->upload($m);
             }
         }
-        $m->getEntity()->{'set' . ucfirst($m->getEntity()->getFieldWithDoc('media'))}(serialize($paths));
+        $setter = $m->getEntity()->getSetter($m->getEntity()->getColId('media'));
+        $m->getEntity()->{$setter}(serialize($paths));
         return $m;
     }
 
@@ -120,38 +94,5 @@ trait ControllerTrait
                 }
             }
         }
-    }
-
-    protected function getUserCart(?CartManager $m = null) : CollectionInterface
-    {
-        $model = $m == null ? $this->model(CartManager::class) : $m;
-        if (!$this->cache->exists($this->cachedFiles['user_cart'])) {
-            $this->cache->set($this->cachedFiles['user_cart'], $model->getUserCart());
-        }
-        return $this->cache->get($this->cachedFiles['user_cart']);
-    }
-
-    protected function getShippingClass(?ShippingClassManager $m = null) : CollectionInterface
-    {
-        $model = $m == null ? $this->model(ShippingClassManager::class) : $m;
-        if (!$this->cache->exists($this->cachedFiles['shipping_class'])) {
-            $this->cache->set($this->cachedFiles['shipping_class'], $model->getShippingClass());
-        }
-        return $this->cache->get($this->cachedFiles['shipping_class']);
-    }
-
-    protected function checkoutPage() : array
-    {
-        return $this->container(CheckoutPage::class, [
-            'userCart' => $this->getUserCart(),
-            'shippingClass' => $this->getShippingClass(),
-            'pmtMode' => function () {
-                if (!$this->cache->exists($this->cachedFiles['paiement_mode'])) {
-                    $this->cache->set($this->cachedFiles['paiement_mode'], $this->model(PaymentModeManager::class)->all());
-                }
-                return $this->cache->get($this->cachedFiles['paiement_mode']);
-            },
-            'customer' => $this->container(Customer::class)->get(),
-        ])->displayAll();
     }
 }

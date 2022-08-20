@@ -1,4 +1,3 @@
-import owlCarousel from "owl.carousel";
 import favicon from "img/favicon.ico";
 import card from "img/visa.png";
 import logo2 from "img/logo2.png";
@@ -7,6 +6,9 @@ import "select2";
 // import _credit_card from "../../components/credit_card/_card";
 import user_cart from "corejs/user_cart";
 import { BASE_URL, HOST } from "corejs/config";
+import cart_manager from "./partials/_cart_manager";
+import owl_carousel from "./partials/_owl_carousel";
+import user_account from "js/components/user_account/user_account";
 
 class Main {
   constructor(element) {
@@ -22,27 +24,22 @@ class Main {
   };
   _setupEvents = () => {
     var phpPlugin = this;
+    /** Cart Manager */
+    cart_manager._init();
+    /** Owl_Carousel */
+    owl_carousel._init();
+    /** User Account */
+    user_account._init();
 
-    // _credit_card._init();
     document.querySelector("link[type='image/ico']").href = favicon;
-    /**
-     * Currency Management
-     * =======================================================================
-     */
-    //  const operation = new OP();
-    //  operation._format_money({
-    //    wrapper: phpPlugin.wrapper,
-    //    fields: [".price .product_regular_price"],
-    //  });
     /**
      * Add to Cart
      * ========================================================================
      */
     phpPlugin.wrapper.on("submit", ".add_to_cart_frm", function (e) {
       e.preventDefault();
-      console.log("submit");
       var data = {
-        url: "userCart/add",
+        url: "user_cart/add",
         frm: $(this),
         frm_name: "add_to_cart_frm" + $(this).find("input[name=item_id]").val(),
         method: "addUserItem",
@@ -51,14 +48,10 @@ class Main {
       Call_controller(data, ManageR);
       function ManageR(response, button) {
         if (response.result == "success") {
-          console.log(response);
           if (document.location.pathname != BASE_URL + "cart") {
-            phpPlugin.header.find(".cart_nb_elt").html(function () {
-              return (
-                response.msg.nbItems +
-                parseInt(phpPlugin.header.find(".cart_nb_elt").html())
-              );
-            });
+            phpPlugin.header
+              .find("#shopping-cart")
+              .replaceWith(response.msg.cartItems);
           }
           if (response.msg.nbItems == 1) {
             button

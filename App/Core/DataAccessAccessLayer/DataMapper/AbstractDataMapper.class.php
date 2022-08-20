@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 abstract class AbstractDataMapper
 {
+    use DataMapperGetSetTrait;
+
+    protected DatabaseConnexionInterface $_con;
+    protected PDOStatement $_query;
+    protected $bind_arr = [];
+    protected int $_lastID;
+    protected int $_count = 0;
+    protected $_results;
+
     public function isEmpty(mixed $value, ?string $errorMsg = null) : bool
     {
         if (empty($value)) {
@@ -44,14 +53,13 @@ abstract class AbstractDataMapper
     /**
      * Select Results
      * ===============================================================.
-     * @param [type] $q
      * @param array $data
      * @return mixed
      */
-    protected function select_result($q, array $data) : mixed
+    protected function select_result(array $data = []) : mixed
     {
         $type = $this->returnMode($data);
-        $q = $this->fetchMode($type, $q, $data);
+        $q = $this->fetchMode($type, $this->_query, $data);
         $check = array_key_exists('return_type', $data) ? $data['return_type'] : 'all';
         return match ($check) {
             'count' => $q->rowCount(),
@@ -59,6 +67,12 @@ abstract class AbstractDataMapper
             'first' => current($q->fetchAll()),
             default => $q->fetchAll()
         };
+    }
+
+    protected function c_u_d_result() : mixed
+    {
+        $this->setLastID();
+        return $this->numrow();
     }
 
     private function fetchMode(int $type, PDOStatement $q, array $data) : PDOStatement

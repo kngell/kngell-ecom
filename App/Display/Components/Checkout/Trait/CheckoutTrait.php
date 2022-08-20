@@ -4,17 +4,6 @@ declare(strict_types=1);
 
 trait CheckoutTrait
 {
-    protected function properties(array $params = []) : void
-    {
-        if (!empty($params)) {
-            foreach ($params as $key => $param) {
-                if (property_exists($this, $key)) {
-                    $this->{$key} = $param;
-                }
-            }
-        }
-    }
-
     protected function getShippingClassObj(CollectionInterface $shClass) : ?object
     {
         if ($shClass->count() > 0) {
@@ -44,10 +33,11 @@ trait CheckoutTrait
     protected function sessionCart() : CollectionInterface
     {
         $cartSummary = new Collection([]);
-        $cartSummary->offsetSet('cart_items', $this->cartSummary->getCartItems());
+        $cartSummary->offsetSet('user_items', $this->cartSummary->getUserItems());
         $cartSummary->offsetSet('totalHT', $this->cartSummary->getHT());
         $cartSummary->offsetSet('totalTTC', $this->cartSummary->getTTC());
         $cartSummary->offsetSet('finalTaxes', $this->cartSummary->getFinalTaxes());
+        $cartSummary->offsetSet('totalItem', $this->cartSummary->getTotalItem());
         return $cartSummary;
     }
 }

@@ -21,7 +21,9 @@ trait ModelGetterAndSetterTrait
     }
 
     /**
-     * Get the value of entity.
+     * Undocumented function.
+     *
+     * @return Entity
      */
     public function getEntity() : Entity
     {
@@ -178,6 +180,24 @@ trait ModelGetterAndSetterTrait
     public function setTableSchema(string $tableSchema) : self
     {
         $this->tableSchema = $tableSchema;
+        return $this;
+    }
+
+    /**
+     * Get the value of _colIndex.
+     */
+    public function getColIndex()
+    {
+        return $this->_colIndex;
+    }
+
+    /**
+     * Set the value of _colIndex.
+     */
+    public function setColIndex($_colIndex): self
+    {
+        $this->_colIndex = $_colIndex;
+
         return $this;
     }
 }

@@ -6,7 +6,7 @@ class RegisterUserToNewsLetterListener implements ListenerInterface
 {
     public function handle(EventsInterface $event) : iterable
     {
-        echo 'RegisterTo newLetter' . PHP_EOL;
+        // echo 'RegisterTo newLetter' . PHP_EOL;
         return ['RegisterTo newLetter'];
     }
 }

@@ -1,0 +1,35 @@
+@use 'corecss/abstract/variables' as *
+@use 'corecss/abstract/mixins' as *
+.products-features
+    .features-title
+        .horizontal-line
+            +horizontal-line($orange-in)
+    .row.products-group
+        display: grid
+        grid-template-columns: repeat(auto-fit,minmax(200px,1fr))
+        justify-content: center
+        .products-item
+            cursor: pointer
+            margin-bottom: 2rem
+            width: 100%
+            img
+                transition: .3s all
+                object-fit: cover
+                width: 80%
+            &:hover
+                img
+                    opacity: .7
+                .buy-btn
+                    transform: translateY(0)
+                    opacity: 1
+            .buy-btn
+                +button($dark-in,$gray-dark-in)
+                background: $orange-in
+                transform: translateY(20px)
+                opacity: 0
+                transition: .3s all
+            .star
+                padding: 10px 0
+                i
+                    font-size: .8rem
+                    color: goldenrod

@@ -101,6 +101,20 @@ class ResponseHandler extends GlobalVariables
         return !empty($str) ? htmlspecialchars_decode(html_entity_decode($str), ENT_QUOTES) : '';
     }
 
+    public function htmlDecodeArray(array $array = []) : array
+    {
+        $r = [];
+        if (!empty($array)) {
+            foreach ($array as $key => $value) {
+                if (is_string($value)) {
+                    $value = $this->htmlDecode($value);
+                }
+                $r[$key] = $value;
+            }
+        }
+        return empty($r) ? $array : $r;
+    }
+
     /**
      * Rename keys
      * ==================================================================================.

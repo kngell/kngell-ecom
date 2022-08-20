@@ -4,5 +4,5 @@ declare(strict_types=1);
 
 interface DisplayPagesInterface
 {
-    public function displayAll(): array;
+    public function displayAll(): mixed;
 }
