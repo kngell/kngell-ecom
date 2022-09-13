@@ -95,6 +95,7 @@ class InputType extends AbstractAttr implements FormBuilderTypeInterface
             'require' => false,
             'model_data' => false,
         ];
+
         return !empty($this->settings) ? array_merge($defaults, $this->settings) : $defaults;
     }
 
@@ -113,29 +114,29 @@ class InputType extends AbstractAttr implements FormBuilderTypeInterface
         switch ($this->getType()) :
             case 'radio':
                 return sprintf('%s', $this->filtering());
-        break;
-        case 'checkbox':
+                break;
+            case 'checkbox':
                 return sprintf("\n<input %s>&nbsp;%s\n", $this->filtering(), (isset($this->settings['template']) && $this->settings['template'] == false ? $this->settings['checkbox_label'] : ''));
-        break;
-        case 'select':
-            sprintf('<select %s>%s</select>', $this->filtering(), $this->renderSelectOptions($this->options, $modelData));
-        break;
-        case 'multiple_checkbox':
+                break;
+            case 'select':
+                sprintf('<select %s>%s</select>', $this->filtering(), $this->renderSelectOptions($this->options, $modelData));
+                break;
+            case 'multiple_checkbox':
                 if (
                     isset($this->options) &&
                     is_array($this->options) &&
                     count($this->options) > 0) {
                     foreach ($this->options['choices'] as $key => $option) {
-                        return '<input type="checkbox" class="uk-checkbox" name="visibility[]" id="' . $key . '" value="' . $key . '">&nbsp;' . Stringify::capitalize($key);
+                        return '<input type="checkbox" class="uk-checkbox" name="visibility[]" id="' . $key . '" value="' . $key . '">&nbsp;' . StringUtil::capitalize($key);
                     }
                 }
-        break;
-        case 'submit':
+                break;
+            case 'submit':
                 return sprintf('<button type="%s" title="%s" class="%s" id="%s" %s>%s</button>', $this->attr['type'] ?? '', $this->attr['title'] ?? '', implode(' ', $this->attr['class']) ?? '', $this->attr['id'] ?? '', $this->attr['custom_attr'] ?? '', $label);
-        break;
-        default:
+                break;
+            default:
                 return sprintf("\n<input %s>\n", $this->filtering());
-        break;
+                break;
         endswitch;
     }
 }

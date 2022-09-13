@@ -10,11 +10,14 @@ class DisplayCustomerAddressListener implements ListenerInterface
         /** @var CustomerEntity */
         $customerEntity = unserialize($controller->getSession()->get(CHECKOUT_PROCESS_NAME));
         $get = $this->getAddressBookMethod($event, $customerEntity);
-        list($html_chk, $html, $text) = $controller->container(AddressBookPage::class)->$get('manage_frm');
+        list($html_chk, $html, $text) = $controller->container(AddressBookPage::class, [
+            'customerEntity' => $customerEntity,
+        ])->$get('manage_frm');
         $messageToDisplay = $this->messageToDisplay($event, $html_chk, $html, $text, $get);
         $customerEntity->setShipTo($text);
         $controller->getSession()->set(CHECKOUT_PROCESS_NAME, serialize($customerEntity));
         $controller->jsonResponse(['result' => 'success', 'msg' => $messageToDisplay]);
+
         return [];
     }
 
@@ -43,6 +46,7 @@ class DisplayCustomerAddressListener implements ListenerInterface
                 $aryMessage[$data['addr']] = $text;
             }
         }
+
         return $aryMessage;
         // return match ($event->getName()) {
         //     'CustomerAddressChangeEent' => [$data['addr'] => $html],
@@ -71,6 +75,7 @@ class DisplayCustomerAddressListener implements ListenerInterface
                 $aryMessage[$data['addr']] = $text;
             }
         }
+
         return $aryMessage;
     }
 
@@ -84,6 +89,7 @@ class DisplayCustomerAddressListener implements ListenerInterface
         } else {
             $get = 'all';
         }
+
         return $get;
     }
 }

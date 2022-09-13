@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 class Navigation extends AbstractNavigation implements DisplayPagesInterface
 {
-    public function __construct(NavigationPath $paths, ?object $settings = null, ?DisplaySearchBox $searchBox = null, ?array $cartItem = [], ?View $view = null)
+    public function __construct(NavigationPath $paths, ?CollectionInterface $settings = null, ?DisplaySearchBox $searchBox = null, ?array $cartItem = [], ?View $view = null)
     {
         parent::__construct($paths, $settings, $searchBox, $cartItem, $view);
     }
@@ -26,6 +26,7 @@ class Navigation extends AbstractNavigation implements DisplayPagesInterface
             $template = str_replace('{{navbar-brand}}', $this->navBrand(), $template);
             $template = str_replace('{{menu}}', $this->menu(), $template);
         }
+
         return $template;
     }
 }

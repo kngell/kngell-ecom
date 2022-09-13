@@ -34,6 +34,7 @@ class DataMapperFactory
         if (!$dataMapperObject instanceof DataMapperInterface) {
             throw new DataMapperExceptions(DataMapperInterface::class . ' is not a valid database connexion Object!');
         }
+
         return $dataMapperObject;
     }
 }

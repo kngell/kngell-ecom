@@ -34,6 +34,7 @@ class ClientFormBuilder extends FormBuilder
         if (!$this->repositoryObject) {
             throw new FormBuilderInvalidArgumentException($this->repositoryObject::class . ' repository has returned null. Repository is only valid if your editing existing data.');
         }
+
         return true;
     }
 
@@ -52,6 +53,7 @@ class ClientFormBuilder extends FormBuilder
     public function setRepo(RepositoryInterface $repository) : self
     {
         $this->repositoryObject = $repository;
+
         return $this;
     }
 
@@ -66,6 +68,7 @@ class ClientFormBuilder extends FormBuilder
         if ($data != null) {
             return (array) $data;
         }
+
         return false;
     }
 }

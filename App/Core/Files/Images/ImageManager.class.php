@@ -37,6 +37,7 @@ class ImageManager implements FilesManagerInterface
         if ($this->imgInfos[0] > '1840' && $this->imgInfos[1] > '860') {
             throw new FileWidthAndHeightException('Invalid width and height! Please change your file.');
         }
+
         return true;
     }
 
@@ -154,18 +155,18 @@ class ImageManager implements FilesManagerInterface
         }
         if (isset($this->infos) && !file_exists($this->destinationPath . DS . $this->img_name)) {
             switch ($this->infos['mime']) {
-            case 'image/png':
-                return imagepng($newImg, $this->destinationPath . DS . $this->img_name);
-                break;
-            case 'image/jpeg':
-                return imagejpeg($newImg, $this->destinationPath . DS . $this->img_name);
-                break;
-            case 'image/gif':
-                return imagegif($newImg, $this->destinationPath . DS . $this->img_name);
-                break;
-            default:
-                return false;
-                break;
+                case 'image/png':
+                    return imagepng($newImg, $this->destinationPath . DS . $this->img_name);
+                    break;
+                case 'image/jpeg':
+                    return imagejpeg($newImg, $this->destinationPath . DS . $this->img_name);
+                    break;
+                case 'image/gif':
+                    return imagegif($newImg, $this->destinationPath . DS . $this->img_name);
+                    break;
+                default:
+                    return false;
+                    break;
             }
         }
     }
@@ -197,18 +198,18 @@ class ImageManager implements FilesManagerInterface
     {
         if (isset($this->infos)) {
             switch ($this->infos['mime']) {
-            case 'image/png':
-                return imagecreatefrompng($this->img);
-                break;
-            case 'image/jpeg':
-                return imagecreatefromjpeg($this->img);
-                break;
-            case 'image/gif':
-                return imagecreatefromgif($this->img);
-                break;
-            default:
-                return false;
-                break;
+                case 'image/png':
+                    return imagecreatefrompng($this->img);
+                    break;
+                case 'image/jpeg':
+                    return imagecreatefromjpeg($this->img);
+                    break;
+                case 'image/gif':
+                    return imagecreatefromgif($this->img);
+                    break;
+                default:
+                    return false;
+                    break;
             }
         }
     }

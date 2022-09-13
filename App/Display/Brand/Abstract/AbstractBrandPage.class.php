@@ -24,6 +24,7 @@ abstract class AbstractBrandPage
         if ($this->slider->count() === 1) {
             return $this->slider->pop();
         }
+
         return null;
     }
 }

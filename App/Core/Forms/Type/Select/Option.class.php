@@ -25,18 +25,21 @@ class Option extends AbstractAttr
     public function getOption(array $globalAttr = []) : string
     {
         $this->globalAttr = $globalAttr;
+
         return $this->__toString();
     }
 
     public function selected(bool $selected) : self
     {
         $this->attr['selected'] = $selected;
+
         return $this;
     }
 
     public function disable(bool $disable) : self
     {
         $this->attr['disable'] = $disable;
+
         return $this;
     }
 }

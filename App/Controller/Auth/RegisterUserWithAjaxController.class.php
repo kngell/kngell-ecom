@@ -25,6 +25,7 @@ class RegisterUserWithAjaxController extends Controller
         $emailConfig->setSubject('Email Vérification.');
         $emailConfig->setFrom('contact@kngell.com', 'K\'ngell Ingénierie Logistique');
         $emailConfig->setEmailClass(WelcomeEmail::class);
+
         return [$emailConfig];
     }
 }

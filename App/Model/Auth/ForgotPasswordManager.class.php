@@ -22,6 +22,7 @@ class ForgotPasswordManager extends Model
             ->groupBy(['userID' => 'users'])
             ->return('class');
         $user = $this->getAll();
+
         return $user->assign((array) current($user->get_results()));
     }
 }

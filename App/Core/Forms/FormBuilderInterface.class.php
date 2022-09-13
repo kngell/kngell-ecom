@@ -62,4 +62,16 @@ interface FormBuilderInterface
      * @return bool
      */
     public function csrfValidate(): bool;
+
+    public function globalClasses(array $classes) : self;
+
+    public function input(array $args = [], $options = null, array $settings = []) : self;
+
+    public function hiddenInputs(array $args = []) : string;
+
+    public function begin(string $alertid = '') : string;
+
+    public function replaceText(?string $template = null, ?string $stringToreplace = null, array $args = []) : string;
+
+    public function end() : string;
 }

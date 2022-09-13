@@ -24,6 +24,7 @@ class RegisterUserManager extends Model
             $entity->setPassword(password_hash($entity->getPassword(), PASSWORD_DEFAULT));
             $entity->delete('terms')->delete('cpassword');
             $save = $this->save($entity);
+
             return $save;
         } catch (\Throwable $th) {
             throw new BaseResourceNotFoundException($th->getMessage(), $th->getCode());

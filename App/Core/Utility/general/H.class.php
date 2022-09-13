@@ -13,6 +13,7 @@ class H
         if ($currentPage == '/index.php' || $currentPage == PROOT || $currentPage == PROOT . 'home/index') {
             return PROOT . 'home';
         }
+
         return $currentPage;
     }
 
@@ -53,7 +54,7 @@ class H
         $time = time() - $timestamps;
 
         switch ($time) {
-                //secondes
+            //secondes
             case $time < 60:
                 return 'Just Now!';
                 break;

@@ -20,6 +20,7 @@ class ControllerFactory
         }
         $this->container->bind('controller', fn () => $this->controllerString);
         $this->container->bind('method', fn () => $this->method);
+
         return $controllerObject;
     }
 
@@ -28,7 +29,7 @@ class ControllerFactory
         return array_merge($this->controllerProperties, [
             'filePath' => $this->path,
             'cachedFiles' => YamlFile::get('cache_files_list'),
-            'route_params' => $this->routeParams,
+            'routeParams' => $this->routeParams,
         ]);
     }
 }

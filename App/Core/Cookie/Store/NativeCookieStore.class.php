@@ -31,6 +31,7 @@ class NativeCookieStore extends AbstractCookieStore
     public function exists(string $name = ''): bool
     {
         $CookieName = $name == '' ? $this->cookieEnvironment->getCookieName() : $name;
+
         return array_key_exists($CookieName, $this->gv->getCookie());
     }
 

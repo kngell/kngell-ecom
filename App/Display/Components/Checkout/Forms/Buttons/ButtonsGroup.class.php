@@ -11,6 +11,7 @@ class ButtonsGroup //extends AbstractCheckoutformSteps
     public function buttonsGroup(string $type = '', ?string $text = null) : string
     {
         list($btnType, $content, $class) = $this->btnType($type);
+
         return '  <div class="input-box mb-3 btns-group">' . $this->frm->input([
             ButtonType::class => ['type' => $btnType, 'class' => ['btn', $class, 'k-text-white']],
         ])->content($text == null ? $content : $text)->html() . '</div>';

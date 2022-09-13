@@ -16,6 +16,7 @@ class ModelFactory
             throw new BadControllerExeption($modelString . ' is not a valid Model');
         }
         $this->container->bind($modelString, fn () => $modelObject);
+
         return $modelObject;
     }
 }

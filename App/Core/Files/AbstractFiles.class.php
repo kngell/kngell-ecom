@@ -7,6 +7,7 @@ declare(strict_types=1);
  */
 abstract class AbstractFiles
 {
+    protected string $originalFolder;
     /**
      * Supported file size units for the byte conversion functions below.
      *
@@ -27,6 +28,7 @@ abstract class AbstractFiles
         if (strpos($path, ':') === false) {
             return str_replace(['//', '\\'], '/', $path);
         }
+
         return preg_replace('/^([a-z]{2,}):\//', '$1://', str_replace(['//', '\\'], '/', $path));
     }
 
@@ -67,6 +69,7 @@ abstract class AbstractFiles
                 $resultingPath .= $path . '/';
             }
         }
+
         return rtrim($resultingPath, '/');
     }
 
@@ -318,6 +321,7 @@ abstract class AbstractFiles
         } catch (\Exception $ignoredException) {
             $content = false;
         }
+
         return $content;
     }
 
@@ -374,6 +378,7 @@ abstract class AbstractFiles
         if ($normalizedTargetPathAndFilename === '') {
             return false;
         }
+
         return $normalizedPathAndFilename !== $normalizedTargetPathAndFilename;
     }
 
@@ -396,12 +401,15 @@ abstract class AbstractFiles
             if (DIRECTORY_SEPARATOR === '/' || is_file($pathAndFilename)) {
                 if (!@\unlink($pathAndFilename)) {
                     clearstatcache();
+
                     return !file_exists($pathAndFilename);
                 }
+
                 return true;
             }
         } catch (\Exception $exception) {
             clearstatcache();
+
             return !file_exists($pathAndFilename);
         }
 
@@ -475,6 +483,7 @@ abstract class AbstractFiles
         if ($pow === false) {
             throw new Exception(sprintf('Unknown file size unit "%s"', $matches['unit']), 1417695299);
         }
+
         return $size * pow(2, (10 * $pow));
     }
 
@@ -503,8 +512,10 @@ abstract class AbstractFiles
             if ($return !== 0) {
                 throw new Exception(sprintf('Error while attempting to create a relative symlink at "%s" pointing to "%s". Make sure you have sufficient privileges and your operating system supports symlinks.', $link, $relativeTargetPath), 1378986321);
             }
+
             return file_exists($link);
         }
+
         return \symlink($relativeTargetPath, $link);
     }
 
@@ -550,6 +561,7 @@ abstract class AbstractFiles
                 $relativePath[0] = './' . $relativePath[0];
             }
         }
+
         return implode('/', $relativePath);
     }
 }

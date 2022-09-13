@@ -13,6 +13,7 @@ trait PhonesHomePageTraits
         $template = str_replace('{{price}}', $this->money->getFormatedAmount(strval($product->regular_price)), $template);
         $template = str_replace('{{ProductForm}}', $this->productForm($product), $template);
         $template = str_replace('{{brandClass}}', $product->categorie ?? 'Brand', $template);
+
         return $template;
     }
 
@@ -40,6 +41,7 @@ trait PhonesHomePageTraits
             ButtonType::class => ['type' => 'submit', 'class' => $class],
         ])->content($title)->noWrapper()->html(), $template);
         $template = str_replace('{{form_end}}', $form->end(), $template);
+
         return $template;
     }
 
@@ -62,11 +64,13 @@ trait PhonesHomePageTraits
                 $class = array_merge($class, ['btn-success']);
                 $title = 'In the Cart';
             }
+
             return [$class ?? ['btn', 'btn-success', 'font-size-12'], $title == null ? 'In the Cart' : $title];
         }
         if (isset($class) && $title == 'Add to Cart') {
             $class = array_merge($class, ['btn-warning']);
         }
+
         return [$class ?? ['btn', 'btn-warning', 'font-size-12'], $title == null ? 'Add to Cart' : $title];
     }
 }

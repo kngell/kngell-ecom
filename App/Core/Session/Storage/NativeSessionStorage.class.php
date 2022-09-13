@@ -33,6 +33,7 @@ class NativeSessionStorage extends AbstractSessionStorage
         if ($this->SessionExists($key)) {
             return $_SESSION[$key];
         }
+
         return $default;
     }
 
@@ -62,8 +63,10 @@ class NativeSessionStorage extends AbstractSessionStorage
         if ($this->SessionExists($key)) {
             $value = $_SESSION[$key];
             $this->deleteSession($key);
+
             return $value;
         }
+
         return $default;
     }
 

@@ -25,6 +25,7 @@ class LoggerFactory
         if (!$logger instanceof LoggerInterface) {
             throw new LoggerHandlerInvalidArgumentException(get_class($logger) . ' is invald as it does not implement the correct interface.');
         }
+
         return $logger; //Container::getInstance()->make(LoggerInterface::class)->setParams($newHandler);
     }
 }

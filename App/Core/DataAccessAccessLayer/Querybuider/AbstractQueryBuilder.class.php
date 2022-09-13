@@ -45,6 +45,7 @@ abstract class AbstractQueryBuilder
         $sql .= $this->groupBy();
         $sql .= $this->orderBy();
         $sql .= $this->queryOffset();
+
         return [$sql, $query];
     }
 
@@ -53,6 +54,7 @@ abstract class AbstractQueryBuilder
         if (in_array($type, self::QUERY_TYPES)) {
             return true;
         }
+
         return false;
     }
 
@@ -73,6 +75,7 @@ abstract class AbstractQueryBuilder
         } else {
             $sql = $this->key['extras']['sql'];
         }
+
         return $sql;
     }
 
@@ -115,6 +118,7 @@ abstract class AbstractQueryBuilder
             }
             $sql .= $braceClose;
         }
+
         return $sql;
     }
 
@@ -124,6 +128,7 @@ abstract class AbstractQueryBuilder
         $sql .= '(' . $globalQuery . ') ';
         $sql .= 'UNION ALL ';
         $sql .= $query;
+
         return $sql;
     }
 
@@ -142,6 +147,7 @@ abstract class AbstractQueryBuilder
                 $sql .= 'p.' . $recursive['field'] . ' FROM ' . $this->key['table'] . ' p ';
                 $sql .= 'INNER JOIN cte ON p.' . $recursive['parentID'] . '= cte.' . $recursive['id'] . ')';
                 $sql .= 'SELECT COUNT(' . $recursive['field'] . ') AS ' . $recursive['AS'] . ' FROM cte;';
+
                 return [$q, $sql];
             }
             $aryIndex = [];
@@ -153,8 +159,10 @@ abstract class AbstractQueryBuilder
             $sql = $query . ' ' . 'INNER JOIN cte ON ';
             $sql .= $aryIndex[0] . '.' . $recursive['parentID'] . ' = cte' . '.' . $recursive['id'] . ') ';
             $sql .= 'SELECT * FROM cte;';
+
             return [$q, $sql];
         }
+
         return [$q, ''];
     }
 
@@ -195,6 +203,7 @@ abstract class AbstractQueryBuilder
                 }
             }
         }
+
         return $where;
     }
 
@@ -209,6 +218,7 @@ abstract class AbstractQueryBuilder
         if (isset($this->key['extras']) && array_key_exists('group_by', $this->key['extras'])) {
             $groupBy .= ' GROUP BY ' . implode(', ', $this->key['extras']['group_by']);
         }
+
         return $groupBy . '';
     }
 
@@ -218,6 +228,7 @@ abstract class AbstractQueryBuilder
         if (isset($this->key['extras']['orderby']) && $this->key['extras']['orderby'] != '') {
             $sql .= is_array($this->key['extras']['orderby']) ? ' ORDER BY ' . implode(', ', $this->key['extras']['orderby']) . ' ' : ' ORDER BY ' . $this->key['extras']['orderby'];
         }
+
         return $sql;
     }
 
@@ -230,6 +241,7 @@ abstract class AbstractQueryBuilder
         if (isset($this->key['params']['limit']) && !isset($this->key['params']['offset'])) {
             $sql .= ' LIMIT :limit';
         }
+
         return $sql;
     }
 
@@ -238,6 +250,7 @@ abstract class AbstractQueryBuilder
         if (in_array($type, self::QUERY_TYPES)) {
             return true;
         }
+
         return false;
     }
 
@@ -258,6 +271,7 @@ abstract class AbstractQueryBuilder
         if ($recursiveCount != false) {
             return $recursiveCount;
         }
+
         return (!empty($this->key['selectors'])) ? implode(', ', $this->key['selectors']) : '*';
     }
 
@@ -277,18 +291,21 @@ abstract class AbstractQueryBuilder
         $braceOpen = isset($aryCond['braceOpen']) ? ' ' . $aryCond['braceOpen'] . ' ' : '';
         $braceEnd = isset($aryCond['braceEnd']) ? ' ' . $aryCond['braceEnd'] . ' ' : '';
         switch ($operator) {
-        case in_array(trim($operator), ['NOT IN', 'IN']):
-            $arr = [];
-            $prefixer = $this->arrayPrefixer($field, $aryCond['value'], $arr);
-            $this->key['where']['bind_array'] = $arr;
-            return $braceOpen . $aryCond['tbl'] . '.' . $field . $operator . ' (' . $prefixer . ')' . $braceEnd . $separator;
-            // return "$add" . $tbl . $key . ' ' . $value['operator'] . ' (' . $prefixer . ')';
+            case in_array(trim($operator), ['NOT IN', 'IN']):
+                $arr = [];
+                $prefixer = $this->arrayPrefixer($field, $aryCond['value'], $arr);
+                $this->key['where']['bind_array'] = $arr;
 
-        break;
+                return $braceOpen . $aryCond['tbl'] . '.' . $field . $operator . ' (' . $prefixer . ')' . $braceEnd . $separator;
+                // return "$add" . $tbl . $key . ' ' . $value['operator'] . ' (' . $prefixer . ')';
+                break;
+            case trim($operator) === 'LIKE':
 
-        default:
-            return $braceOpen . $aryCond['tbl'] . '.' . $field . $operator . ":$field" . $braceEnd . $separator;
-        break;
+                break;
+
+            default:
+                return $braceOpen . $aryCond['tbl'] . '.' . $field . $operator . ":$field" . $braceEnd . $separator;
+                break;
         }
     }
 
@@ -307,6 +324,7 @@ abstract class AbstractQueryBuilder
             $str .= ':' . $prefix . $index . ',';
             $bindArray[$prefix . $index] = $value;
         }
+
         return rtrim($str, ',');
     }
 }

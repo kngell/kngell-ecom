@@ -103,6 +103,7 @@ abstract class AbstractCacheStorage implements IterableStorageInterface
         }
 
         $pathAndFilename = $this->cacheFilesIterator->getPathname();
+
         return $this->readCacheFile($pathAndFilename);
     }
 
@@ -135,6 +136,7 @@ abstract class AbstractCacheStorage implements IterableStorageInterface
         if ($this->cacheFilesIterator === null) {
             $this->rewind();
         }
+
         return $this->cacheFilesIterator->getBasename($this->cacheEntryFileExtension);
     }
 
@@ -149,6 +151,7 @@ abstract class AbstractCacheStorage implements IterableStorageInterface
         if ($this->cacheFilesIterator === null) {
             $this->rewind();
         }
+
         return $this->cacheFilesIterator->valid();
     }
 
@@ -187,6 +190,7 @@ abstract class AbstractCacheStorage implements IterableStorageInterface
     protected function findCacheFilesByIdentifier(string $entryIdentifier): array|bool
     {
         $cacheEntryPathAndFilename = $this->cacheEntryPathAndFilename($entryIdentifier);
+
         return file_exists($cacheEntryPathAndFilename) ? [$cacheEntryPathAndFilename] : false;
     }
 

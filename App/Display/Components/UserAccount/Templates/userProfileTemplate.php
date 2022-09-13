@@ -1,38 +1,34 @@
-<div class="card mini-profile" style="width:18rem;">
-   <div class="card-header mini-profile-header">
-      <div class="mini-profile-cover-photo"></div>
-      <div class="mini-profile-author d-sm-flex">
-         {{userIdentification}}
-         <div class="text-center mini-profile-photo">
-            <img src="{{profile_image}}" alt="mini-profile Photo" class="img-fluid">
-         </div>
-         <div class="mini-profile-name">
-            <h4 class="name"><span>{{firstName}}</span>&nbsp;
-               <span>{{lastName}}</span>
-            </h4>
-            <p class="email">{{Email}}
-            </p>
-         </div>
-      </div>
+<div class="infos-personnelles">
+   <div class="tabs">
+      {{user_profile_menu}}
    </div>
-   <div class="card-body mini-profile-body">
-      <div class="mini-profile-title">
-         <a class="mini-profile-link" href="javascript:void(0)">
-            <p class="title lead"><i class="fa-solid fa-bars"></i>&nbsp;menu
-            </p>
-         </a>
 
-      </div>
-      <div class="mini-profile-details">
-         <div class="single-details-item">
-            {{remove_account_frm}}
+   <div class="tab-content">
+      <div class="tab-pane active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+         <div class="row g-0">
+            {{user_profile_data}}
          </div>
       </div>
-   </div>
-   <div class="mini-profile-footer">
-      <div class="mini-profile-title">
-         <a class="btn btn-primary w-100 mini-profile-link" href="{{account_route}}"><span class="icon"><i
-                  class="fa-solid fa-rotate-left"></i></span><span>Retour</span></a>
+      <div class="tab-pane" id="edit-profile" role="tabpanel" aria-labelledby="edit-profile-tab">
+         <div class="row g-0">
+            <div class="user-form-box">
+               {{user_profile_formdata}}
+            </div>
+         </div>
+      </div>
+      <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+         <div class="row g-3">
+            <div class="col-md-6">
+               <div class="form-box">
+                  <form action="">
+
+                  </form>
+               </div>
+            </div>
+            <div class="col-md-6">
+
+            </div>
+         </div>
       </div>
    </div>
 </div>

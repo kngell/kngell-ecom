@@ -23,6 +23,7 @@ class WelcomeEmail extends AbstractEmail implements DisplayPagesInterface
         $cssInliner = CssInliner::fromHtml($html)->inlineCss($this->css);
         HtmlPruner::fromDomDocument($cssInliner->getDomDocument())
             ->removeRedundantClassesAfterCssInlined($cssInliner);
+
         return HtmlNormalizer::fromHtml($cssInliner->render())->render();
     }
 
@@ -31,6 +32,7 @@ class WelcomeEmail extends AbstractEmail implements DisplayPagesInterface
         $emailTemp = $this->header;
         $emailTemp .= $this->welcomePageContent();
         $emailTemp .= $this->footer;
+
         return $emailTemp;
     }
 
@@ -44,6 +46,7 @@ class WelcomeEmail extends AbstractEmail implements DisplayPagesInterface
         $content = str_replace('{{completeProfileText}}', $this->getTemplate('completeProfile'), $content);
         $content = str_replace('{{startPurchase}}', $this->getTemplate('startPurchase'), $content);
         $content = str_replace('{{host}}', $this->host, $content);
+
         return $content;
     }
 }

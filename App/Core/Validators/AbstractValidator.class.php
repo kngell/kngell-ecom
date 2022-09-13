@@ -24,12 +24,14 @@ abstract class AbstractValidator
         if (( new ReflectionProperty($obj->getEntity(), $obj->getEntity()->getFields('terms')))->isInitialized($obj->getEntity())) {
             return $obj->getEntity()->{'getTerms'}();
         }
+
         return '';
     }
 
     private function validatorMessages(string $display, mixed $rule_value, string $item, array $items) : array
     {
         $matchvalue = isset($items[$rule_value]['display']) ? $items[$rule_value]['display'] : '';
+
         return [
             'required' => ($item == 'terms') ? 'Please accept terms & conditions' : "{$display} is require",
             'min' => "{$display} must be a minimum of {$rule_value} characters",

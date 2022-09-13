@@ -15,6 +15,7 @@ class RegistrationEvent extends Event implements EmailSenderEventInterface
     public function getEmailConfig() : EmailConfigurationEnv
     {
         list($emailconfig) = $this->getParams();
+
         return $emailconfig;
     }
 }

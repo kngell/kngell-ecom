@@ -20,6 +20,7 @@ class OrderDetailsManager extends Model
             ->on(['od_product_id|order_details', 'pdt_id|products'])
             ->whereIn(['od_order_id|order_details' => $keys])
             ->return('object');
+
         return new Collection($this->getAll()->get_results());
     }
 }

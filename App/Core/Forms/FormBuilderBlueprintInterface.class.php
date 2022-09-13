@@ -25,7 +25,7 @@ interface FormBuilderBlueprintInterface
      */
     public function hidden(string $name, mixed $value = null, array $class = []): array;
 
-    public function textarea(string $name, array $class = [], mixed $id = null, string|null $placeholder = null, int $rows = 5, int $cols = 33, ): array;
+    public function textarea(string $name, array $class = [], mixed $id = null, string|null $placeholder = null, int $rows = 5, int $cols = 33): array;
 
     public function email(string $name, array $class = [], mixed $value = null, bool $required = true, bool $pattern = false, string|null $placeholder = null): array;
 
@@ -44,7 +44,7 @@ interface FormBuilderBlueprintInterface
 
     public function checkbox(string $name, array $class = [], mixed $value = null): array;
 
-    public function select(string $name, array $class = [], ?string $id = null, mixed $value = null, bool $multiple = false, ): array;
+    public function select(string $name, array $class = [], ?string $id = null, mixed $value = null, bool $multiple = false): array;
 
     public function multipleCheckbox(string $name, array $class = [], mixed $value = null): array;
 

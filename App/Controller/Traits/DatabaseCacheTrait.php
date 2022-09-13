@@ -4,61 +4,90 @@ declare(strict_types=1);
 
 trait DatabaseCacheTrait
 {
-    public function getUserCart(?CartManager $m = null) : CollectionInterface
+    public function getCachedData(string $fileName, array $cm = [], array $params = [], int $time = 20) : Object
     {
-        if (!$this->cache->exists($this->cachedFiles['user_cart'])) {
-            $model = $m == null ? $this->model(CartManager::class) : $m;
-            $this->cache->set($this->cachedFiles['user_cart'], $model->getUserCart());
+        if ((!is_array($cm) || !is_array($params)) || empty($cm)) {
+            throw new BaseInvalidArgumentException('Paramètres collecte des données invalides', 1);
         }
-        return $this->cache->get($this->cachedFiles['user_cart']);
+        if (!$this->cache->exists($this->cachedFiles[$fileName] ?? $fileName)) {
+            $this->cache->set($this->cachedFiles[$fileName] ?? $fileName, call_user_func_array($cm, !empty($params) ? $params : []), $time);
+        }
+
+        return $this->cache->get($this->cachedFiles[$fileName] ?? $fileName);
+    }
+
+    public function getUserCart() : CollectionInterface
+    {
+        return $this->getCachedData('user_cart', [$this->model(CartManager::class), 'getUserCart']);
     }
 
     public function getSettings() : object
     {
-        if (!$this->cache->exists('settings')) {
-            $this->cache->set('settings', $this->container(SettingsManager::class)->getSettings());
-        }
-        return $this->cache->get('settings');
+        return $this->getCachedData('settings', [$this->model(SettingsManager::class), 'getSettings']);
     }
 
     protected function getProducts(int $brand, ?string $cache) : CollectionInterface
     {
-        if (!$this->cache->exists($this->cachedFiles[$cache])) {
-            $this->cache->set($this->cachedFiles[$cache], $this->model(ProductsManager::class)->getProducts($brand));
-        }
-        return $this->cache->get($this->cachedFiles[$cache]);
+        return $this->getCachedData($cache, [$this->model(ProductsManager::class), 'getProducts'], [$brand]);
     }
 
     protected function getSingleProduct(?string $slug) : ?object
     {
-        $cacheKey = Stringify::studlyCaps($slug);
-        if (!$this->cache->exists($cacheKey)) {
-            $this->cache->set($cacheKey, $this->model(ProductsManager::class)->getSingleProduct($slug), 20);
-        }
-        return $this->cache->get($cacheKey);
+        $cacheKey = StringUtil::studlyCaps($slug);
+
+        return $this->getCachedData($cacheKey, [$this->model(ProductsManager::class), 'getSingleProduct'], [$slug], 20);
     }
 
     protected function getSliders() : CollectionInterface
     {
-        if (!$this->cache->exists($this->cachedFiles['sliders'])) {
-            $this->cache->set($this->cachedFiles['sliders'], $this->model(SlidersManager::class)->all());
-        }
-        return $this->cache->get($this->cachedFiles['sliders']);
+        return $this->getCachedData('sliders', [$this->model(SlidersManager::class), 'all']);
     }
 
-    protected function getShippingClass(?ShippingClassManager $m = null) : CollectionInterface
+    protected function getShippingClass() : CollectionInterface
     {
-        $model = $m == null ? $this->model(ShippingClassManager::class) : $m;
-        if (!$this->cache->exists($this->cachedFiles['shipping_class'])) {
-            $this->cache->set($this->cachedFiles['shipping_class'], $model->getShippingClass());
-        }
-        return $this->cache->get($this->cachedFiles['shipping_class']);
+        return $this->getCachedData('shipping_class', [$this->model(ShippingClassManager::class), 'getShippingClass']);
     }
 
-    protected function getOrderList(array $params = [])
+    protected function getOrderList(array $params = []) : CollectionInterface
     {
-        return $this->container(OrdersManager::class)->assign([
-            'ord_user_id' => $this->session->get(CURRENT_USER_SESSION_NAME)['id'],
-        ])->AllWithSearchAndPagin($params);
+        if (AuthManager::isUserLoggedIn()) {
+            return $this->container(OrdersManager::class)->assign([
+                'ord_user_id' => $this->session->get(CURRENT_USER_SESSION_NAME)['id'],
+            ])->AllWithSearchAndPagin($params);
+        }
+
+        return new Collection([]);
+    }
+
+    protected function getCustomerEntity() : CustomerEntity
+    {
+        $customer = $this->model(Customer::class)->get();
+        if ($this->session->exists(CURRENT_USER_SESSION_NAME)) {
+            return $this->getCachedData(
+                'customer' . $this->session->get(CURRENT_USER_SESSION_NAME)['id'],
+                [$customer, 'getEntity']
+            );
+        }
+        return new CustomerEntity();
+    }
+
+    protected function getCustomerEntityFromSession() : ?CustomerEntity
+    {
+        if ($this->session->exists(CHECKOUT_PROCESS_NAME)) {
+            return unserialize($this->session->get(CHECKOUT_PROCESS_NAME));
+        }
+
+        return null;
+    }
+
+    protected function getUserAccount(array $params = []) : ?UserAccount
+    {
+        if ($this->session->exists(CURRENT_USER_SESSION_NAME)) {
+            $file = 'user_account' . $this->session->get(CURRENT_USER_SESSION_NAME)['id'];
+
+            return $this->getCachedData($file, [$this->model(UserAccount::class), 'get'], [$params]);
+        }
+
+        return null;
     }
 }

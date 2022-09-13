@@ -34,6 +34,7 @@ class GlobalVariables implements GlobalVariablesInterface
         if (null != $key) {
             return $global[$key] ?? null;
         }
+
         return $global ?? [];
     }
 
@@ -64,10 +65,19 @@ class GlobalVariables implements GlobalVariablesInterface
         if (isset($_SERVER)) {
             $global = filter_input_array(INPUT_SERVER, FILTER_SANITIZE_SPECIAL_CHARS) ?? null;
             if (null != $key) {
-                return $global[$key] ?? '/';
+                if (!isset($global[strtoupper($key)])) {
+                    if (!isset($_SERVER[strtoupper($key)])) {
+                        return '';
+                    }
+
+                    return $_SERVER[strtoupper($key)];
+                }
+
+                return $_SERVER[strtoupper($key)] ?? '';
             }
         }
-        return array_map('strip_tags', $global ?? []);
+
+        return array_map('strip_tags', $_SERVER ?? []);
     }
 
     /**
@@ -77,6 +87,6 @@ class GlobalVariables implements GlobalVariablesInterface
      */
     public function getFiles() : array
     {
-        return filter_var_array($_FILES, FILTER_SANITIZE_SPECIAL_CHARS) ?? null;
+        return filter_var_array($_FILES, FILTER_DEFAULT) ?? null;
     }
 }

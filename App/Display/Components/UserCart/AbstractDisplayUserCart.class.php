@@ -29,6 +29,7 @@ abstract class AbstractDisplayUserCart
     public function setUserCart(CollectionInterface $userCart) : self
     {
         $this->userCart = $userCart;
+
         return $this;
     }
 }

@@ -7,6 +7,7 @@ class CustomerEntity extends Entity
     /** @id */
     private int $userId;
     private string $orderId;
+    private string $customerId;
     private string $lastName;
     private string $firstName;
     private string $userName;
@@ -15,6 +16,7 @@ class CustomerEntity extends Entity
     private string $billTo;
     private array $shippingMethod;
     private string $promo;
+    private object $userCards;
     private CollectionInterface $cartSummary;
     /** @media */
     private string $profileImage;
@@ -46,6 +48,7 @@ class CustomerEntity extends Entity
     public function setUserId(int $userId) : self
     {
         $this->userId = $userId;
+
         return $this;
     }
 
@@ -65,6 +68,7 @@ class CustomerEntity extends Entity
     public function setLastName(string $lastName) : self
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
@@ -84,6 +88,7 @@ class CustomerEntity extends Entity
     public function setFirstName(string $firstName) : self
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -103,6 +108,7 @@ class CustomerEntity extends Entity
     public function setUserName(string $userName) : self
     {
         $this->userName = $userName;
+
         return $this;
     }
 
@@ -122,6 +128,7 @@ class CustomerEntity extends Entity
     public function setEmail(string $email) : self
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -141,6 +148,7 @@ class CustomerEntity extends Entity
     public function setRegisterDate(DateTimeInterface $registerDate) : self
     {
         $this->registerDate = $registerDate;
+
         return $this;
     }
 
@@ -160,6 +168,7 @@ class CustomerEntity extends Entity
     public function setProfileImage(string $profileImage) : self
     {
         $this->profileImage = $profileImage;
+
         return $this;
     }
 
@@ -179,6 +188,7 @@ class CustomerEntity extends Entity
     public function setPhone(string $phone) : self
     {
         $this->phone = $phone;
+
         return $this;
     }
 
@@ -198,6 +208,7 @@ class CustomerEntity extends Entity
             }
             $this->address = $add;
         }
+
         return $this;
     }
 
@@ -217,6 +228,7 @@ class CustomerEntity extends Entity
     public function setAddress(CollectionInterface $address) : self
     {
         $this->address = $address;
+
         return $this;
     }
 
@@ -227,6 +239,7 @@ class CustomerEntity extends Entity
         } else {
             unset($this->field);
         }
+
         return $this;
     }
 
@@ -246,6 +259,7 @@ class CustomerEntity extends Entity
     public function setShipTo(string $shipTo) : self
     {
         $this->shipTo = $shipTo;
+
         return $this;
     }
 
@@ -265,6 +279,7 @@ class CustomerEntity extends Entity
     public function setBillTo(string $billTo) : self
     {
         $this->billTo = $billTo;
+
         return $this;
     }
 
@@ -284,6 +299,7 @@ class CustomerEntity extends Entity
     public function setShippingMethod(array $shippingMethod) : self
     {
         $this->shippingMethod = $shippingMethod;
+
         return $this;
     }
 
@@ -303,6 +319,7 @@ class CustomerEntity extends Entity
     public function setPromo(string $promo) : self
     {
         $this->promo = $promo;
+
         return $this;
     }
 
@@ -322,6 +339,7 @@ class CustomerEntity extends Entity
     public function setCartSummary(CollectionInterface $cartSummary) : self
     {
         $this->cartSummary = $cartSummary;
+
         return $this;
     }
 
@@ -341,6 +359,43 @@ class CustomerEntity extends Entity
     public function setOrderId(string $orderId) : self
     {
         $this->orderId = $orderId;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userCards.
+     */
+    public function getUserCards(): object
+    {
+        return $this->userCards;
+    }
+
+    /**
+     * Set the value of userCards.
+     */
+    public function setUserCards(object $userCards): self
+    {
+        $this->userCards = $userCards;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of customerId.
+     */
+    public function getCustomerId(): string
+    {
+        return $this->customerId;
+    }
+
+    /**
+     * Set the value of customerId.
+     */
+    public function setCustomerId(string $customerId): self
+    {
+        $this->customerId = $customerId;
+
         return $this;
     }
 }

@@ -69,6 +69,7 @@ trait SessionTrait
         if (!$storedSessionObject) {
             throw new SessionException('No session object found within the global manager');
         }
+
         return $storedSessionObject;
     }
 
@@ -100,6 +101,7 @@ trait SessionTrait
         if (isset($_SESSION['EXPIRES']) && $_SESSION['EXPIRES'] < time()) {
             return false;
         }
+
         return true;
     }
 }

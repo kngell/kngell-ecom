@@ -165,6 +165,7 @@ class GroupsEntity extends Entity
     public function delete(?string $field = null) : self
     {
         unset($this->$field);
+
         return $this;
     }
 
@@ -184,6 +185,7 @@ class GroupsEntity extends Entity
     public function setDateEnreg(DateTimeInterface $dateEnreg) : self
     {
         $this->dateEnreg = $dateEnreg;
+
         return $this;
     }
 }

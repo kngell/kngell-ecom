@@ -12,6 +12,7 @@ class FileStorageRepositoryFactory
         if (!$repositoryObject instanceof FileStorageRepositoryInterface) {
             throw new BaseUnexpectedValueException(get_class($repositoryObject) . ' is not a valid repository Object!');
         }
+
         return $repositoryObject;
     }
 }

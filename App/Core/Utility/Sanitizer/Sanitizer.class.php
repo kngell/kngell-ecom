@@ -27,6 +27,7 @@ class Sanitizer
             }
         } else {
             $input = htmlspecialchars(trim(stripslashes($dirtydata)), ENT_QUOTES, 'UTF-8');
+
             return self::sanitizeInput($input);
         }
     }
@@ -38,7 +39,13 @@ class Sanitizer
                 $m->$key = $m->htmlDecode($m->$key);
             }
         }
+
         return $m;
+    }
+
+    public static function cleanFiles(array $fileAry) : array
+    {
+        return FileArraySanitizer::sanitize($fileAry);
     }
 
     /**
@@ -58,23 +65,24 @@ class Sanitizer
                 break;
 
             case is_numeric($value):
-                   return isset($value) ? filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : '';
+                return isset($value) ? filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : '';
                 break;
             case is_array($value) && !empty($value):
-                    $arr = [];
-                    if (count($value) > 0) {
-                        foreach ($value as $k => $v) {
-                            if (is_int($v)) {
-                                $arr[$k] = isset($v) ? filter_var($value, FILTER_SANITIZE_NUMBER_INT) : '';
-                            } else {
-                                $arr[$k] = isset($v) ? filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
-                            }
+                $arr = [];
+                if (count($value) > 0) {
+                    foreach ($value as $k => $v) {
+                        if (is_int($v)) {
+                            $arr[$k] = isset($v) ? filter_var($value, FILTER_SANITIZE_NUMBER_INT) : '';
+                        } else {
+                            $arr[$k] = isset($v) ? filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
                         }
-                        return $arr;
                     }
-                 break;
+
+                    return $arr;
+                }
+                break;
             default:
-             return isset($value) ? filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
+                return isset($value) ? filter_var($value, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : '';
                 break;
         }
     }

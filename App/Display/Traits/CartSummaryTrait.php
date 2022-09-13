@@ -10,6 +10,7 @@ trait CartSummaryTrait
         if (property_exists($this, 'userItems')) {
             $this->userItems[] = ['id' => $product->item_id, 'HT' => $HT, 'taxes' => $productTaxes, 'item_qty' => $item_qty];
         }
+
         return (object) ['item' => $product->item_id, 'taxes' => $productTaxes, 'amount' => $HT];
     }
 
@@ -21,6 +22,7 @@ trait CartSummaryTrait
             $categories = array_unique(array_column($userCart->all(), 'cat_id'));
             $cache->set('userCartTaxes', (new TaxesManager())->getTaxSystem($categories));
         }
+
         return $cache->get('userCartTaxes');
     }
 
@@ -36,6 +38,7 @@ trait CartSummaryTrait
             $totalTaxes = $totalTaxes->plus($taxe->getAmount());
             $temp .= $html;
         }
+
         return [$temp, $totalTaxes->getAmount()];
     }
 
@@ -48,8 +51,10 @@ trait CartSummaryTrait
                     $price = $price->plus($this->money->getCustomAmt(strval($product->regular_price * $product->item_qty), 2));
                 }
             }
+
             return $price;
         }
+
         return $this->money->getCustomAmt(strval(0), 2);
     }
 
@@ -75,6 +80,7 @@ trait CartSummaryTrait
                 }
             }
         }
+
         return new Collection($finalTaxes);
     }
 }

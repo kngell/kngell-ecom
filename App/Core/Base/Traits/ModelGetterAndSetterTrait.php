@@ -12,6 +12,7 @@ trait ModelGetterAndSetterTrait
         if (null != $class) {
             return Application::diGet($class, $args);
         }
+
         return Application::getInstance();
     }
 
@@ -38,6 +39,7 @@ trait ModelGetterAndSetterTrait
     public function setEntity(Entity $entity) : self
     {
         $this->entity = $entity;
+
         return $this;
     }
 
@@ -69,6 +71,7 @@ trait ModelGetterAndSetterTrait
     public function unsetProperty(string $p) : self
     {
         unset($this->$p);
+
         return $this;
     }
 
@@ -82,12 +85,14 @@ trait ModelGetterAndSetterTrait
         if (isset($this->_lasID)) {
             return $this->_lasID;
         }
+
         return null;
     }
 
     public function setLastID(int $lastID) : self
     {
         $this->_lasID = $lastID;
+
         return $this;
     }
 
@@ -120,6 +125,7 @@ trait ModelGetterAndSetterTrait
     public function softDelete($value) : self
     {
         $this->_softDelete = $value;
+
         return $this;
     }
 
@@ -132,6 +138,7 @@ trait ModelGetterAndSetterTrait
     public function current_ctrl_method(string $value) : self
     {
         $this->_current_ctrl_method = $value;
+
         return $this;
     }
 
@@ -161,6 +168,7 @@ trait ModelGetterAndSetterTrait
     public function setTableSchemaID(string $tableSchemaID) : self
     {
         $this->tableSchemaID = $tableSchemaID;
+
         return $this;
     }
 
@@ -180,6 +188,7 @@ trait ModelGetterAndSetterTrait
     public function setTableSchema(string $tableSchema) : self
     {
         $this->tableSchema = $tableSchema;
+
         return $this;
     }
 
@@ -199,5 +208,10 @@ trait ModelGetterAndSetterTrait
         $this->_colIndex = $_colIndex;
 
         return $this;
+    }
+
+    public function getQueryParams() : QueryParamsInterface
+    {
+        return $this->queryParams;
     }
 }

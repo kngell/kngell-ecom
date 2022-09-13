@@ -14,6 +14,7 @@ class PaymentModeManager extends Model
     public function all()
     {
         $this->table()->return('object');
+
         return new Collection($this->getAll()->get_results());
     }
 }

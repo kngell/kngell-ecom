@@ -23,8 +23,10 @@ class AuthenticateUserManager extends Model
             $u->_count = $user->count();
             $u->setEntity($this->entity);
             $user = null;
+
             return [$u, (int) $u->number];
         }
+
         return false;
     }
 
@@ -38,13 +40,16 @@ class AuthenticateUserManager extends Model
             ]);
             $this->session->set(CURRENT_USER_SESSION_NAME, [
                 'id' => (int) $this->user_id,
-                'first_name' => (string) $this->first_name,
-                'last_name' => (string) $this->last_name,
+                'first_name' => (string) $this->first_name ?? '',
+                'last_name' => (string) $this->last_name ?? '',
                 'acl' => (array) $this->acls(),
-                'verified' => (int) $this->verified,
+                'verified' => (int) $this->verified ?? 0,
+                'customer_id' => (string) $this->customer_id ?? '',
             ]);
+
             return $this->userSession->assign(array_merge($data, $this->manageSession($visitor, $remember_me)))->save();
         }
+
         return null;
     }
 
@@ -55,6 +60,7 @@ class AuthenticateUserManager extends Model
             $this->userSession->getDetails($rem, 'remember_me_cookie');
             if ($this->userSession->count() === 1) {
                 $userSession = $this->userSession->get_results();
+
                 return [
                     'remember' => true,
                     'email' => $userSession->email,
@@ -62,6 +68,7 @@ class AuthenticateUserManager extends Model
                 ];
             }
         }
+
         return [];
     }
 
@@ -73,10 +80,12 @@ class AuthenticateUserManager extends Model
                 if (!$session->getEntity()->isInitialized('remember_me_cookie')) {
                     return $this->rememberCookie();
                 }
+
                 return $session->getEntity()->{'getRememberMeCookie'}();
             }
             $rem_cookie = $this->rememberCookie();
         }
+
         return $rem_cookie;
     }
 
@@ -90,6 +99,7 @@ class AuthenticateUserManager extends Model
         } else {
             $rem_cookie = $this->cookie->get(REMEMBER_ME_COOKIE_NAME);
         }
+
         return $rem_cookie;
     }
 
@@ -130,6 +140,7 @@ class AuthenticateUserManager extends Model
             }
         }
         $session = null;
+
         return $sessionToken;
     }
 
@@ -137,6 +148,7 @@ class AuthenticateUserManager extends Model
     {
         $sessionDb = $this->userSession->getDetails($this->getEntity()->{'getUserId'}(), 'user_id');
         $sessionDb->count() == 1 ? $sessionDb = $sessionDb->assign((array) $sessionDb->get_results()) : '';
+
         return [
             'remember_me_cookie' => $this->rememberMe($remember_me, $sessionDb),
             'session_token' => $this->sessionToken($sessionDb),
@@ -156,6 +168,7 @@ class AuthenticateUserManager extends Model
             ->groupBy(['user_id' => 'users'])
             ->return('class')
             ->build();
+
         return $this->getAll();
     }
 

@@ -38,6 +38,7 @@ abstract class AbstractCrud implements CrudInterface
             'extras' => $options['recursive']['options'],
         ];
         list($sql, $query) = $this->queryBuilder->buildQuery($arg)->baseQuery();
+
         return $query;
     }
 }

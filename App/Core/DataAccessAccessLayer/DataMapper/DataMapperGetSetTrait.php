@@ -29,6 +29,7 @@ trait DataMapperGetSetTrait
     public function set_results(mixed $results) : self
     {
         $this->_results = $results;
+
         return $this;
     }
 
@@ -41,6 +42,7 @@ trait DataMapperGetSetTrait
                     $this->_lastID = intval($lastID);
                 }
             }
+
             return $this;
         } catch (Throwable $th) {
             throw $th;

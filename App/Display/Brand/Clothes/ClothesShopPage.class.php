@@ -37,6 +37,7 @@ class ClothesShopPage extends AbstractBrandPage implements DisplayPagesInterface
             $temp = str_replace('{{button}}', $this->clothesButton(), $temp);
             $html .= $temp;
         }
+
         return str_replace('{{shop_items_collection}}', $html, $template);
     }
 }

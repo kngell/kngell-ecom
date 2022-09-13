@@ -44,6 +44,7 @@ class EmailConfigurationEnv
     public function setSubject($subject) : self
     {
         $this->subject = $subject;
+
         return $this;
     }
 
@@ -64,6 +65,7 @@ class EmailConfigurationEnv
     {
         $from !== '' ? $this->from['email'] = $from : '';
         $name !== '' ? $this->from['name'] = $name : '';
+
         return $this;
     }
 
@@ -83,6 +85,7 @@ class EmailConfigurationEnv
     public function setEmailClass(string $emailClass) : self
     {
         $this->emailClass = $emailClass;
+
         return $this;
     }
 }

@@ -13,6 +13,7 @@ trait ModelTrait
         $this->setResults($results->count() > 0 ? $results->get_results() : null);
         $this->setCount($results->count() > 0 ? $results->count() : 0);
         $results = null;
+
         return $this;
     }
 
@@ -27,7 +28,7 @@ trait ModelTrait
         /** @var Paginator */
         $pagin = new Paginator($totalRecords, $args['records_per_page'], $request->query->getInt('page', 1));
         $queryCond = array_merge($args['additional_conditions'], $conditions);
-        $parameters['offset'] = $pagin->getOffset();
+        $parameters = ['limit' => $args['records_per_page'], 'offset' => $pagin->getOffset()];
         $results = $this->repository->findBy($selectors, $queryCond, $parameters, $options); //$optionnals
         $this->setResults([
             'results' => $results->get_results(),
@@ -36,6 +37,7 @@ trait ModelTrait
             'totalRecords' => $totalRecords,
         ]);
         $this->setCount($results->count() > 0 ? $results->count() : 0);
+
         return $this;
     }
 
@@ -48,10 +50,12 @@ trait ModelTrait
         $dataMapperResults = $this->repository->findOneBy($conditions, $options);
         if ($dataMapperResults->count() <= 0) {
             $this->setCount(0);
+
             return $this;
         }
         $this->setCount($dataMapperResults->count());
         $this->setResults($this->afterFind($dataMapperResults)->get_results());
+
         return $this;
     }
 
@@ -61,6 +65,7 @@ trait ModelTrait
         $result = $this->getRepository()->entity($this->getEntity())->create();
         $this->setCount($result->count());
         $this->setLastID($result->getLasID() ?? 0);
+
         return $this;
     }
 
@@ -70,6 +75,7 @@ trait ModelTrait
         $this->getEntity()->delete($this->getEntity()->regenerateField($this->getEntity()->getColID()));
         $result = $this->getRepository()->entity($this->getEntity())->update($conditions);
         $this->setCount($result->count());
+
         return $this;
     }
 
@@ -78,6 +84,7 @@ trait ModelTrait
         list($conditions) = $this->conditions()->getQueryParams()->params('delete');
         $result = $this->getRepository()->entity($this->getEntity())->delete($conditions);
         $this->setCount($result->count());
+
         return $this;
     }
 
@@ -108,6 +115,7 @@ trait ModelTrait
             }
             $m->set_results($array ? (array) $model : $model);
         }
+
         return $m;
     }
 
@@ -122,6 +130,7 @@ trait ModelTrait
         if ($this->_flatDb === true) {
             $props['repository'] = FileStorageRepositoryFactory::class;
         }
+
         return $props;
     }
 
@@ -168,6 +177,7 @@ trait ModelTrait
             $conditions = [];
             $totalRecords = $this->em->getCrud()->countRecords($conditions);
         }
+
         return [
             $conditions,
             $totalRecords,

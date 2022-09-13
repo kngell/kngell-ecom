@@ -14,6 +14,7 @@ class ConstantConfig
         defined('PS') or define('PS', PATH_SEPARATOR);
         defined('US') or define('US', URL_SEPARATOR);
         defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+
         return $this;
     }
 
@@ -29,6 +30,7 @@ class ConstantConfig
         defined('CONFIG_PATH') or define('CONFIG_PATH', APP_ROOT . DS . 'Config' . DS . 'Yaml');
         defined('TEMPLATE_PATH') or define('TEMPLATE_PATH', APP_ROOT . DS . 'App' . DS);
         defined('LOG_DIR') or define('LOG_DIR', APP_ROOT . DS . 'Temp' . DS . 'Log');
+
         return $this;
     }
 }

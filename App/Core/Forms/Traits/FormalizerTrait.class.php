@@ -15,6 +15,7 @@ trait FormalizerTrait
         if ($repository !== null) {
             $this->dataRepository = $repository;
         }
+
         return $this;
     }
 
@@ -31,6 +32,7 @@ trait FormalizerTrait
     public function setTemplate(string $template) : self
     {
         $this->template = $template;
+
         return $this;
     }
 
@@ -85,6 +87,7 @@ trait FormalizerTrait
     public function setCsrfKey(string $csrfKey) : self
     {
         $this->csrfKey = $csrfKey;
+
         return $this;
     }
 
@@ -93,6 +96,7 @@ trait FormalizerTrait
         foreach ($classes as $key => $class) {
             $this->globalClasses[$key] = $class;
         }
+
         return $this;
     }
 
@@ -106,24 +110,28 @@ trait FormalizerTrait
                 array_push($this->htmlAttr[__FUNCTION__], $classStr);
             }
         }
+
         return $this;
     }
 
     public function content(string $content) : self
     {
         $this->inputObject[0]->content($content);
+
         return $this;
     }
 
     public function rows(int $rows) : self
     {
         $this->inputObject[0]->rows($rows);
+
         return $this;
     }
 
     public function cols(int $rows) : self
     {
         $this->inputObject[0]->cols($rows);
+
         return $this;
     }
 
@@ -131,18 +139,21 @@ trait FormalizerTrait
     {
         $this->htmlAttr['wrapperClass'] = isset($this->htmlAttr['wrapperClass']) ? [] : '';
         $this->htmlAttr['labelClass'] = isset($this->htmlAttr['labelClass']) ? [] : '';
+
         return $this;
     }
 
     public function noWrapper() : self
     {
         $this->inputObject[0]->settings(['field_wrapper' => false]);
+
         return $this;
     }
 
     public function noLabel() : self
     {
         $this->inputObject[0]->settings(['show_label' => false]);
+
         return $this;
     }
 
@@ -150,6 +161,7 @@ trait FormalizerTrait
     {
         $this->inputObject[0]->settings(['templatePath' => $str]);
         $this->inputObject[0]->templatesReset();
+
         return $this;
     }
 
@@ -162,12 +174,14 @@ trait FormalizerTrait
                 }
             }
         }
+
         return $this;
     }
 
     public function value(mixed $value)
     {
         $this->inputObject[0]->value($value);
+
         return $this;
     }
 
@@ -176,6 +190,7 @@ trait FormalizerTrait
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->placeholder($str);
         }
+
         return $this;
     }
 
@@ -184,6 +199,7 @@ trait FormalizerTrait
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->settings(['label' => $str, 'show_label' => true]);
         }
+
         return $this;
     }
 
@@ -196,6 +212,7 @@ trait FormalizerTrait
                 }
             }
         }
+
         return $this;
     }
 
@@ -204,6 +221,7 @@ trait FormalizerTrait
         if (count($this->inputObject) === 1) {
             $this->htmlAttr[__FUNCTION__] = [$str];
         }
+
         return $this;
     }
 
@@ -212,6 +230,7 @@ trait FormalizerTrait
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->req();
         }
+
         return $this;
     }
 
@@ -220,6 +239,7 @@ trait FormalizerTrait
         if (count($args) !== 0) {
             $this->inputObject[0]->attr($args);
         }
+
         return $this;
     }
 
@@ -232,6 +252,7 @@ trait FormalizerTrait
                 }
             }
         }
+
         return $this;
     }
 
@@ -247,6 +268,7 @@ trait FormalizerTrait
                 }
             }
         }
+
         return $this;
     }
 
@@ -255,6 +277,7 @@ trait FormalizerTrait
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->checked($chk);
         }
+
         return $this;
     }
 
@@ -263,6 +286,7 @@ trait FormalizerTrait
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->settings(['label' => $str, 'show_label' => true, 'label_up' => true]);
         }
+
         return $this;
     }
 
@@ -271,12 +295,14 @@ trait FormalizerTrait
         if (count($this->inputObject) === 1) {
             $this->inputObject[0]->id($id);
         }
+
         return $this;
     }
 
     public function useModel(bool $useModelData = false) : self
     {
         $this->inputObject[0]->useModel($useModelData);
+
         return $this;
     }
 
@@ -305,6 +331,7 @@ trait FormalizerTrait
                 }
             }
         }
+
         return $this;
     }
 }

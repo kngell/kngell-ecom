@@ -39,6 +39,7 @@ class Flash implements FlashInterface
     public function getSessionObject(object $session): self
     {
         $this->session = $session;
+
         return $this;
     }
 

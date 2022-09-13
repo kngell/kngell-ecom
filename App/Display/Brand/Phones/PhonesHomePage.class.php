@@ -38,6 +38,7 @@ class PhonesHomePage extends AbstractBrandPage implements DisplayPagesInterface
         $topSalesTemplate = $this->getTemplate('topSalesPath');
         $productTemplate = $this->getTemplate('topSalesTemplatePath');
         $productTemplate = str_replace('{{singleProductTemplate}}', $this->getTemplate('productTemplatePath'), $productTemplate);
+
         return $this->iteratedOutput($topSalesTemplate, $productTemplate);
     }
 
@@ -47,6 +48,7 @@ class PhonesHomePage extends AbstractBrandPage implements DisplayPagesInterface
         $blogTemplate = str_replace('{{blog1}}', ImageManager::asset_img('blog' . DS . 'blog1.jpg'), $blogTemplate);
         $blogTemplate = str_replace('{{blog2}}', ImageManager::asset_img('blog' . DS . 'blog2.jpg'), $blogTemplate);
         $blogTemplate = str_replace('{{blog3}}', ImageManager::asset_img('blog' . DS . 'blog3.jpg'), $blogTemplate);
+
         return $blogTemplate;
     }
 
@@ -64,6 +66,7 @@ class PhonesHomePage extends AbstractBrandPage implements DisplayPagesInterface
                 $html .= $imgTemplate;
             }
         }
+
         return str_replace('{{bannerTemplate}}', $html, $bannerAreaTemplate);
     }
 
@@ -72,6 +75,7 @@ class PhonesHomePage extends AbstractBrandPage implements DisplayPagesInterface
         $newProductsTemplate = $this->getTemplate('newProductPath');
         $productTemplate = $this->getTemplate('newProductTemplate');
         $productTemplate = str_replace('{{singleProductTemplate}}', $this->getTemplate('productTemplatePath'), $productTemplate);
+
         return $this->iteratedOutput($newProductsTemplate, $productTemplate);
     }
 
@@ -109,6 +113,7 @@ class PhonesHomePage extends AbstractBrandPage implements DisplayPagesInterface
                 }, $brands);
             }
         }
+
         return $brandButton;
     }
 
@@ -121,6 +126,7 @@ class PhonesHomePage extends AbstractBrandPage implements DisplayPagesInterface
                 $html .= $this->outputProduct($productTemplate, $product);
             }
         }
+
         return str_replace('{{productsTemplate}}', $html, $template);
     }
 }

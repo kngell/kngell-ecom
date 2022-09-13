@@ -13,6 +13,7 @@ class UpdateCustomerSessionAddressListener implements ListenerInterface
         $newAddresses = $this->updateCustomerAddress($customerEntity, $address);
         $customerEntity->setAddress($newAddresses);
         $controller->getSession()->set(CHECKOUT_PROCESS_NAME, serialize($customerEntity));
+
         return [];
     }
 
@@ -38,6 +39,7 @@ class UpdateCustomerSessionAddressListener implements ListenerInterface
             } elseif ($addrType != '' && $addrType == 'billing') {
                 $address->billing_addr = 'Y';
             }
+
             return $address;
         }
     }
@@ -51,6 +53,7 @@ class UpdateCustomerSessionAddressListener implements ListenerInterface
         $data = $event->getParams()['data'];
         $id = $addressBook->getLastID() ?? $data['ab_id'];
         $addressBook = !$addrEntity->isInitialized('ab_id') ? $addressBook->assign(['ab_id' => $id]) : '';
+
         return (object) $addressBook->getEntity()->getInitializedAttributes();
     }
 
@@ -61,6 +64,7 @@ class UpdateCustomerSessionAddressListener implements ListenerInterface
         if ($currentAddresses->valueExists($newAddress, 'ab_id')) {
             return $this->updateValue($newAddress, $currentAddresses);
         }
+
         return $this->addNewValue($newAddress, $currentAddresses);
     }
 
@@ -77,6 +81,7 @@ class UpdateCustomerSessionAddressListener implements ListenerInterface
             $newAddress->pays = Container::getInstance()->make(CountriesManager::class)->country($newAddress->pays);
         }
         $add->add($newAddress);
+
         return $add;
     }
 
@@ -91,8 +96,10 @@ class UpdateCustomerSessionAddressListener implements ListenerInterface
                 }
                 $add->add($address);
             }
+
             return $add;
         }
+
         return $currentAddresses;
     }
 
@@ -112,6 +119,7 @@ class UpdateCustomerSessionAddressListener implements ListenerInterface
                 $add->add($address);
             }
         }
+
         return $add;
     }
 }

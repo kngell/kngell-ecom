@@ -27,6 +27,7 @@ class TreeBuilder implements TreeBuilderInterface
                 $branch[] = $item;
             }
         }
+
         return $branch;
     }
 
@@ -38,6 +39,7 @@ class TreeBuilder implements TreeBuilderInterface
             $this->buildBranch($item, $items);
             $tree[] = $item;
         }
+
         return $tree;
     }
 
@@ -52,6 +54,7 @@ class TreeBuilder implements TreeBuilderInterface
             if ($parent === null) {
                 list($items, $foundParent, $foundSomething) = $this->foundParents($items, $branch, $foundSomething);
             }
+
             return [$hitBottom = !$foundSomething, $items];
         }
     }
@@ -69,6 +72,7 @@ class TreeBuilder implements TreeBuilderInterface
                 break;
             }
         }
+
         return [$items, $foundParent, $foundSomeThing];
     }
 
@@ -84,6 +88,7 @@ class TreeBuilder implements TreeBuilderInterface
                 $removals[] = $idx;
             }
         }
+
         return [$removals, $foundsomething, $items];
     }
 
@@ -99,6 +104,7 @@ class TreeBuilder implements TreeBuilderInterface
                 if ($chd->{$this->idColName} === $child->{$this->idColName}) {
                     if (empty($chd->{$this->childrenKeyName})) {
                         $parent->{$this->childrenKeyName}[$idx] = $child;
+
                         return;
                     } else {
                         if (empty($child->{$this->childrenKeyName})) {
@@ -106,6 +112,7 @@ class TreeBuilder implements TreeBuilderInterface
                         } else {
                             $chd->{$this->childrenKeyName} += $child->{$this->childrenKeyName};
                             $parent->{$this->childrenKeyName}[$idx] = $child;
+
                             return;
                         }
                     }

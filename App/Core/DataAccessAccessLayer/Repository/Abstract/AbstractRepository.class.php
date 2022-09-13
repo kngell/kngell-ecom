@@ -16,6 +16,7 @@ abstract class AbstractRepository
                 }
             }
         }
+
         return $fields;
     }
 
@@ -24,6 +25,7 @@ abstract class AbstractRepository
         if (!is_array($conditions)) {
             throw new RepositoryInvalidArgumentException('Argument Supplied is not an array');
         }
+
         return true;
     }
 

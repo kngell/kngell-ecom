@@ -42,6 +42,7 @@ abstract class AbstractShoppingCartPage
         $this->TTC = $this->HT->plus($totalTaxes)->formatTo('fr_FR');
         $template = str_replace('{{totalTTC}}', $this->TTC ?? '', $template);
         $template = str_replace('{{proceedTobuyform}}', $this->proceedToBuyForm(), $template);
+
         return $template;
     }
 
@@ -57,6 +58,7 @@ abstract class AbstractShoppingCartPage
                 return $this->itemsHtml($cartItems, $template, 'shoppingItems', 'shoppingItemPath');
             }
         }
+
         return str_replace('{{shoppingItems}}', $this->getTemplate('emptycartPath'), $template);
     }
 
@@ -69,8 +71,10 @@ abstract class AbstractShoppingCartPage
                 return $item->cart_type == 'wishlist';
             });
             $this->wishlistStyle = $whishlist->count() > 0 ? 'style="display:block"' : 'style="display:none"';
+
             return $this->itemsHtml($whishlist, $template, 'whishlist_item', 'whishlistItemPath');
         }
+
         return $this->wishlistStyle = 'style="display:none"';
     }
 
@@ -86,8 +90,10 @@ abstract class AbstractShoppingCartPage
                     $ItemsHtml .= $this->whishlistItemHtml($item, $itemHtml);
                 }
             }
+
             return str_replace('{{' . $replace . '}}', $ItemsHtml, $template);
         }
+
         return '';
     }
 
@@ -104,6 +110,7 @@ abstract class AbstractShoppingCartPage
             ButtonType::class => ['type' => 'submit', 'class' => ['button', 'buy-btn']],
         ])->content('Proceed to checkout')->noWrapper()->html(), $template);
         $template = str_replace('{{form_end}}', $this->frm->end(), $template);
+
         return $template;
     }
 
@@ -120,6 +127,7 @@ abstract class AbstractShoppingCartPage
             $temp = str_replace('{{itemDelItemFrom}}', $this->shoppingItemDelForm($item, 'cart'), $temp);
             $temp = str_replace('{{price}}', $this->money->getFormatedAmount(strval($item->regular_price * $item->item_qty)), $temp);
         }
+
         return $temp;
     }
 
@@ -135,6 +143,7 @@ abstract class AbstractShoppingCartPage
             $temp = str_replace('{{whishlist_del_frm}}', $this->shoppingItemDelForm($item, 'wishlist'), $temp);
             $temp = str_replace('{{price}}', $this->money->getFormatedAmount(strval($item->regular_price * $item->item_qty)), $temp);
         }
+
         return $temp;
     }
 
@@ -201,6 +210,7 @@ abstract class AbstractShoppingCartPage
         ])->content($btn)->noWrapper()->html(), $template);
 
         $template = str_replace('{{form_end}}', $this->frm->end(), $template);
+
         return $template;
     }
 }

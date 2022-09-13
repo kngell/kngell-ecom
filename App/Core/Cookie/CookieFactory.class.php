@@ -23,6 +23,7 @@ class CookieFactory
         if (!$cookieStoreObject instanceof CookieStoreInterface) {
             throw new CookieUnexpectedValueException($cookieStoreObject::class . 'is not a valid cookie store object.');
         }
+
         return Container::getInstance()->make(CookieInterface::class, ['cookieStore' => $cookieStoreObject]);
     }
 }

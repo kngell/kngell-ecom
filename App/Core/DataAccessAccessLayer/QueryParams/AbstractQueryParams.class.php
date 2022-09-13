@@ -24,6 +24,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         $this->query_params = [];
         $this->conditionBreak = [];
         $this->braceOpen = '';
+
         return $this;
     }
 
@@ -32,6 +33,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         if (is_string($separator) && is_numeric($key) && in_array(strtoupper($separator), self::SEPARATOR)) {
             return strtoupper($separator);
         }
+
         return 'AND';
     }
 
@@ -49,8 +51,10 @@ abstract class AbstractQueryParams implements QueryParamsInterface
             if (!count($parts) === 1) {
                 throw new BaseInvalidArgumentException('Argument ou condition mal renseignée');
             }
+
             return [current($parts), $operator];
         }
+
         return [$field, '='];
     }
 
@@ -72,6 +76,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
                 return [$val, $tbl];
             }
         }
+
         return [$value, $tbl];
     }
 
@@ -94,6 +99,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         if ($params['braceEnd'] != '') {
             $where[$params['field']]['braceEnd'] = $params['braceEnd'];
         }
+
         return $where;
     }
 
@@ -101,6 +107,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
     {
         if (str_contains($field, '|')) {
             $parts = explode('|', $field);
+
             return count($parts) > 1 ? [$parts[0], $parts[1]] : [$parts[0], ''];
         }
     }
@@ -129,6 +136,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         if (count($conditions) > 2 || (isset($prevCondition['separator']) && in_array($prevCondition['separator'], self::SEPARATOR))) {
             return $this->braceOpen = '(';
         }
+
         return '';
     }
 
@@ -136,8 +144,10 @@ abstract class AbstractQueryParams implements QueryParamsInterface
     {
         if (!empty($this->braceOpen)) {
             $this->braceOpen = '';
+
             return ')';
         }
+
         return '';
     }
 
@@ -150,6 +160,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         $whereParams['braceOpen'] = ($key == $firstKey) || (is_numeric($key) && in_array($value, ['or', 'and']) || !empty($this->conditionBreak)) ? $this->braceOpen($conditions) : '';
         $whereParams['braceEnd'] = $this->braceClose($whereParams['separator'], $key);
         $whereParams['value'] = $value;
+
         return $whereParams;
     }
 
@@ -199,8 +210,10 @@ abstract class AbstractQueryParams implements QueryParamsInterface
         if (null != $tbl && str_contains($tbl, '|')) {
             $parts = explode('|', $tbl);
             $this->tableSuffix = trim($parts[1]);
+
             return trim($parts[0]);
         }
+
         return $tbl;
     }
 
@@ -227,6 +240,7 @@ abstract class AbstractQueryParams implements QueryParamsInterface
                 }
             }
         }
+
         return $this->query_params['selectors'] = $selectors;
     }
 

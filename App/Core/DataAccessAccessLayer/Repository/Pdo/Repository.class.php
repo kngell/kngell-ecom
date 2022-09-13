@@ -19,6 +19,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
     public function entity(Entity $entity) : self
     {
         $this->entity = $entity;
+
         return $this;
     }
 
@@ -94,6 +95,7 @@ class Repository extends AbstractRepository implements RepositoryInterface
                 throw $th;
             }
         }
+
         return false;
     }
 

@@ -48,24 +48,28 @@ class MoneyManager
     public function getAmount(string $p = '')
     {
         $this->isEmpty($p);
+
         return Money::of($p, 'EUR', new AutoContext());
     }
 
     public function getCustomAmt(string $p, int $context)
     {
         $this->isEmpty($p);
+
         return Money::of($p, 'EUR', new CustomContext($context), RoundingMode::DOWN);
     }
 
     public function getFormatedAmount(string $p = '')
     {
         $this->isEmpty($p);
+
         return Money::of($p, 'EUR', new CustomContext(2), RoundingMode::DOWN)->formatTo('fr_FR');
     }
 
     public function getIntAmount(string $p = '') : int
     {
         $this->isEmpty($p);
+
         return Money::of($p, 'EUR', new CustomContext(2), RoundingMode::UP)->getMinorAmount()->toInt();
     }
 
@@ -84,6 +88,7 @@ class MoneyManager
         if (empty($p)) {
             return 0;
         }
+
         return true;
     }
 }

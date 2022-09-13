@@ -22,6 +22,7 @@ trait ReflectionTrait
             $this->name = $name;
             $this->reflection = new ReflectionClass($name);
         }
+
         return $this;
     }
 
@@ -43,6 +44,7 @@ trait ReflectionTrait
     public function hasMethod(string $name): ReflectionMethod|false
     {
         $has = $this->reflection->hasMethod($name);
+
         return is_bool($has) && $has === true ? $this->method($name) : false;
     }
 
@@ -91,6 +93,7 @@ trait ReflectionTrait
     public function hasProp(string $name): ReflectionProperty|false
     {
         $has = $this->reflection->hasProperty($name);
+
         return is_bool($has) && $has === true ? $this->prop($name) : false;
     }
 
@@ -110,6 +113,7 @@ trait ReflectionTrait
     public function hasConst(string $name): ReflectionClassConstant|false
     {
         $has = $this->reflection->hasConstant($name);
+
         return is_bool($has) && $has === true ? $this->const($name) : false;
     }
 
@@ -220,6 +224,7 @@ trait ReflectionTrait
     public function attr(?string $name = null, int $flag = 0): ReflectionAttribute|array
     {
         $this->attr = $this->reflection->getAttributes($name, $flag);
+
         return $this;
     }
 

@@ -35,6 +35,7 @@ class TaxesEntity extends Entity
     public function setTId(int $tId)
     {
         $this->tId = $tId;
+
         return $this;
     }
 
@@ -54,6 +55,7 @@ class TaxesEntity extends Entity
     public function setTName(string $tName) : self
     {
         $this->tName = $tName;
+
         return $this;
     }
 
@@ -73,6 +75,7 @@ class TaxesEntity extends Entity
     public function setTDescr(string $tDescr) : self
     {
         $this->tDescr = $tDescr;
+
         return $this;
     }
 
@@ -92,6 +95,7 @@ class TaxesEntity extends Entity
     public function setTRate(string $tRate) : self
     {
         $this->tRate = $tRate;
+
         return $this;
     }
 
@@ -111,6 +115,7 @@ class TaxesEntity extends Entity
     public function setTClass(string $tClass) : self
     {
         $this->tClass = $tClass;
+
         return $this;
     }
 
@@ -130,6 +135,7 @@ class TaxesEntity extends Entity
     public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -149,6 +155,7 @@ class TaxesEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -168,6 +175,7 @@ class TaxesEntity extends Entity
     public function setStatus(string $status) : self
     {
         $this->status = $status;
+
         return $this;
     }
 }

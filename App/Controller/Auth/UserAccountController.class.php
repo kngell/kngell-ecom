@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 class UserAccountController extends Controller
 {
-    use UserAccountTrait;
-    use MethodsForDisplayingPageTrait;
-
     public function __construct(array $params = [])
     {
         parent::__construct($params);
@@ -19,8 +16,15 @@ class UserAccountController extends Controller
         $params = [
             'records_per_page' => 3,
             'additional_conditions' => [],
+            'links' => [
+                'profile' => DS . 'user_account' . DS . 'my_account_show' . DS . 'profile',
+                'orders' => DS . 'user_account' . DS . 'my_account_show' . DS . 'orders',
+                'address' => DS . 'user_account' . DS . 'my_account_show' . DS . 'address',
+                'card' => DS . 'user_account' . DS . 'my_account_show' . DS . 'userCard',
+            ],
         ];
-        $this->render('user_account' . DS . 'account', $this->displayUerAccount($params));
+        $link = empty($args) ? 'orders' : array_pop($args);
+        $this->render('user_account' . DS . 'account', $this->displayUerAccount($params, $link));
     }
 
     public function index(array $args = [])

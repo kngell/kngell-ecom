@@ -24,6 +24,7 @@ class ShoppingCartPage extends AbstractShoppingCartPage implements DisplayPagesI
             'shoppingCart' => $this->outputShoppingCart($shopping_cart_template),
             'whislist' => $this->outputWhishlist($whishlist_template),
         ];
+
         return $c;
     }
 
@@ -44,6 +45,7 @@ class ShoppingCartPage extends AbstractShoppingCartPage implements DisplayPagesI
             $temp = str_replace('{{whishlist_items}}', $this->whishlistItems, $template);
             $temp = str_replace('{{display}}', $this->wishlistStyle, $temp);
         }
+
         return $temp;
     }
 
@@ -54,6 +56,7 @@ class ShoppingCartPage extends AbstractShoppingCartPage implements DisplayPagesI
             $temp = str_replace('{{shopping_cart_items}}', $this->shoppinCartItems, $template);
             $temp = str_replace('{{shopping_cart_subTotal}}', $this->shoppinCartTotal, $temp);
         }
+
         return $temp;
     }
 }

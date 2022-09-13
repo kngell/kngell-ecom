@@ -10,8 +10,10 @@ class PaymentServicesFactory
     private string $gatewaySuffix = 'GatewayService';
     private ?CollectionInterface $paymentMethod = null;
     private ResponseHandler $response;
+    private string $customerId;
+    private ?CustomerEntity $customerEntity;
 
-    public function __construct(array $params, ResponseHandler $response)
+    public function __construct(array $params = [], ?ResponseHandler $response = null)
     {
         $this->response = $response;
         $this->properties($params);
@@ -21,12 +23,18 @@ class PaymentServicesFactory
     {
         if (null === $this->plateForm) {
             $gateway = ucfirst($this->defaultPlatForm) . $this->gatewaySuffix;
-            $gatewayObject = $this->container->make($gateway, ['paymentMethod' => $this->paymentMethod]);
+            $gatewayObject = $this->container->make($gateway, [
+                'paymentMethod' => isset($this->paymentMethod) ? $this->paymentMethod : null,
+                'customer_id' => isset($this->customerId) ? $this->customerId : null,
+                'customerEntity' => isset($this->customerEntity) ? $this->customerEntity : null,
+            ]);
             if (!$gatewayObject instanceof PaymentGatewayInterface) {
                 throw new PaymentGatewayException("$gateway is not a valid instance of Payment!");
             }
+
             return $gatewayObject;
         }
+
         return $this->paymentPlateForm();
     }
 
@@ -41,6 +49,7 @@ class PaymentServicesFactory
             4 => $this->defaultPlatForm = 'klarna',
             default => throw new PaymentGatewayException('Unknown payment Services!'),
         };
+
         return $this->create();
     }
 
@@ -48,7 +57,7 @@ class PaymentServicesFactory
     {
         if (!empty($params)) {
             foreach ($params as $key => $value) {
-                $key = Stringify::camelCase($key);
+                $key = StringUtil::camelCase($key);
                 if ($key === 'paymentMethod') {
                     $value = new Collection(json_decode($this->response->htmlDecode($value), true)['paymentMethod']);
                 }

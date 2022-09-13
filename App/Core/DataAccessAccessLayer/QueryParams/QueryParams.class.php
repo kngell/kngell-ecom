@@ -15,12 +15,14 @@ class QueryParams extends AbstractQueryParams
         $tbl = $this->parseTable($tbl);
         $this->query_params['table_join'] = [$tbl != null ? $tbl : $this->tableSchema => $columns != null ? $columns : ['*']];
         $this->addTableToOptions($tbl);
+
         return $this;
     }
 
     public function params(?string $repositoryMethod = null) : array
     {
         $this->getSelectors();
+
         return match ($repositoryMethod) {
             'findOneBy' => [$this->query_params['conditions'] ?? [],  $this->query_params['options'] ?? []],
             'findBy','findBySearch' => [$this->query_params['selectors'] ?? [], $this->query_params['conditions'] ?? [], $this->query_params['parameters'] ?? [], $this->query_params['options'] ?? []],
@@ -38,6 +40,7 @@ class QueryParams extends AbstractQueryParams
             $this->key('options');
             $this->query_params['options']['join_rules'][] = $joinType;
             $this->addTableToOptions($tbl);
+
             return $this;
         }
         throw new Exception('Cannot join the same table ' . $tbl);
@@ -69,6 +72,7 @@ class QueryParams extends AbstractQueryParams
                 $tableIndex++;
             }
         }
+
         return $this;
     }
 
@@ -92,6 +96,7 @@ class QueryParams extends AbstractQueryParams
                     $this->conditionBreak = $whereParams;
                 }
             }
+
             return $this;
         }
     }
@@ -120,6 +125,7 @@ class QueryParams extends AbstractQueryParams
             if (!array_key_exists($op, $this->query_params['conditions'])) {
                 $this->query_params['conditions'][$op] = [];
             }
+
             return $this->where($cond, $op);
         }
     }
@@ -144,6 +150,7 @@ class QueryParams extends AbstractQueryParams
                 $this->query_params['options']['group_by'][] = $param[key($param)] . '.' . key($param);
             }
         }
+
         return $this;
     }
 
@@ -161,6 +168,7 @@ class QueryParams extends AbstractQueryParams
                 $this->query_params['options']['orderby'][] = $tbl . '.' . $field;
             }
         }
+
         return $this;
     }
 
@@ -168,6 +176,7 @@ class QueryParams extends AbstractQueryParams
     {
         $this->key('options');
         $this->query_params['options']['return_mode'] = $str;
+
         return $this;
     }
 
@@ -176,6 +185,7 @@ class QueryParams extends AbstractQueryParams
         if (!array_key_exists('parameters', $this->query_params)) {
             $this->query_params['parameters'] = [];
         }
+
         return $this->aryParams($params, 'parameters');
     }
 
@@ -187,6 +197,7 @@ class QueryParams extends AbstractQueryParams
         $this->query_params['options']['recursive']['conditions'] = $conditions;
         $this->query_params['options']['recursive']['parameters'] = $parameters;
         $this->query_params['options']['recursive']['options'] = $options;
+
         return $this;
     }
 
@@ -196,6 +207,7 @@ class QueryParams extends AbstractQueryParams
         $this->query_params['options']['recursive']['parentID'] = $parentID;
         $this->query_params['options']['recursive']['id'] = $id;
         $this->recursiveCount();
+
         return $this;
     }
 
@@ -204,6 +216,7 @@ class QueryParams extends AbstractQueryParams
         if (isset($params) && !empty($params)) {
             $this->query_params[$name] = $params;
         }
+
         return $this;
     }
 }

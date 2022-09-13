@@ -16,7 +16,9 @@ class PaginationPath implements PathsInterface
         return [
             'paginPath' => $this->templatePath . 'paginationTemplate.php',
             'linkPath' => $this->templatePath . 'paginationLinkTemplate.php',
-
+            'previousPath' => $this->templatePath . 'previousLinkTemplate.php',
+            'nextPath' => $this->templatePath . 'nextLinkTemplate.php',
+            'dotsPath' => $this->templatePath . 'dotsLinkTemplate.php',
         ];
     }
 

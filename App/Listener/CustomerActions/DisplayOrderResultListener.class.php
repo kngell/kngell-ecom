@@ -16,6 +16,7 @@ class DisplayOrderResultListener implements ListenerInterface
             'en' => $object->getCustomerEntity(),
         ])->display();
         $this->response->jsonResponse(['result' => 'success', 'msg' => $message]);
+
         return [];
     }
 }

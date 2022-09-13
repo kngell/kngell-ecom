@@ -3,8 +3,8 @@ const CopyPlugin = require("copy-webpack-plugin");
 const AssetsPlugin = require("assets-webpack-plugin");
 const DelWebpackPlugin = require("del-webpack-plugin");
 const webpack = require("webpack");
-const CKEditorWebpackPlugin = require("@ckeditor/ckeditor5-dev-webpack-plugin");
-// const plugins = require("./plugins");
+// const CKEditorWebpackPlugin = require("@ckeditor/ckeditor5-dev-webpack-plugin");
+var CopyFiles = require("./src/entries/assets/frontend/copyFilesEntries");
 
 module.exports = {
   plugins: [
@@ -14,6 +14,7 @@ module.exports = {
       keepGeneratedAssets: false,
       allowExternal: false,
     }),
+    new CopyFiles({ options: true }),
     new AssetsPlugin({
       filename: "assets.json",
       includeManifest: "manifest",
@@ -32,6 +33,7 @@ module.exports = {
       // "global.jQuery": "jquery",
       Popper: "@popperjs/core",
     }),
+
     new webpack.ProgressPlugin(),
     // plugins.ESLintPlugin,
     // new CKEditorWebpackPlugin({

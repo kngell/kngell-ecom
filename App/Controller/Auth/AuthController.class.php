@@ -80,9 +80,9 @@ class AuthController extends Controller
                                 $msg = '<a href="http://localhost/kngell/users/resetpassword/' . $lastID . '/' . $this->token->urlSafeEncode($code) . '">Click to reset your password.</a>';
                             // if (H_Email::sendEmail($data['email'], $user[0]->name, 'Password Reset', $msg)) {
                                 //     $this->jsonResponse(['result' => 'success', 'msg' => FH::showMessage('success text-center', 'An Email has been sent if an account with that email exist.')]);
-                                // } else {
+                            // } else {
                                 //     $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('warning text-center', 'Failed to send email')]);
-                                // }
+                            // }
                             } else {
                                 $this->jsonResponse(['result' => 'error', 'msg' => FH::showMessage('danger text-center', 'Failed to create request in database! Plase try again.')]);
                             }

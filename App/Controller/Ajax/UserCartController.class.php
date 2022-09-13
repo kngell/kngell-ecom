@@ -40,7 +40,7 @@ class UserCartController extends Controller
             if ($model->delete()->count() === 1) {
                 $this->dispatcher->dispatch(new UserCartChangeEvent($this, '', [
                     'displayUserCart',
-                    'shoppingCart',
+                    'displayShoppingCart',
                 ]));
             }
         }
@@ -58,7 +58,7 @@ class UserCartController extends Controller
             if ($model->save()->count() === 1) {
                 $this->dispatcher->dispatch(new UserCartChangeEvent($this, '', [
                     'displayUserCart',
-                    'shoppingCart',
+                    'displayShoppingCart',
                 ]));
             }
         }
@@ -81,6 +81,7 @@ class UserCartController extends Controller
                 $m->assign(['cart_id' => $item->cart_id]);
             }
         }
+
         return $m;
     }
 }

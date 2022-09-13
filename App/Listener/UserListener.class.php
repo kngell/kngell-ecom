@@ -14,6 +14,7 @@ class UserListener implements ListenerInterface
         if ($object instanceof Entity) {
             // do something
         }
+
         return [];
     }
 }

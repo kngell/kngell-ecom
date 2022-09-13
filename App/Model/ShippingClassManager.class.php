@@ -17,6 +17,7 @@ class ShippingClassManager extends Model
     {
         $this->table()
             ->return('object');
+
         return new Collection($this->getAll()->get_results());
     }
 }

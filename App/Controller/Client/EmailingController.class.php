@@ -13,6 +13,7 @@ class EmailingController extends Controller
     {
         $this->setLayout('emailTemplate');
         $this->siteTitle('Registration Email');
+
         return $this->render('users' . DS . 'emailTemplate' . DS . 'welcomeTemplate');
     }
 }

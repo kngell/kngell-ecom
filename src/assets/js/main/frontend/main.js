@@ -1,6 +1,3 @@
-import favicon from "img/favicon.ico";
-import card from "img/visa.png";
-import logo2 from "img/logo2.png";
 import { Call_controller } from "corejs/form_crud";
 import "select2";
 // import _credit_card from "../../components/credit_card/_card";
@@ -9,6 +6,7 @@ import { BASE_URL, HOST } from "corejs/config";
 import cart_manager from "./partials/_cart_manager";
 import owl_carousel from "./partials/_owl_carousel";
 import user_account from "js/components/user_account/user_account";
+import imageList from "./partials/_image_list";
 
 class Main {
   constructor(element) {
@@ -30,8 +28,11 @@ class Main {
     owl_carousel._init();
     /** User Account */
     user_account._init();
+    /** FavIcon */
+    document.querySelector("link[type='image/ico']").href =
+      imageList["favicon"];
+    /** Authentication Manager */
 
-    document.querySelector("link[type='image/ico']").href = favicon;
     /**
      * Add to Cart
      * ========================================================================

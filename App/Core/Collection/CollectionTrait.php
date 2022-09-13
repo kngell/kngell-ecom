@@ -38,6 +38,7 @@ trait CollectionTrait
         if (!in_array($key, self::$proxies)) {
             throw new BaseException("Property [{$key}] does not exist on this collection instance.");
         }
+
         return new CollectionProxy($this, $key);
     }
 
@@ -72,6 +73,7 @@ trait CollectionTrait
     public static function isAssoc(array $inputArray)
     {
         $keys = array_keys($inputArray);
+
         return array_keys($keys) !== $keys;
     }
 

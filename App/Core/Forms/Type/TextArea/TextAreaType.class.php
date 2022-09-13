@@ -119,6 +119,7 @@ class TextAreaType extends AbstractAttr implements FormBuilderTypeInterface
             'require' => false,
             'model_data' => false,
         ];
+
         return !empty($this->settings) ? array_merge($defaults, $this->settings) : $defaults;
     }
 
@@ -140,12 +141,14 @@ class TextAreaType extends AbstractAttr implements FormBuilderTypeInterface
     public function rows(int $rows) : self
     {
         $this->attr[__FUNCTION__] = $rows;
+
         return $this;
     }
 
     public function cols(int $cols) : self
     {
         $this->attr[__FUNCTION__] = $cols;
+
         return $this;
     }
 

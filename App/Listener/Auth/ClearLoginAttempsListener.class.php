@@ -12,8 +12,10 @@ class ClearLoginAttempsListener implements ListenerInterface
             $loginAttemps = Container::getInstance()->make(LoginAttemptsManager::class);
             $conditions = $loginAttemps->table()->where(['user_id' => $object->getUserId()])->build();
             $delete = $loginAttemps->delete($conditions);
+
             return [$delete];
         }
+
         return [];
     }
 }

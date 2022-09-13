@@ -4,9 +4,38 @@ declare(strict_types=1);
 
 use Symfony\Component\HttpFoundation\Response;
 
-class ResponseHandler extends GlobalVariables
+class ResponseHandler
 {
+    use HttpTraits;
+
+    private RequestHandler $request;
+    private CollectionInterface $headers;
+    private CollectionInterface $cookies;
     private string $content;
+    private ?string $protocol;
+    private HttpStatus $status;
+    private bool $prepared = false;
+
+    public function __construct(string $status = 'HTTP_OK', string $content = '', array $headers = [])
+    {
+        $this->status = HttpStatus::getStatus($status);
+        $this->headers = new Collection($headers);
+        $this->content = $content;
+    }
+
+    public function addHeader(string $name, string $value) : self
+    {
+        $this->headers->offsetGet($name, $value);
+
+        return $this;
+    }
+
+    public function addHeaders(array $headers) : self
+    {
+        $this->headers->addAll($headers);
+
+        return $this;
+    }
 
     public function handler() : Response
     {
@@ -16,6 +45,7 @@ class ResponseHandler extends GlobalVariables
                 return $response;
             }
         }
+
         return false;
     }
 
@@ -32,14 +62,22 @@ class ResponseHandler extends GlobalVariables
     public function setStatusCode(int $code) : self
     {
         http_response_code($code);
+
         return $this;
     }
 
-    public function redirect(string $url) : self
+    public function redirect(string $url, ?string $refreshtime = null) : string
     {
-        header("Location: $url");
-        header('HTTP/1.1 301 Moved Permanently');
-        exit;
+        if (headers_sent()) {
+            echo "<script>document.location.href='" . $url . "'</script>";
+        } elseif (isset($refreshtime)) {
+            header('refresh:' . $refreshtime . ';url=' . $url);
+        } else {
+            header('Location:' . $url);
+        }
+
+        return $url;
+        die();
     }
 
     public function is_image(string $file)
@@ -68,6 +106,7 @@ class ResponseHandler extends GlobalVariables
                 }
             }
         }
+
         return $S;
     }
 
@@ -81,12 +120,14 @@ class ResponseHandler extends GlobalVariables
     public function setJsonHeader() : self
     {
         header('Content-Type: application/json;charset=utf-8');
+
         return $this;
     }
 
     public function setResponseCode(int $code) : self
     {
         http_response_code($code);
+
         return $this;
     }
 
@@ -112,7 +153,49 @@ class ResponseHandler extends GlobalVariables
                 $r[$key] = $value;
             }
         }
+
         return empty($r) ? $array : $r;
+    }
+
+    public function send() : void
+    {
+        if (!$this->prepared) {
+            throw new ResponseException('Response need to be prepared');
+        }
+        $this->addAllCookies();
+        $this->sendAllHeaders();
+        echo $this->content;
+    }
+
+    public function prepare(RequestHandler $request) : self
+    {
+        $this->request = $request;
+        $this->protocol = $this->request->getProtocol();
+        if (!$this->headers->has('Content-Type')) {
+            $this->headers->offsetSet('Content-Type', 'text/html');
+        }
+        if (!$this->headers->has('Content-Length')) {
+            $this->headers->offsetSet('Content-Length', strlen($this->content));
+        }
+        $this->prepared = true;
+
+        return $this;
+    }
+
+    private function addAllCookies() : void
+    {
+    }
+
+    private function sendAllHeaders() : void
+    {
+        if (headers_sent()) {
+            return;
+        }
+        header(sprintf('%s %s %s', $this->protocol, $this->status->value, $this->status->getStatusText()), true, $this->status->value);
+        foreach ($this->headers as $name => $value) {
+            header(sprintf('%s: %s', $name, $value), false, $this->status->value);
+        }
+        header('X-Response-Time: ' . (microtime(true) - $this->request->getRequestStartTime()), );
     }
 
     /**
@@ -128,6 +211,7 @@ class ResponseHandler extends GlobalVariables
         if (array_key_exists($oldkey, $arr)) {
             $arr[$newkey] = $arr[$oldkey];
             unset($arr[$oldkey]);
+
             return $arr;
         } else {
             return false;

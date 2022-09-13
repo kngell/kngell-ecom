@@ -21,8 +21,10 @@ class AddressBookManager extends Model
                 $address->pays = $this->container(CountriesManager::class)->country($address->pays);
                 // code...
             }
+
             return new Collection($add);
         }
+
         return new Collection([]);
     }
 
@@ -35,6 +37,7 @@ class AddressBookManager extends Model
             //$singleAddress->pays = $this->container(CountriesManager::class)->country($singleAddress->pays);
             return $singleAddress;
         }
+
         return null;
     }
 
@@ -48,10 +51,13 @@ class AddressBookManager extends Model
             if ($en->getPrincipale() == 'Y') {
                 $data = $en->getInitializedAttributes(true);
                 $r = $this->updateAddressPrincipale($id);
+
                 return $r->assign(array_merge($data, ['tbl' => $tbl, 'rel_id' => $id]))->save();
             }
+
             return $this->assign(['tbl' => $tbl, 'rel_id' => $id])->save();
         }
+
         return parent::save();
     }
 
@@ -63,8 +69,10 @@ class AddressBookManager extends Model
             $addrPrincipale = $addrPrincipale->assign((array) current($addrPrincipale->get_results()));
             $addrPrincipale->getEntity()->{$addrPrincipale->getEntity()->getSetter('principale')}('N');
             $addrPrincipale->getQueryParams()->reset();
+
             return current($addrPrincipale->save()->get_results());
         }
+
         return $addrPrincipale;
     }
 }

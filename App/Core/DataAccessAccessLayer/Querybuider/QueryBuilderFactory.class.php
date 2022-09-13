@@ -26,6 +26,7 @@ class QueryBuilderFactory
         if (!$this->querybuider instanceof QueryBuilderInterface) {
             throw new QueryBuilderExceptions($this->querybuider . ' is not a valid query builder Object!');
         }
+
         return $this->querybuider;
     }
 }

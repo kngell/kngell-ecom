@@ -24,6 +24,7 @@ trait StripeGetSetTrait
     public function setStripe(StripeClient $stripe) : self
     {
         $this->stripe = $stripe;
+
         return $this;
     }
 
@@ -43,6 +44,7 @@ trait StripeGetSetTrait
     public function setSession(SessionInterface $session) : self
     {
         $this->session = $session;
+
         return $this;
     }
 
@@ -62,6 +64,7 @@ trait StripeGetSetTrait
     public function setCustomer(Customer $customer) : self
     {
         $this->customer = $customer;
+
         return $this;
     }
 
@@ -81,6 +84,7 @@ trait StripeGetSetTrait
     public function setCustomerEntity(CustomerEntity $customerEntity) : self
     {
         $this->customerEntity = $customerEntity;
+
         return $this;
     }
 
@@ -100,6 +104,7 @@ trait StripeGetSetTrait
     public function setPaymentMethod(?CollectionInterface $paymentMethod) :self
     {
         $this->paymentMethod = $paymentMethod;
+
         return $this;
     }
 
@@ -119,6 +124,7 @@ trait StripeGetSetTrait
     public function setPaymentIntent(PaymentIntent $paymentIntent) : self
     {
         $this->paymentIntent = $paymentIntent;
+
         return $this;
     }
 
@@ -138,6 +144,7 @@ trait StripeGetSetTrait
     public function setMoney(MoneyManager $money) : self
     {
         $this->money = $money;
+
         return $this;
     }
 }

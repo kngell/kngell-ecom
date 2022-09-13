@@ -16,6 +16,7 @@ class DispatcherFactory
         if (!$dispatcher instanceof EventDispatcherInterface) {
             throw new BadEnventDispatcherException($dispatcher::class . ' is not a valid event dispatcher');
         }
+
         return $dispatcher;
     }
 }

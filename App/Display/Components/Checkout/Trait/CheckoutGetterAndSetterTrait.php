@@ -40,6 +40,7 @@ trait CheckoutGetterAndSetterTrait
     public function setUserItems(array $userItems) : self
     {
         $this->userItems = $userItems;
+
         return $this;
     }
 
@@ -59,6 +60,7 @@ trait CheckoutGetterAndSetterTrait
     public function setHT(Money $HT) : self
     {
         $this->HT = $HT;
+
         return $this;
     }
 
@@ -78,6 +80,7 @@ trait CheckoutGetterAndSetterTrait
     public function setFinalTaxes(CollectionInterface $finalTaxes) : self
     {
         $this->finalTaxes = $finalTaxes;
+
         return $this;
     }
 }

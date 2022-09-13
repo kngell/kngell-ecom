@@ -24,9 +24,10 @@ abstract class AbstractController
     protected array $callAfterMiddlewares = [];
     protected string $filePath;
     protected array $cachedFiles;
-    protected array $route_params = [];
+    protected array $routeParams = [];
     protected array $frontEndComponents = [];
     protected array $select2Field = [];
+    protected string $previousPage;
 
     // public function getComment() : CommentsInterface
     // {
@@ -55,7 +56,9 @@ abstract class AbstractController
         return [
             'Error404' => Error404::class,
             // 'ShowCommentsMiddlewares' => ShowCommentsMiddlewares::class,
+            'CheckUserLoggedInMiddleware' => CheckUserLoggedInMiddleware::class,
             'SelectPathMiddleware' => SelectPathMiddleware::class,
+
         ];
     }
 
@@ -63,12 +66,14 @@ abstract class AbstractController
     {
         $this->isValidView();
         $this->view_instance->reset();
+
         return $this;
     }
 
     protected function siteTitle(?string $title = null) : View
     {
         $this->isValidView();
+
         return $this->view_instance->siteTitle($title);
     }
 
@@ -84,6 +89,7 @@ abstract class AbstractController
         if ($this->view_instance === null) {
             throw new BaseLogicException('You cannot use the render method if the View is not available !');
         }
+
         return true;
     }
 }

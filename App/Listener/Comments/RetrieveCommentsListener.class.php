@@ -18,12 +18,14 @@ class RetrieveCommentsListener implements ListenerInterface
         /** @var array */
         $comments = $this->allComments($event);
         $params = $event->getParams();
+
         return [
             'totalComment' => $this->totalComment($event),
             'userComments' => $comment !== null ? $this->comment->showComment($comment) : null,
             'commentsHtml' => $this->comment->showAllComments($comments, $params['filters'] ?? [], $comment->parent_id ?? 0),
             'comments' => $comments,
         ];
+
         return null;
     }
 
@@ -39,6 +41,7 @@ class RetrieveCommentsListener implements ListenerInterface
         if ($object->count() > 0) {
             return $object->get_results();
         }
+
         return null;
     }
 
@@ -52,6 +55,7 @@ class RetrieveCommentsListener implements ListenerInterface
         }
         $object->table()->where(['cmtID' => $lastID])->reset()->return('object');
         $object->assign((array) $object->getAll()->get_results());
+
         return $object->getEntity();
     }
 
@@ -71,6 +75,7 @@ class RetrieveCommentsListener implements ListenerInterface
         if ($object->count() > 0) {
             return current($object->get_results())->total_comments;
         }
+
         return null;
     }
 
@@ -79,6 +84,7 @@ class RetrieveCommentsListener implements ListenerInterface
         if (isset($params['current_pagination_page'])) {
             return (int) $params['current_pagination_page'] * (int) $this->commentPerPaginationPage($params);
         }
+
         return $this->limit;
     }
 
@@ -99,6 +105,7 @@ class RetrieveCommentsListener implements ListenerInterface
                 return ['votes DESC', 'created_at DESC'];
             }
         }
+
         return [];
     }
 

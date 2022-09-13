@@ -22,6 +22,7 @@ class UniqueValidator extends CustomValidator
                 }
             }
         }
+
         return !$other->count() >= 1;
     }
 }

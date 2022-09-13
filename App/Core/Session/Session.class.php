@@ -135,6 +135,7 @@ class Session extends AbstractSession implements SessionInterface
     public function exists(string $key): bool
     {
         $this->ensureSessionKeyIsValid($key);
+
         return $this->storage->SessionExists($key);
     }
 }

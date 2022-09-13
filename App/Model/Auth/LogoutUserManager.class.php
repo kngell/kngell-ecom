@@ -33,8 +33,9 @@ class LogoutUserManager extends Model
         }
         if ($this->session->exists(CURRENT_USER_SESSION_NAME)) {
             $id = $this->session->get(CURRENT_USER_SESSION_NAME)['id'];
-            $this->session->invalidate(CURRENT_USER_SESSION_NAME);
+            $this->session->invalidate();
         }
+
         return [$token ?? '', $id ?? ''];
     }
 }

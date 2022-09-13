@@ -18,6 +18,7 @@ abstract class AbstractDataMapper
         if (empty($value)) {
             throw new DataMapperExceptions($errorMsg);
         }
+
         return true;
     }
 
@@ -26,6 +27,7 @@ abstract class AbstractDataMapper
         if (!is_array($value)) {
             throw new DataMapperExceptions('Your argument need to be an array!');
         }
+
         return true;
     }
 
@@ -33,17 +35,18 @@ abstract class AbstractDataMapper
     {
         try {
             switch ($value) {
-            case is_bool($value):
-            case intval($value):
-                $type = PDO::PARAM_INT;
-            break;
-            case is_null($value):
-                $type = PDO::PARAM_NULL;
-            break;
-            default:
-                $type = PDO::PARAM_STR;
-            break;
-        }
+                case is_bool($value):
+                case intval($value):
+                    $type = PDO::PARAM_INT;
+                    break;
+                case is_null($value):
+                    $type = PDO::PARAM_NULL;
+                    break;
+                default:
+                    $type = PDO::PARAM_STR;
+                    break;
+            }
+
             return $type;
         } catch (\DataMapperExceptions $ex) {
             throw $ex;
@@ -61,6 +64,7 @@ abstract class AbstractDataMapper
         $type = $this->returnMode($data);
         $q = $this->fetchMode($type, $this->_query, $data);
         $check = array_key_exists('return_type', $data) ? $data['return_type'] : 'all';
+
         return match ($check) {
             'count' => $q->rowCount(),
             'single' => $q->fetch(),
@@ -72,6 +76,7 @@ abstract class AbstractDataMapper
     protected function c_u_d_result() : mixed
     {
         $this->setLastID();
+
         return $this->numrow();
     }
 
@@ -88,6 +93,7 @@ abstract class AbstractDataMapper
         } else {
             $q->setFetchMode($type);
         }
+
         return $q;
     }
 
@@ -107,6 +113,7 @@ abstract class AbstractDataMapper
                 default => PDO::FETCH_ASSOC
             };
         }
+
         return $returnMode;
     }
 }

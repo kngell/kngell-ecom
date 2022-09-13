@@ -199,24 +199,17 @@ interface CollectionInterface extends Countable, IteratorAggregate, ArrayAccess
      */
     public function diffKeysUsing(mixed $items, callable $callback): static;
 
-    public function filter(?callable $callback = null);
-
-    public function offsetExists(mixed $offset): bool;
+    public function filter(?callable $callback = null): static;
 
     public function valueExists(mixed $value) : bool;
 
-    public function offsetGet(mixed $offset): mixed;
+    public function isEmpty() : bool;
 
-    public function offsetSet(mixed $key, mixed $value): void;
+    public function addAll(array $parameters) : self;
 
-    public function offsetUnset(mixed $key): void;
+    public function clear(string $key): void;
 
-    public function getIterator(): Traversable;
+    public function getWithDefault(string $key, mixed $defaultValue) : mixed;
 
-    /**
-     * Aliase of $this->size method.
-     *
-     * @return int
-     */
-    public function count(): int;
+    public function get(mixed $key): mixed;
 }

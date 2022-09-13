@@ -14,8 +14,10 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
             if (!$eventObj instanceof EventsInterface) {
                 throw new BadEnventDispatcherException("[$eventObj::class] is not a valid Event Object!", 1);
             }
+
             return $eventObj;
         }
+
         return $this->event($event, $obj, $args);
     }
 
@@ -32,6 +34,7 @@ abstract class AbstractEventDispatcher implements EventDispatcherInterface
                 $event->setParams($args);
             }
         }
+
         return $event;
     }
 }

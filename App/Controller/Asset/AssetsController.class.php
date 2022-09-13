@@ -60,6 +60,7 @@ class AssetsController extends Controller
                 $type = 'application/x-font-ttf';
                 break;
         }
+
         return $this->read_asset($fileToGet, $type);
     }
 

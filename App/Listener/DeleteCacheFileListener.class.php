@@ -10,6 +10,7 @@ class DeleteCacheFileListener implements ListenerInterface
         if ($object->getCache()->exists($object->getCachedFiles()['user_cart'])) {
             $object->getCache()->delete($object->getCachedFiles()['user_cart']);
         }
+
         return [];
     }
 }

@@ -23,6 +23,7 @@ class ShowCommentsMiddlewares extends BeforeMiddleware
             $template = $object->getComment()->showAllComments($model->getComments(), $model->maxComments());
             $object->setCommentsArg($template);
         }
+
         return $next($object);
     }
 }

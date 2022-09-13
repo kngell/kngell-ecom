@@ -20,20 +20,19 @@ class PaiementInfos extends AbstractFormSteps implements CheckoutFormStepInterfa
     private function outputTemplate(string $template = '', string $dataTemplate = '') : string
     {
         $temp = '';
-        /** @var CustomerEntity */
-        $en = $this->customer->getEntity();
         list('name' => $method, 'price' => $price) = $this->shippingMethod($this->shippingClass);
         $temp = str_replace('{{userCartSummary}}', $this->summary->display($this), $template);
         $temp = str_replace('{{discountCode}}', $this->discountCode(), $temp);
         $temp = str_replace('{{data}}', $dataTemplate, $temp);
         $temp = str_replace('{{title}}', $this->titleTemplate($this->title), $temp);
-        $temp = str_replace('{{contact_email}}', $en->isInitialized('email') ? $en->getEmail() : '', $temp);
+        $temp = str_replace('{{contact_email}}', $this->customerEntity->isInitialized('email') ? $this->customerEntity->getEmail() : '', $temp);
         $temp = str_replace('{{address_de_livraion}}', $this->customerAddress(1), $temp);
         $temp = str_replace('{{shipping_mode}}', $method, $temp);
         $temp = str_replace('{{shipping_price}}', $this->money->getFormatedAmount($price, 2), $temp);
         $temp = str_replace('{{addresse_de_facturation}}', $this->customerAddress(1), $temp);
         $temp = str_replace('{{paiementForm}}', $this->form(), $temp);
         $temp = str_replace('{{buttons_group}}', $this->buttons($this->btnNextText), $temp);
+
         return $temp;
     }
 
@@ -64,6 +63,7 @@ class PaiementInfos extends AbstractFormSteps implements CheckoutFormStepInterfa
                 }
             }
         }
+
         return $html;
     }
 }

@@ -113,6 +113,7 @@ class RadioType extends AbstractAttr implements FormBuilderTypeInterface
             'require' => false,
             'model_data' => false,
         ];
+
         return !empty($this->settings) ? array_merge($defaults, $this->settings) : $defaults;
     }
 
@@ -135,6 +136,7 @@ class RadioType extends AbstractAttr implements FormBuilderTypeInterface
     {
         $checked = isset($attr['checked']) && $attr['checked'] == true ? 'checked' : '';
         $value = isset($this->attr['value']) ? 'value="' . $this->attr['value'] . '" ' : '';
+
         return '<input type="' . $attr['type'] . '" name="' . $attr['name'] . '" id="' . $attr['id'] . '" class="' . implode(' ', $attr['class']) . '" ' . $value . $checked . ' />' . "\n";
     }
 

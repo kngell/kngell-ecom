@@ -38,6 +38,7 @@ class CoreError implements CoreErrorInterface
         if ($object) {
             $this->object = $object;
         }
+
         return $this;
     }
 
@@ -60,6 +61,7 @@ class CoreError implements CoreErrorInterface
             }
         }
         $this->hasError = false;
+
         return $this;
     }
 
@@ -79,6 +81,7 @@ class CoreError implements CoreErrorInterface
 
             return true;
         }
+
         return false;
     }
 

@@ -16,6 +16,7 @@ abstract class AbstractSession
         $uagent = $_SERVER['HTTP_USER_AGENT'];
         $regx = '/\/[a-zA-z0-9.]+/';
         $newString = preg_replace($regx, '', $uagent);
+
         return $newString;
     }
 

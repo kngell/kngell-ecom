@@ -15,21 +15,30 @@ class UserAccountPaths implements PathsInterface
     private function templatesPath() : array
     {
         return [
+            'userMiniProfilePath' => $this->templatePath . 'userMiniProfileTemplate.php',
             'userProfilePath' => $this->templatePath . 'userProfileTemplate.php',
             'buttonsPath' => $this->templatePath . 'buttonsTemplate.php',
             'removeAccountPath' => $this->templatePath . 'removeAccountFrmTemplate.php',
             'userFormPath' => $this->templatePath . 'userFormTemplate.php',
             'showOrdersPath' => $this->templatePath . 'showOrdersTemplate.php',
             'itemInfosPath' => $this->templatePath . 'ordersItemsInfosTemplate.php',
+            'transactionPath' => $this->templatePath . 'userTransactionTemplate.php',
+            'profileDataPath' => $this->templatePath . 'userProfileDataTemplate.php',
+            'userFormDataPath' => $this->templatePath . 'userFormDataTemplate.php',
+            'userProfileMenuPath' => $this->templatePath . 'userProfileMenuTemplate.php',
+            'userUploadProfilePath' => $this->templatePath . 'uploadProfileBox.php',
+            'userCardPath' => $this->templatePath . 'userCardTemplate.php.php',
+            'userCardListPath' => $this->templatePath . 'userCardListTemplate.php',
+            'userCardItemPath' => $this->templatePath . 'userCardItemTemplate.php',
+            'userCardPaymentPath' => $this->templatePath . 'userPaymentCardHeadTemplate.php',
+            'userCcHeadItemPath' => $this->templatePath . 'userCreditCardHeadElementTemplate.php',
         ];
     }
 
     private function viewPath() : array
     {
         return [
-            'userCardPaymentPath' => $this->viewPath . '_user_payment_card.php',
             'menuPath' => $this->viewPath . '_transaction_menu.php',
-
         ];
     }
 }

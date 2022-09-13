@@ -49,6 +49,7 @@ class NativeCacheStorage extends AbstractCacheStorage
         if (!file_exists($cacheEntryPathAndFilename)) {
             return false;
         }
+
         return $this->readCacheFile($cacheEntryPathAndFilename);
     }
 
@@ -67,6 +68,7 @@ class NativeCacheStorage extends AbstractCacheStorage
         if (($liveTime > $this->envConfigurations->getMaximumPathLength())) {
             return false;
         }
+
         return true;
     }
 
@@ -82,6 +84,7 @@ class NativeCacheStorage extends AbstractCacheStorage
             $result = $this->tryRemoveWithLock($cacheEntryPathAndFilename);
             if ($result === true) {
                 clearstatcache(true, $cacheEntryPathAndFilename);
+
                 return true;
             }
             usleep(rand(10, 500));

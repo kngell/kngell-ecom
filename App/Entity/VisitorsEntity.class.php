@@ -126,6 +126,7 @@ class VisitorsEntity extends Entity
     public function setUpdateAt(DateTimeInterface $updateAt) : self
     {
         $this->updateAt = $updateAt;
+
         return $this;
     }
 
@@ -252,6 +253,7 @@ class VisitorsEntity extends Entity
     public function delete(?string $field = null) : self
     {
         unset($this->$field);
+
         return $this;
     }
 
@@ -271,6 +273,7 @@ class VisitorsEntity extends Entity
     public function setDateEnreg(DateTimeInterface $dateEnreg) : self
     {
         $this->dateEnreg = $dateEnreg;
+
         return $this;
     }
 }

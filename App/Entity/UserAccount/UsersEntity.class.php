@@ -66,6 +66,7 @@ class UsersEntity extends Entity
     public function setLastName(string $lastName) : self
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
@@ -85,6 +86,7 @@ class UsersEntity extends Entity
     public function setFirstName(string $firstName) : self
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
@@ -104,6 +106,7 @@ class UsersEntity extends Entity
     public function setUserName(string $userName) : self
     {
         $this->userName = $userName;
+
         return $this;
     }
 
@@ -123,6 +126,7 @@ class UsersEntity extends Entity
     public function setEmail(string $email) : self
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -142,6 +146,7 @@ class UsersEntity extends Entity
     public function setPassword(string $password) : self
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -169,6 +174,7 @@ class UsersEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -188,6 +194,7 @@ class UsersEntity extends Entity
     public function setProfileImage(string $profileImage) : self
     {
         $this->profileImage = $profileImage;
+
         return $this;
     }
 
@@ -207,6 +214,7 @@ class UsersEntity extends Entity
     public function setSalt(string $salt) : self
     {
         $this->salt = $salt;
+
         return $this;
     }
 
@@ -226,6 +234,7 @@ class UsersEntity extends Entity
     public function setUserToken(string $token) : self
     {
         $this->userToken = $token;
+
         return $this;
     }
 
@@ -245,6 +254,7 @@ class UsersEntity extends Entity
     public function setPhone(string $phone) : self
     {
         $this->phone = $phone;
+
         return $this;
     }
 
@@ -284,6 +294,7 @@ class UsersEntity extends Entity
     public function setVerified(int $verified) : self
     {
         $this->verified = $verified;
+
         return $this;
     }
 
@@ -304,6 +315,7 @@ class UsersEntity extends Entity
         if (isset($this->$field)) {
             unset($this->$field);
         }
+
         return $this;
     }
 
@@ -343,6 +355,7 @@ class UsersEntity extends Entity
     public function setCpassword($cpassword)
     {
         $this->cpassword = $cpassword;
+
         return $this;
     }
 
@@ -362,6 +375,7 @@ class UsersEntity extends Entity
     public function setUserCookie(string $userCookie) : self
     {
         $this->userCookie = $userCookie;
+
         return $this;
     }
 
@@ -381,6 +395,7 @@ class UsersEntity extends Entity
     public function setCustomerId(string $userCustomerID) : self
     {
         $this->customerId = $userCustomerID;
+
         return $this;
     }
 
@@ -400,6 +415,7 @@ class UsersEntity extends Entity
     public function setRememberMeCookie(string $rememberCookie) : self
     {
         $this->rememberMeCookie = $rememberCookie;
+
         return $this;
     }
 
@@ -419,6 +435,7 @@ class UsersEntity extends Entity
     public function setTokenExpire(DateTimeInterface $tokenExpire) : self
     {
         $this->tokenExpire = $tokenExpire;
+
         return $this;
     }
 
@@ -438,6 +455,7 @@ class UsersEntity extends Entity
     public function setFbAccessToken(string $fbAccessToken) : self
     {
         $this->fbAccessToken = $fbAccessToken;
+
         return $this;
     }
 
@@ -449,6 +467,7 @@ class UsersEntity extends Entity
     public function setRegisterDate(DateTimeInterface $registerDate) : self
     {
         $this->registerDate = $registerDate;
+
         return $this;
     }
 }

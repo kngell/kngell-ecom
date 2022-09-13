@@ -25,6 +25,7 @@ class CountriesManager extends Model
                 return str_starts_with(strtolower($countrie['name']), $search);
             });
         }
+
         return array_map(function ($country) {
             return ['id' => $country['numeric'], 'text' => $this->response->htmlDecode($country['name'])];
         }, $countries);
@@ -34,6 +35,7 @@ class CountriesManager extends Model
     {
         if (is_string($id)) {
             $country = (new ISO3166)->numeric($id);
+
             return [
                 'id' => $country['numeric'],
                 'name' => $country['name'],

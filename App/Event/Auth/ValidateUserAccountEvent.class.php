@@ -19,6 +19,7 @@ class ValidateUserAccountEvent extends AbstractEmailSenderEvent implements Email
         $emailconfig->setSubject('Account Validation!')
             ->setFrom('', 'K\'nGELL Ingenierie Logistique')
             ->setEmailTemplate('users' . DS . 'emailTemplate' . DS . 'successTemplate');
+
         return $emailconfig;
     }
 
@@ -31,6 +32,7 @@ class ValidateUserAccountEvent extends AbstractEmailSenderEvent implements Email
         $html = str_replace('{{btnText}}', $this->getBtnText(), $html);
         $html = str_replace('{{msgEnd}}', $this->getMsgEnd(), $html);
         $html = str_replace('{{link}}', $this->getLink(), $html);
+
         return $this->parseDom($html);
     }
 }

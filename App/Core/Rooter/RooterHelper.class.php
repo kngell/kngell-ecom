@@ -37,6 +37,7 @@ class RooterHelper
                 }
             }
         }
+
         return !empty($formatUrl) ? $formatUrl : $urlArgs;
     }
 
@@ -51,6 +52,7 @@ class RooterHelper
                 $url = '';
             }
         }
+
         return rtrim($url, '/');
     }
 

@@ -14,6 +14,33 @@ class Collection implements CollectionInterface
         $this->items = (array) $items;
     }
 
+    public function isEmpty() : bool
+    {
+        return $this->count === 0;
+    }
+
+    public function addAll(array $parameters) : self
+    {
+        foreach ($parameters as $key => $value) {
+            $this->items[$key] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add an item to the collection.
+     *
+     * @param mixed $item
+     * @return self
+     */
+    public function add(mixed $item): self
+    {
+        $this->items[] = $item;
+
+        return $this;
+    }
+
     /**
      * Returns all the items within the collection.
      *
@@ -37,7 +64,7 @@ class Collection implements CollectionInterface
      */
     public function has(string $key): bool
     {
-        return isset($this->items[$key]);
+        return array_key_exists($key, $this->items) && isset($this->items[$key]);
     }
 
     /**
@@ -64,6 +91,7 @@ class Collection implements CollectionInterface
     public function map(callable $callback): static
     {
         $items = array_map($callback, $this->items, $this->keys());
+
         return new static(array_combine($this->keys(), $items));
     }
 
@@ -72,6 +100,7 @@ class Collection implements CollectionInterface
         if ($size = $this->size()) {
             $array = array_filter($this->items);
             $avg = array_sum($array) / $size;
+
             return $avg;
         }
     }
@@ -148,6 +177,7 @@ class Collection implements CollectionInterface
     public function push(...$values): self
     {
         array_push($this->items, $values);
+
         return $this;
     }
 
@@ -204,18 +234,6 @@ class Collection implements CollectionInterface
     }
 
     /**
-     * Add an item to the collection.
-     *
-     * @param mixed $item
-     * @return self
-     */
-    public function add(mixed $item): self
-    {
-        $this->items[] = $item;
-        return $this;
-    }
-
-    /**
      * Remove the item from the collection.
      *
      * @param string $key
@@ -223,7 +241,15 @@ class Collection implements CollectionInterface
      */
     public function remove(string $key): void
     {
+        if (!$this->has($key)) {
+            return;
+        }
         unset($this->items[$key]);
+    }
+
+    public function clear(string $key): void
+    {
+        $this->items = [];
     }
 
     public function updateValue(mixed $oldValue, mixed $NewValue) : void
@@ -328,6 +354,7 @@ class Collection implements CollectionInterface
         if ($callback) {
             return new static($this->where($this->items, $callback));
         }
+
         return new static(array_filter($this->items));
     }
 
@@ -386,6 +413,16 @@ class Collection implements CollectionInterface
         return null;
     }
 
+    public function get(mixed $key): mixed
+    {
+        return $this->offsetGet($key);
+    }
+
+    public function getWithDefault(string $key, mixed $defaultValue) : mixed
+    {
+        return $this->offsetGet($key) ?? $defaultValue;
+    }
+
     public function offsetSet(mixed $key, mixed $value): void
     {
         if (is_null($key)) {
@@ -400,7 +437,7 @@ class Collection implements CollectionInterface
         unset($this->items[$key]);
     }
 
-    public function getIterator(): Iterator
+    final public function getIterator(): Traversable
     {
         return new ArrayIterator($this->items);
     }
@@ -410,7 +447,7 @@ class Collection implements CollectionInterface
      *
      * @return int
      */
-    public function count(): int
+    final public function count(): int
     {
         return $this->size();
     }
@@ -428,6 +465,7 @@ class Collection implements CollectionInterface
                 $result[$key] = $value;
             }
         }
+
         return $result;
     }
 }

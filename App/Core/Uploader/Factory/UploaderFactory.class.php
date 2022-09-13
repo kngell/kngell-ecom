@@ -36,6 +36,7 @@ class UploaderFactory
                 };
             }
         }
+
         return [$uploaders, $paths];
     }
 
@@ -106,11 +107,13 @@ class UploaderFactory
                 $finfo = finfo_open(FILEINFO_MIME);
                 $mimetype = finfo_file($finfo, $fileAry['name']);
                 finfo_close($finfo);
+
                 return $mimetype;
             } else {
                 return 'application/octet-stream';
             }
         }
+
         return !empty($fileAry['tmp_name']) ? mime_content_type($fileAry['tmp_name']) : '';
     }
 }

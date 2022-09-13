@@ -20,12 +20,18 @@ class SaveOrderDetailsListener implements ListenerInterface
         foreach ($user_cart as $cartItem) {
             $od[] = $odManager->assign($this->orderDetailsData($object, $cartItem, $orders))->save();
         }
-        return [$orders, $tr, $od];
+        $customer = $this->container->make(UsersManager::class)->assign([
+            'user_id' => $object->getCustomerEntity()->getUserId(),
+            'customer_id' => $object->getCustomer()->id,
+        ])->save();
+
+        return [$orders, $tr, $od, $customer];
     }
 
     private function orderDetailsData(PaymentGatewayInterface $object, array $cartItem, OrdersManager $orders) : array
     {
         list($taxeAmount, $taxeDetails) = $this->calcTaxes($cartItem);
+
         return [
             'od_order_id' => $orders->getLastID(),
             'od_product_id' => $cartItem['id'],
@@ -49,6 +55,7 @@ class SaveOrderDetailsListener implements ListenerInterface
                 $taxeAmount += ($cartItem['HT'] * $taxObj->t_rate) / 100;
                 $taxeDetails[$taxObj->t_class] = ['title' => $taxObj->t_name, 'rate' => $taxObj->t_rate];
             }
+
             return [$taxeAmount, $taxeDetails];
         }
         throw new BaseException('Unable to calculate taxes for the product!', 1);
@@ -84,7 +91,7 @@ class SaveOrderDetailsListener implements ListenerInterface
             'ord_tax' => json_encode($obj->getCustomerEntity()->getCartSummary()->offsetGet('finalTaxes')->all()),
             'ord_qty' => $obj->getCustomerEntity()->getCartSummary()->offsetGet('totalItem'),
             'ord_delivery_date' => $this->dt->getFromInterface(new DateTime()),
-            'ord_shipping_class' => $obj->getCustomerEntity()->getShippingMethod()['id'],
+            'ord_shipping_class' => filter_var($obj->getCustomerEntity()->getShippingMethod()['id'], FILTER_SANITIZE_NUMBER_INT),
             'ord_status' => 1,
             'ord_pmt_status' => $obj->getPaymentIntent()->status,
             'updated_at' => $this->dt->getFromInterface(new DateTime()),

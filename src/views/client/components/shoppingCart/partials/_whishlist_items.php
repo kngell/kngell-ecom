@@ -2,8 +2,8 @@
    <!-- Wishlist item -->
    <?php if ($this->user_cart && $this->user_cart[0]) :?>
    <?php $products = array_filter($this->user_cart[0], function ($item) {
-    return $item->c_content == 'wishlist';
-})?>
+       return $item->c_content == 'wishlist';
+   })?>
    <?php if (count($products) > 0) :?>
    <?php foreach ($products as $product):?>
    <div class="row cart-row">

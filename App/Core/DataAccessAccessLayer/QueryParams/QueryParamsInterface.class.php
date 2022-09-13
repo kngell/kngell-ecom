@@ -12,4 +12,6 @@ interface QueryParamsInterface
     public function where(array $conditions, ?string $op = null) : self;
 
     public function build() : array;
+
+    public function reset() : self;
 }

@@ -21,19 +21,21 @@ class UserInfos extends AbstractFormSteps implements CheckoutFormStepInterface
     {
         $mainTemplate = $this->getTemplate('mainUserTemplate');
         $userData = $this->getTemplate('userDataPath');
+
         return $this->outputTemplate($mainTemplate, $userData, $this->userCart);
     }
 
     protected function titleTemplate(string $title = '') : string
     {
         $contactTitle = $this->getTemplate('contactTitlePath');
+
         return str_replace('{{accountCheckt}}', !AuthManager::isUserLoggedIn() ? $this->accountCheck() : '', $contactTitle);
     }
 
     private function outputTemplate(string $template = '', string $dataTemplate = '', ?CollectionInterface $obj = null) : string
     {
         $temp = '';
-        if (!is_null($obj) && $obj->count() > 0) {
+        if (!is_null($obj)) {
             $temp = str_replace('{{userCartSummary}}', $this->summary->display($this), $template);
             $temp = str_replace('{{data}}', $dataTemplate, $temp);
             $temp = str_replace('{{title}}', $this->titleTemplate($this->title), $temp);
@@ -44,6 +46,7 @@ class UserInfos extends AbstractFormSteps implements CheckoutFormStepInterface
             $temp = str_replace('{{deliveryAddress}}', $this->deliveryAdress(), $temp);
             $temp = str_replace('{{buttons_group}}', $this->buttons(), $temp);
         }
+
         return $temp;
     }
 
@@ -51,8 +54,10 @@ class UserInfos extends AbstractFormSteps implements CheckoutFormStepInterface
     {
         if (AuthManager::isUserLoggedIn()) {
             list($htmlChk, $htmlModal, $text) = $this->addressBook->all('manage_frm');
+
             return $htmlChk;
         }
+
         return '';
     }
 

@@ -19,6 +19,7 @@ class ThemeBuilderFactory
         if (!$_themeDefault) {
             throw new ThemeBuilderInvalidArgumentException('Invalid theme builder object library. Ensure you are implementing the correct interface [ThemeBuilderInterface]');
         }
+
         return new ThemeBuilder();
         //return (new ThemeBuilder())->build($_themeDefault);
     }

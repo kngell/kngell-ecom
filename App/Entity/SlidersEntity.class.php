@@ -34,6 +34,7 @@ class SlidersEntity extends Entity
     public function setSlId(int $slId) : self
     {
         $this->slId = $slId;
+
         return $this;
     }
 
@@ -53,6 +54,7 @@ class SlidersEntity extends Entity
     public function setMedia(string $media) : self
     {
         $this->media = $media;
+
         return $this;
     }
 
@@ -72,6 +74,7 @@ class SlidersEntity extends Entity
     public function setPageSlider(string $pageSlider) : self
     {
         $this->pageSlider = $pageSlider;
+
         return $this;
     }
 
@@ -91,6 +94,7 @@ class SlidersEntity extends Entity
     public function setSliderTitle(string $sliderTitle) : self
     {
         $this->sliderTitle = $sliderTitle;
+
         return $this;
     }
 
@@ -110,6 +114,7 @@ class SlidersEntity extends Entity
     public function setSliderSubtitle(string $sliderSubtitle) : self
     {
         $this->sliderSubtitle = $sliderSubtitle;
+
         return $this;
     }
 
@@ -129,6 +134,7 @@ class SlidersEntity extends Entity
     public function setSliderText(string $sliderText) : self
     {
         $this->sliderText = $sliderText;
+
         return $this;
     }
 
@@ -148,6 +154,7 @@ class SlidersEntity extends Entity
     public function setSliderBtnText(string $sliderBtnText) : self
     {
         $this->sliderBtnText = $sliderBtnText;
+
         return $this;
     }
 
@@ -167,6 +174,7 @@ class SlidersEntity extends Entity
     public function setSliderBtnLink(string $sliderBtnLink) : self
     {
         $this->sliderBtnLink = $sliderBtnLink;
+
         return $this;
     }
 
@@ -206,6 +214,7 @@ class SlidersEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -225,6 +234,7 @@ class SlidersEntity extends Entity
     public function setStatus(string $status) : self
     {
         $this->status = $status;
+
         return $this;
     }
 }

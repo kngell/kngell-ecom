@@ -17,7 +17,7 @@ abstract class AbstractCreditCardPage
     {
         $this->frm = $frm;
         $this->paths = $paths->Paths();
-        $this->customer = $this->customer($customer);
+        $this->customer = $customer;
         $this->dm = $dm;
     }
 

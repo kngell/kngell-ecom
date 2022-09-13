@@ -27,6 +27,7 @@ class SinglePhonePage extends AbstractSinglePage implements DisplayPagesInterfac
     {
         if (count((array) $this->product) !== 0) {
             $template = $this->getTemplate('productDetailsPath');
+
             return $this->outputSingleProduct($template, $this->product);
         } else {
             return '<div class="text-center text-lead py-5">

@@ -29,14 +29,21 @@ abstract class AbstractEntity
         if (is_string($comment)) {
             preg_match('/@(?<content>.+)/i', $comment, $content);
             $content = isset($content['content']) ? $content['content'] : '';
+
             return trim(str_replace('*/', '', $content));
         }
+
         return '';
+    }
+
+    protected function reflectionClass() : CustomReflectorInterface
+    {
+        return CustomReflector::getInstance();
     }
 
     protected function reflectionInstance() : ReflectionClass
     {
-        return CustomReflection::getInstance()->reflectionInstance($this::class);
+        return CustomReflector::getInstance()->reflectionInstance($this::class);
     }
 
     protected function assingParams(array $attrs, array $params) : self
@@ -47,6 +54,7 @@ abstract class AbstractEntity
                 $this->updateEntity($field, $value);
             }
         }
+
         return $this;
     }
 
@@ -60,6 +68,7 @@ abstract class AbstractEntity
                 $this->updateEntity($attr, $value);
             }
         }
+
         return $this;
     }
 
@@ -82,6 +91,7 @@ abstract class AbstractEntity
         if (is_string($value)) {
             return new DateTime($value);
         }
+
         return $value;
     }
 
@@ -97,6 +107,7 @@ abstract class AbstractEntity
             $pattern = ['#(?<=(?:[A-Z]))([A-Z]+)([A-Z][a-z])#', '#(?<=(?:[a-z0-9]))([A-Z])#'];
             $replacement = ['\1' . $separator . '\2', $separator . '\1'];
         }
+
         return preg_replace($pattern, $replacement, $value);
     }
 

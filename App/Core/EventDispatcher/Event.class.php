@@ -64,6 +64,7 @@ class Event implements StoppableEventInterface, EventsInterface
     public function setObject(object $object) : self
     {
         $this->object = $object;
+
         return $this;
     }
 
@@ -75,6 +76,7 @@ class Event implements StoppableEventInterface, EventsInterface
     public function setName($name) : self
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -94,6 +96,7 @@ class Event implements StoppableEventInterface, EventsInterface
     public function setParams($params) : self
     {
         $this->params = $params;
+
         return $this;
     }
 
@@ -105,6 +108,7 @@ class Event implements StoppableEventInterface, EventsInterface
     public function setPropagation(bool $propagationStopped)
     {
         $this->propagationStopped = $propagationStopped;
+
         return $this;
     }
 
@@ -124,6 +128,7 @@ class Event implements StoppableEventInterface, EventsInterface
     public function setResults(object $results) : self
     {
         $this->results = $results;
+
         return $this;
     }
 
@@ -133,6 +138,7 @@ class Event implements StoppableEventInterface, EventsInterface
         $doc->preserveWhiteSpace = false;
         $doc->encoding = 'utf-8';
         $doc->loadHTML($html);
+
         return $doc->saveHTML($doc->documentElement) . PHP_EOL . PHP_EOL;
     }
 }

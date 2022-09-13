@@ -108,13 +108,14 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
                 if (!in_array($value, self::SUPPORT_INPUT_TYPES)) {
                     throw new FormBuilderInvalidArgumentException('Unsupported object type ' . $value);
                 }
-        break;
-        default:
+                break;
+            default:
                 return false;
-        break;
+                break;
         endswitch;
 
         $this->inputs[$key] = $value;
+
         return true;
     }
 
@@ -133,36 +134,37 @@ abstract class AbstractFormBuilder implements FormBuilderInterface
                 if (!is_string($key)) {
                     throw new FormBuilderInvalidArgumentException('Invalid action key. This must be a string.');
                 }
-        break;
-        case 'method':
+                break;
+            case 'method':
                 if (!in_array($value, ['post', 'get', 'dialog'])) {
                     throw new FormBuilderInvalidArgumentException('Invalid form method. Either this is not set or you\'ve set an unsupported method type.');
                 }
-        break;
-        case 'target' :
+                break;
+            case 'target' :
                 if (!in_array($value, ['_self', '_blank', '_parent', '_top'])) {
                     throw new FormBuilderInvalidArgumentException('Invalid key');
                 }
-        break;
-        case 'enctype':
+                break;
+            case 'enctype':
                 if (!in_array($value, ['application/x-www-form-urlencoded', 'multipart/form-data', 'text/plain'])) {
                     throw new FormBuilderInvalidArgumentException();
                 }
-        break;
-        case 'id':
+                break;
+            case 'id':
             case 'class':
                 break;
-        case 'novalidate':
-            // case 'autocomplete' :
+            case 'novalidate':
+                // case 'autocomplete' :
                 if (!is_bool($value)) {
                     throw new FormBuilderInvalidArgumentException();
                 }
-        break;
-        default:
+                break;
+            default:
                 return false;
-        break;
+                break;
         endswitch;
         $this->formAttr[$key] = $value;
+
         return true;
     }
 }

@@ -14,6 +14,7 @@ class ListenerProvider extends AbstractEventListener
         if (array_key_exists($eventType, $this->listeners)) {
             return $this->listeners[$eventType];
         }
+
         return [];
     }
 
@@ -24,6 +25,7 @@ class ListenerProvider extends AbstractEventListener
             $this->listnerCanBeAdded(listener: $listener);
         }
         $this->listeners[$name][] = ['callback' => $callable, 'priority' => $priority];
+
         return $this;
     }
 

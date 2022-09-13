@@ -20,6 +20,7 @@ abstract class AbstractAttr
         foreach ($args as $key => $value) {
             $this->settings[$key] = $value;
         }
+
         return $this;
     }
 
@@ -35,18 +36,21 @@ abstract class AbstractAttr
     public function type(string $str) : self
     {
         $this->attr[__FUNCTION__] = $str;
+
         return $this;
     }
 
     public function placeholder(string $str) : self
     {
         $this->attr[__FUNCTION__] = $str;
+
         return $this;
     }
 
     public function value(mixed $value) : self
     {
         $this->attr['value'] = $value;
+
         return $this;
     }
 
@@ -54,6 +58,7 @@ abstract class AbstractAttr
     {
         $this->settings['show_label'] = true;
         $this->settings['label'] = $label;
+
         return $this;
     }
 
@@ -62,6 +67,7 @@ abstract class AbstractAttr
         foreach ($args as $key => $value) {
             $this->attr[$key] = $value;
         }
+
         return $this;
     }
 
@@ -76,36 +82,42 @@ abstract class AbstractAttr
             }
             $this->settings[__FUNCTION__] = array_merge($currentClass, $class);
         }
+
         return $this;
     }
 
     public function checked(bool $chk = false) : self
     {
         $this->attr[__FUNCTION__] = $chk;
+
         return $this;
     }
 
     public function req() : self
     {
         $this->attr['required'] = true;
+
         return $this;
     }
 
     public function id(string $id) : self
     {
         $this->attr['id'] = $id;
+
         return $this;
     }
 
     public function useModel(bool $useModel) : self
     {
         $this->settings['model_data'] = $useModel;
+
         return $this;
     }
 
     public function content(string $content) : self
     {
         $this->attr['content'] = $content;
+
         return $this;
     }
 
@@ -148,6 +160,7 @@ abstract class AbstractAttr
             'autocomplete' => 'nope',
             'custom_attr' => '',
             'title' => '',
+            'value' => '',
         ];
     }
 
@@ -176,6 +189,7 @@ abstract class AbstractAttr
             }
         }
         $arr1['class'] = $class;
+
         return $arr1;
     }
 
@@ -184,6 +198,7 @@ abstract class AbstractAttr
         if ((!empty($this->templatePath) && !file_exists($this->templatePath)) || (!empty($this->labelTemplatePath) && !file_exists($this->labelTemplatePath))) {
             throw new BaseException('Template Not Found!', 1);
         }
+
         return[
             !empty($this->templatePath) ? file_get_contents($this->templatePath) : '',
             !empty($this->labelTemplatePath) ? file_get_contents($this->labelTemplatePath) : '',
@@ -217,6 +232,7 @@ abstract class AbstractAttr
     protected function buildExtensionName() : string
     {
         $extensionName = lcfirst(str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $this->type . 'Type'))));
+
         return ucwords($extensionName);
     }
 
@@ -240,6 +256,7 @@ abstract class AbstractAttr
             }
             $attribute .= $this->getGlobalAttrHtml();
         }
+
         return $attribute;
     }
 
@@ -255,6 +272,7 @@ abstract class AbstractAttr
                 }
             }
         }
+
         return $attribute;
     }
 }

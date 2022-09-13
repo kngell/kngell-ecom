@@ -18,6 +18,7 @@ class VerifyUserAccountEvent extends AbstractEmailSenderEvent implements EmailSe
         $emailconfig = Container::getInstance()->make(EmailSenderConfiguration::class);
         $emailconfig->setSubject('Email Verification!');
         $emailconfig->setFrom('', 'K\'nGELL Ingenierie Logistique');
+
         return $emailconfig;
     }
 
@@ -25,6 +26,7 @@ class VerifyUserAccountEvent extends AbstractEmailSenderEvent implements EmailSe
     {
         $html = str_replace('{{name}}', $this->getUserName(), $html);
         $html = str_replace('{{EmailVerifylink}}', $this->getLink(), $html);
+
         return $this->parseDom($html);
     }
 }

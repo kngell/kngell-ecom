@@ -26,6 +26,7 @@ class UserCartItemsForm extends ClientFormBuilder implements ClientFormBuilderIn
         $this->template = str_replace('{{route}}', '/cart', $this->template);
         $this->template = str_replace('{{NumberOfItems}}', (string) $dataRepository->count(), $this->template);
         $this->template = str_replace('{{form_end}}', $form->end(), $this->template);
+
         return $this->template;
     }
 }

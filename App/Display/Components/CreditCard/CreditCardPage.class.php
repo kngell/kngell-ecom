@@ -22,6 +22,7 @@ class CreditCardPage extends AbstractCreditCardPage implements DisplayPagesInter
         // $template = str_replace('{{front}}', $this->getTemplate('ccFrontPath'), $template);
         // $template = str_replace('{{back}}', $this->getTemplate('ccBackPath'), $template);
         $template = str_replace('{{cc_form}}', $this->creditCardForm(), $template);
+
         return $template;
     }
 }

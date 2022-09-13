@@ -36,6 +36,7 @@ class JsonRepository extends AbstractRepository implements RepositoryInterface
     public function findAll(): mixed
     {
         $file = file_get_contents($this->file);
+
         return json_decode($file, true);
     }
 

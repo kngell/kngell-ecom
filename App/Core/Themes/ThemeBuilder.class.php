@@ -12,6 +12,7 @@ class ThemeBuilder
         if (!$this->themeBuilder instanceof ThemeBuilderInterface) {
             throw new ThemeBuilderInvalidArgumentException('Invalid theme builder object. Ensure you are implementing the correct interface [ThemeBuilderInterface]');
         }
+
         return $this->themeBuilder;
     }
 }

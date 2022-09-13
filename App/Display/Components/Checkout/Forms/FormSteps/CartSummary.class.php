@@ -63,6 +63,7 @@ class CartSummary extends AbstractFormSteps implements CheckoutFormStepInterface
         if (!is_null($step) && $step::class === 'PaiementInfos') {
             return '<div class="button-pay"><button type="button" class="btn btn-pay">Complete Order</button></div>';
         }
+
         return '';
     }
 
@@ -86,6 +87,7 @@ class CartSummary extends AbstractFormSteps implements CheckoutFormStepInterface
                 $template .= $uCartSummaryContent;
             }
         }
+
         return $template;
     }
 
@@ -97,6 +99,7 @@ class CartSummary extends AbstractFormSteps implements CheckoutFormStepInterface
         if (!is_null($shippingMode)) {
             $temp = str_replace('{{shipping}}', $this->totalShippingContent($shippingMode), $template);
         }
+
         return $temp == '' ? str_replace('{{shipping}}', '', $template) : $temp;
     }
 
@@ -106,6 +109,7 @@ class CartSummary extends AbstractFormSteps implements CheckoutFormStepInterface
         $template = str_replace('{{title}}', $shippingMode->sh_name, $template);
         $template = str_replace('{{sh_amount}}', strval($this->money->getFormatedAmount(strval($shippingMode->price))) ?? '', $template);
         $this->shippingAmount = $this->money->getCustomAmt(strval($shippingMode->price), 2);
+
         return $template;
     }
 }

@@ -17,6 +17,7 @@ abstract class AbstractEventListener implements ListenerProviderInterface
         if (!$object instanceof ListenerInterface) {
             throw new BaseInvalidArgumentException("Listener can not be instantiate [$class]!");
         }
+
         return $object;
     }
 

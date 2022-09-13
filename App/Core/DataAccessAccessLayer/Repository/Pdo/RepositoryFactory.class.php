@@ -36,6 +36,7 @@ class RepositoryFactory
         if (!$repositoryObject instanceof RepositoryInterface) {
             throw new BaseUnexpectedValueException(get_class($repositoryObject) . ' is not a valid repository Object!');
         }
+
         return $repositoryObject;
     }
 

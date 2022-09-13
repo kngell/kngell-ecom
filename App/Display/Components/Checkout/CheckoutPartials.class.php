@@ -42,7 +42,6 @@ class CheckoutPartials
         return [
             'mainUserTemplate' => $this->viewPath . $this->orderInfosPath . '_chk_user_info.php',
             'userDataPath' => $this->viewPath . $this->orderInfosPath . '_user_data.php',
-            'addAddressPath' => $this->viewPath . $this->orderInfosPath . '_checkout_add_address.php',
             'contactInfosPath' => $this->templatePath . 'userContactInfosTemplate.php',
             'contactTitlePath' => $this->viewPath . $this->orderInfosPath . '_contact_title.php',
         ];
@@ -88,7 +87,6 @@ class CheckoutPartials
     private function modalsPaths() : array
     {
         return [
-            'addAddressModalPath' => $this->templatePath . 'addAdressModal.php',
             'changeEmailModalPath' => $this->templatePath . 'changeEmailTemplate.php',
             'changeShippingModalPath' => $this->templatePath . 'changeShippingModeTemplate.php',
             'userAddressModalPath' => $this->templatePath . 'userAddressModalTemplate.php',

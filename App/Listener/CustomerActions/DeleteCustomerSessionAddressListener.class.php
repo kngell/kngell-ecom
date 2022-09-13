@@ -13,6 +13,7 @@ class DeleteCustomerSessionAddressListener implements ListenerInterface
         $newAddresses = $this->deleteCustomerAddress($customerEntity, (string) $key);
         $customerEntity->setAddress($newAddresses);
         $controller->getSession()->set(CHECKOUT_PROCESS_NAME, serialize($customerEntity));
+
         return [];
     }
 
@@ -30,6 +31,7 @@ class DeleteCustomerSessionAddressListener implements ListenerInterface
                 return $addressToRemove = [$key, $addr];
             }
         }
+
         return $addressToRemove;
     }
 
@@ -38,6 +40,7 @@ class DeleteCustomerSessionAddressListener implements ListenerInterface
         /** @var CollectionInterface */
         $currentAddresses = $customerEntity->getAddress();
         $currentAddresses->remove($key);
+
         return $currentAddresses;
     }
 }

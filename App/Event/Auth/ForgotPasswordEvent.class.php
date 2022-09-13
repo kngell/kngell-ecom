@@ -16,6 +16,7 @@ class ForgotPasswordEvent extends Event implements EmailSenderEventInterface
         $emailconfig->setSubject('Password Recovery!');
         $emailconfig->setCssPath(ASSET . 'css' . DS . 'custom' . DS . 'client' . DS . 'users' . DS . 'email' . DS . 'forgotPassword' . DS . 'forgotPawwordTemplate.css');
         $emailconfig->setEmailTemplate('users' . DS . 'emailTemplate' . DS . 'forgotPasswordEmailTemplate');
+
         return $emailconfig;
     }
 }

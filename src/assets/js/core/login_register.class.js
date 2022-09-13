@@ -108,7 +108,6 @@ class Login_And_Register {
       Call_controller(inputData, (response) => {
         phpLR.regfrm.find("#reg_singin").html("Register");
         if (response.result == "success") {
-          console.log(response.msg);
           phpLR.regbox
             .find(".upload-profile-image .img")
             .attr("src", "/public\\assets\\img\\users/avatar.png");

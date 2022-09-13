@@ -35,6 +35,7 @@ class CartEntity extends Entity
     public function setCartId(int $cartId) : self
     {
         $this->cartId = $cartId;
+
         return $this;
     }
 
@@ -54,6 +55,7 @@ class CartEntity extends Entity
     public function setUserId(string $userId) : self
     {
         $this->userId = $userId;
+
         return $this;
     }
 
@@ -73,6 +75,7 @@ class CartEntity extends Entity
     public function setItemId(int $itemId) : self
     {
         $this->itemId = $itemId;
+
         return $this;
     }
 
@@ -92,6 +95,7 @@ class CartEntity extends Entity
     public function setItemQty(int $itemQty) : self
     {
         $this->itemQty = $itemQty;
+
         return $this;
     }
 
@@ -111,6 +115,7 @@ class CartEntity extends Entity
     public function setTotalAmount(string $totalAmount) : self
     {
         $this->totalAmount = $totalAmount;
+
         return $this;
     }
 
@@ -130,6 +135,7 @@ class CartEntity extends Entity
     public function setCartType(string $cartType) : self
     {
         $this->cartType = $cartType;
+
         return $this;
     }
 
@@ -149,6 +155,7 @@ class CartEntity extends Entity
     public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -168,6 +175,7 @@ class CartEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -176,6 +184,7 @@ class CartEntity extends Entity
         if (isset($this->$field)) {
             unset($this->$field);
         }
+
         return $this;
     }
 }

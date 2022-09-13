@@ -14,6 +14,7 @@ trait CheckoutTrait
                 return $shObj->pop();
             }
         }
+
         return null;
     }
 
@@ -27,6 +28,7 @@ trait CheckoutTrait
                 'name' => (string) $shippingClassObj->sh_name,
                 'price' => (string) $shippingClassObj->price, ];
         }
+
         return [];
     }
 
@@ -38,6 +40,7 @@ trait CheckoutTrait
         $cartSummary->offsetSet('totalTTC', $this->cartSummary->getTTC());
         $cartSummary->offsetSet('finalTaxes', $this->cartSummary->getFinalTaxes());
         $cartSummary->offsetSet('totalItem', $this->cartSummary->getTotalItem());
+
         return $cartSummary;
     }
 }

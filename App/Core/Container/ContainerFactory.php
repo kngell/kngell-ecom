@@ -25,6 +25,7 @@ class ContainerFactory
         if (!$containerObject instanceof ContainerInterface) {
             throw new ContainerInvalidArgumentException($container . ' is not a valid container object');
         }
+
         return $containerObject;
     }
 }

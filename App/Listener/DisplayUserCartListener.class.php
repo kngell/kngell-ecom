@@ -13,6 +13,7 @@ class DisplayUserCartListener implements ListenerInterface
             'msg' => $this->msgToDisplay($params, $object),
             'url' => $object->isInitialized('url') ? $object->getUrl() : null,
         ]);
+
         return [];
     }
 
@@ -25,6 +26,7 @@ class DisplayUserCartListener implements ListenerInterface
                 $msg[$key] = $value;
             }
         }
+
         return $msg;
     }
 }

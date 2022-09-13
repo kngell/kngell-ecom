@@ -39,6 +39,7 @@ class CacheFactory
         if (!$cacheObject instanceof CacheInterface) {
             throw new cacheInvalidArgumentException('"' . $cacheObject::class . '" is not a valid cache storage object.', 0);
         }
+
         return $cacheObject;
     }
 }

@@ -27,6 +27,7 @@ class UserMessages
         $template = str_replace('{{num_commande}}', $this->en->getOrderId(), $template);
         $template = str_replace('{{num_Transaction}}', $this->paymentObject->id, $template);
         $template = str_replace('{{TextMessage}}', $this->textMessage(), $template);
+
         return $template;
     }
 

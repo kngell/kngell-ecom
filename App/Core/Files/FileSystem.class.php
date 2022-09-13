@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 class FileSystem extends AbstractFiles implements FilesSystemInterface
 {
-    /**
-     * Get Files
-     * ==============================================================================.
-     * @param string $folder
-     * @param string $file
-     * @return mixed
-     */
+    public function readFile(string $file) : string
+    {
+        try {
+            $content = file_get_contents($file);
+
+            return $content;
+        } catch (FilesException $th) {
+            throw new FilesException($th->getMessage(), $th->getCode());
+        }
+    }
+
     public function get(string $folder, string $file = '') : mixed
     {
         $file = file_exists($folder . $file) ? [$folder . $file] : $this->search_file($folder, $file);
@@ -20,11 +24,25 @@ class FileSystem extends AbstractFiles implements FilesSystemInterface
 
             return match ($infos['extension']) {
                 'json' => json_decode(file_get_contents($file), true),
-                'php' => '',
+                'php' => $file,
+                'js' => file_get_contents($file)
             };
         }
 
         return false;
+    }
+
+    public function createDirectory(string $directory) : void
+    {
+        if (is_dir($directory) && !is_writable($directory)) {
+            return;
+        }
+        if (is_dir($directory) && !is_writable($directory)) {
+            throw new FilesException(sprintf('The Directory"%s" exists but is not writable. you can create a directory when it doesn\'t exist', $directory));
+        }
+        if (!@mkdir($directory, 0777, true)) {
+            throw new FilesException(sprintf('Unable to create directory %s', $directory));
+        }
     }
 
     public function createDir(string $folder) : bool
@@ -35,11 +53,13 @@ class FileSystem extends AbstractFiles implements FilesSystemInterface
         } else {
             try {
                 mkdir($folder);
+
                 return true;
-            } catch (\Throwable $th) {
-                throw new FileSystemManagementException('Impossible de créer le fichier! ' . $th->getMessage(), $th->getCode());
+            } catch (FileSystemManagementException $th) {
+                throw new FileSystemManagementException($th->getMessage(), $th->getCode());
             }
         }
+
         return false;
     }
 
@@ -55,6 +75,7 @@ class FileSystem extends AbstractFiles implements FilesSystemInterface
                     }
                 }
             }
+
             return array_values($dbAry);
         }
     }
@@ -74,6 +95,7 @@ class FileSystem extends AbstractFiles implements FilesSystemInterface
                     return $m;
                 }
             }));
+
             return !is_object($m) ? null : $m;
         }
     }
@@ -85,8 +107,10 @@ class FileSystem extends AbstractFiles implements FilesSystemInterface
             foreach ($imgAry as $url) {
                 $dbUslrsModel[] = $this->getFileModel($url, $m);
             }
+
             return $this->files_model_diff($dbUslrsModel, $m->get_results());
         }
+
         return [];
     }
 
@@ -101,8 +125,10 @@ class FileSystem extends AbstractFiles implements FilesSystemInterface
                         $filesToRemove[] = $m;
                     }
                 }
+
                 return $this->cleanFilesSystemUrls($filesToRemove);
             }
+
             return true;
         } catch (\Throwable $th) {
             throw new FileSystemManagementException('Impossible de supprimer les fichiers! ' . $th->getMessage(), $th->getCode());
@@ -129,6 +155,7 @@ class FileSystem extends AbstractFiles implements FilesSystemInterface
                     }
                 }
             }
+
             return true;
         } catch (\Throwable $th) {
             throw new FileSystemManagementException('Impossible de supprimer les fichiers! ' . $th->getMessage(), $th->getCode());
@@ -150,26 +177,35 @@ class FileSystem extends AbstractFiles implements FilesSystemInterface
                     }
                 }
             }
+
             return true;
         } catch (\Throwable $th) {
             throw new FileSystemManagementException('Impossible de supprimer les fichiers! ' . $th->getMessage(), $th->getCode());
         }
     }
 
-    private function search_file(string $folder, ?string $file_to_search = null, array &$results = []) : array
+    public function search_file(string $folder, ?string $file_to_search = null, ?string $subFolder = '', array &$results = []) : array
     {
-        $files = ($folder !== false and is_dir($folder)) ? scandir($folder) : false;
+        $files = ($folder !== false && is_dir($folder)) ? scandir($folder) : false;
         if ($files) {
             foreach ($files as $key => $value) {
                 $path = realpath($folder . DS . $value);
                 if (!is_dir($path)) {
                     if ($file_to_search == $value) {
-                        $results[] = $path;
+                        if ($subFolder == null) {
+                            $results[] = $path;
+                        } elseif (basename(dirname($path)) == $subFolder) {
+                            $results[] = $path;
+                        }
                     }
                 } elseif ($value != '.' && $value != '..') {
-                    $this->search_file($path, $file_to_search, $results);
+                    $this->search_file($path, $file_to_search, $subFolder, $results);
                     if ($file_to_search == $value) {
-                        $results[] = $path;
+                        if ($subFolder == null) {
+                            $results[] = $path;
+                        } elseif (basename(dirname($path)) == $subFolder) {
+                            $results[] = $path;
+                        }
                     }
                 }
             }

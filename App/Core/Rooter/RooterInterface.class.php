@@ -19,4 +19,10 @@ interface RooterInterface
      * ======================================================.
      */
     public function resolve() : self;
+
+    public function getMatchingRoutes(string $url, array $routes) : array;
+
+    public function getRoutes() : array;
+
+    public function getParams(): mixed;
 }

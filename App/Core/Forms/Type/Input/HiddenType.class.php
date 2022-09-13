@@ -44,6 +44,7 @@ class HiddenType extends InputType implements FormExtensionTypeInterface
     public function htmlAttr() : array
     {
         $htmlArg = self::HTML_ELEMENT_PARTS !== null ? self::HTML_ELEMENT_PARTS : [];
+
         return $htmlArg;
     }
 

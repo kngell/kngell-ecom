@@ -52,6 +52,7 @@ class EntityManagerFactory
         if (!$em instanceof EntityManagerInterface) {
             throw new EntityManagerExceptions(get_class($em) . ' is not a valid entityManager object!');
         }
+
         return $em;
     }
 

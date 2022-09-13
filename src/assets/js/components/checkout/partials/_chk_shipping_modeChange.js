@@ -28,6 +28,7 @@ class ChangeShippingMode {
           frm_name: $(this).attr("id"),
         };
         Call_controller(data, (response) => {
+          console.log(response);
           if (response.result == "success") {
             phpModal.var.bs_modals.then((modal) => {
               modal["modal-box-shipping"].hide();

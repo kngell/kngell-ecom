@@ -22,6 +22,7 @@ abstract class AbstractSessionStorage implements SessionStorageInterface
             session_destroy();
         }
         $this->start();
+
         return $this;
     }
 

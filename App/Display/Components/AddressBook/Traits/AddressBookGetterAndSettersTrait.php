@@ -7,9 +7,9 @@ trait AddressBookGetterAndSettersTrait
     /**
      * Get the value of customer.
      */
-    public function getCustomer() : Customer
+    public function getCustomer() : CustomerEntity
     {
-        return $this->customer;
+        return $this->customerEntity;
     }
 
     /**
@@ -17,15 +17,17 @@ trait AddressBookGetterAndSettersTrait
      *
      * @return  self
      */
-    public function setCustomer(Customer $customer) : self
+    public function setCustomer(CustomerEntity $customer) : self
     {
-        $this->customer = $customer;
+        $this->customerEntity = $customer;
+
         return $this;
     }
 
     public function noForm(bool $nf) : self
     {
         $this->noManageForm = $nf;
+
         return $this;
     }
 }

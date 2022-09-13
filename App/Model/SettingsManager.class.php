@@ -11,13 +11,14 @@ class SettingsManager extends Model
         parent::__construct($this->_table, $this->_colID);
     }
 
-    public function getSettings()
+    public function getSettings() : CollectionInterface
     {
         $this->table(null, ['setting_key', 'value'])->return('object');
-        $settings = new stdClass();
+        $settings = new Collection();
         foreach ($this->getAll()->get_results() as $setting) {
-            $settings->{$setting->setting_key} = $setting->value;
+            $settings->offsetSet($setting->setting_key, $setting->value);
         }
+
         return $settings;
     }
 }

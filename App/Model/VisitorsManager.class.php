@@ -25,6 +25,7 @@ class VisitorsManager extends Model
         } else {
             $return_value = $this->add_new_visitor($ipData);
         }
+
         return $return_value ?? false;
     }
 
@@ -43,12 +44,14 @@ class VisitorsManager extends Model
         if ($save = $this->save()) {
             return $save;
         }
+
         return false;
     }
 
     public function getAllVisitors() : CollectionInterface
     {
         $this->table()->return('object');
+
         return new Collection($this->getAll()->get_results());
     }
 
@@ -61,6 +64,7 @@ class VisitorsManager extends Model
             ])
             ->return('class')
             ->build();
+
         return $this->getAll($query_data);
     }
 
@@ -72,6 +76,7 @@ class VisitorsManager extends Model
         if (!$update = $info->update()) {
             throw new BaseRuntimeException('Erreur lors de la mise à jour des données visiteur!');
         }
+
         return $update ?? null;
     }
 
@@ -86,6 +91,7 @@ class VisitorsManager extends Model
                     throw new BaseRuntimeException('Erreur lors de la mise à jour des données visiteur!');
                 }
             }
+
             return $this->add_new_visitor($ipData);
         }
     }

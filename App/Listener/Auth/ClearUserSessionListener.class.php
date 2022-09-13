@@ -4,21 +4,28 @@ declare(strict_types=1);
 
 class ClearUserSessionListener implements ListenerInterface
 {
+    public function __construct(private ResponseHandler $response, private RequestHandler $request, private RooterInterface $rooter)
+    {
+    }
+
     /**
      * @param EventsInterface $event
      */
     public function handle(EventsInterface $event): iterable
     {
+        /** @var UserSessionsManager */
         $object = $event->getObject();
-        if ($object instanceof UserSessionsEntity) {
-            if (!( new ReflectionProperty($object, $object->getFields('rememberMeCookie')))->isInitialized($object)) {
-                /** @var UserSessionsManager */
-                $userSession = Container::getInstance()->make(UserSessionsManager::class);
-                $userSession->table()->where(['userID' => $object->getUserID()]);
-                $delete = $userSession->delete();
-                return [$delete];
-            }
+        $delete = null;
+        if (!$object->getEntity()->isInitialized('remember_me_cookie')) {
+            $object->getQueryParams()->reset();
+            $delete = $object->delete();
         }
-        return [];
+        // if ($this->request->isAjax()) {
+        //     echo "<script>document.location.href='" . 'restricted' . DS . 'index' . "'</script>";
+        // } else {
+        //     $url = HOST . DS . 'home';
+        //     $this->response->redirect($url);
+        // }
+        return [$delete];
     }
 }

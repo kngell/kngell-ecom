@@ -20,6 +20,7 @@ class Datatable extends AbstractDatatable
         $this->dataColumns = $this->dataColumnsObject->columns();
         $this->sortController = $sortcontrollerArg;
         $this->getRepositoryParts($datarepository);
+
         return $this;
     }
 
@@ -53,6 +54,7 @@ class Datatable extends AbstractDatatable
             }
             $this->element .= $after;
         }
+
         return $this->element;
     }
 
@@ -105,6 +107,7 @@ class Datatable extends AbstractDatatable
         $element .= '</div>';
         $element .= '</nav>';
         $element .= '</section>';
+
         return $element;
     }
 
@@ -126,6 +129,7 @@ class Datatable extends AbstractDatatable
         }
         $element .= '</tr>';
         $element .= sprintf('</%s>', $inFoot ? 'tfoot' : 'thead');
+
         return $element;
     }
 
@@ -140,6 +144,7 @@ class Datatable extends AbstractDatatable
         } else {
             $element .= $column['dt_row'];
         }
+
         return $element;
     }
 }

@@ -118,12 +118,14 @@ class SelectType extends AbstractAttr implements FormBuilderTypeInterface
             'require' => false,
             'model_data' => false,
         ];
+
         return !empty($this->settings) ? array_merge($defaults, $this->settings) : $defaults;
     }
 
     public function settings(array $settings) : self
     {
         $this->settings = $settings;
+
         return $this;
     }
 
@@ -142,6 +144,7 @@ class SelectType extends AbstractAttr implements FormBuilderTypeInterface
         if (!is_array($this->options)) {
             $this->options = [];
         }
+
         return $this->renderHtmlElement($this->attr);
     }
 

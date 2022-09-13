@@ -1,1 +1,1 @@
-<li class="page-item"><a class="page-link" href="{{href}}">{{page}}</a></li>
+<li class="page-item current-page{{active}}"><a class="page-link" href="{{href}}">{{page}}</a></li>

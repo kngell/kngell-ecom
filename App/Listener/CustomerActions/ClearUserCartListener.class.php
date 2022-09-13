@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 class ClearUserCartListener implements ListenerInterface
 {
-    public function __construct(private ContainerInterface $container)
+    public function __construct(private CartManager $cart)
     {
     }
 
@@ -21,8 +21,10 @@ class ClearUserCartListener implements ListenerInterface
                 $delete[] = $this->clearDbCart($ctrl, $cartItem);
             }
             $cache = $this->deleteCache($ctrl, 'user_cart');
+
             return[$delete, $cache];
         }
+
         return [];
     }
 
@@ -32,7 +34,8 @@ class ClearUserCartListener implements ListenerInterface
             $item = $ctrl->selectItem($cartItem['id']);
             if ($item->count() === 1) {
                 $item = $item->pop();
-                $delete[] = $this->container->make(CartManager::class)->assign(['cart_id' => $item->cart_id])->delete();
+                $this->cart->getQueryParams()->reset();
+                $delete[] = $this->cart->assign(['cart_id' => $item->cart_id])->delete();
             }
         }
     }
@@ -41,8 +44,10 @@ class ClearUserCartListener implements ListenerInterface
     {
         if ($ctrl->getCache()->exists($ctrl->getCachedFiles()[$cacheKey])) {
             $cache = $ctrl->getCache()->delete($ctrl->getCachedFiles()[$cacheKey]);
+
             return true;
         }
+
         return false;
     }
 }

@@ -8,3 +8,5 @@ paiement_mode: paiement_mode_list
 visitors: visitors
 user_address: user_addree_list
 sliders: sliders
+customer: customer_data_wwww
+settings: front_end_settings

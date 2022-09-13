@@ -16,6 +16,7 @@ class UpdateUserCokkiesListener implements ListenerInterface
                 'user_id' => (int) $object->getUserID(),
                 'user_cookie' => $object->getUserCookie(),
             ])->save();
+
             return [$user];
         }
         return [];

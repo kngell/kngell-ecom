@@ -19,6 +19,7 @@ class TaxesManager extends Model
             ->whereIn(['tr_catID|taxe_region' => $categories])
             ->return('object')
             ->groupBy('tr_tax_id');
+
         return new Collection($this->getAll()->get_results());
     }
 }

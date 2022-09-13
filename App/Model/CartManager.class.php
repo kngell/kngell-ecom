@@ -26,6 +26,7 @@ class CartManager extends Model
                 ])->save();
             }
         }
+
         return $this;
     }
 
@@ -40,8 +41,10 @@ class CartManager extends Model
                 ->where(['user_id' => $this->cookie->get(VISITOR_COOKIE_NAME)])
                 ->groupBy(['pdt_id' => 'products'])
                 ->return('object');
+
             return new Collection($this->getAll()->get_results());
         }
+
         return new Collection([]);
     }
 }

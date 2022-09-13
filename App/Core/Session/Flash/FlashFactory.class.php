@@ -23,6 +23,7 @@ class FlashFactory
         if (!$session instanceof SessionInterface) {
             throw new SessionUnexpectedValueException('Object does not implement session interface.');
         }
+
         return new Flash($session, $flashKey);
     }
 }

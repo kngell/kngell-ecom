@@ -43,6 +43,7 @@ class LoginUserWithAjaxController extends Controller
         if ($remember_me) {
             return $remember_me;
         }
+
         return false;
     }
 

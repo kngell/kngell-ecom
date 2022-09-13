@@ -54,14 +54,14 @@ trait CheckoutControllerTrait
             /** @var ShippingClassEntity */
             $shippingEntity = $model->getEntity();
             $shippingMethod = [
-                'id' => (string) $shippingEntity->getShcId(),
+                'id' => 'sh_name' . $shippingEntity->getShcId(),
                 'name' => (string) $shippingEntity->getShName(),
                 'price' => MoneyManager::getInstance()->getFormatedAmount((string) $shippingEntity->getPrice()),
             ];
             /** @var CustomerEntity */
             $customerEntity = unserialize($this->session->get(CHECKOUT_PROCESS_NAME));
 
-            $cartSummary = (new CartSummary($this->getUserCart(), $this->UserCheckoutShippingClass($model, (int) $shippingMethod['id']), MoneyManager::getInstance(), (new CheckoutPartials())->paths()));
+            $cartSummary = (new CartSummary($this->getUserCart(), $this->UserCheckoutShippingClass($model, (int) filter_var($shippingMethod['id'], FILTER_SANITIZE_NUMBER_INT)), MoneyManager::getInstance(), (new CheckoutPartials())->paths()));
 
             $customerEntity->setShippingMethod($shippingMethod);
             $cs = $customerEntity->getCartSummary();
@@ -71,5 +71,19 @@ trait CheckoutControllerTrait
 
             $this->jsonResponse(['result' => 'success', 'msg' => ['name' => $shippingMethod['name'], 'price' => $shippingMethod['price'], 'cart' => $cartSummary->total(), 'ttc' => $cartSummary->getTTC()->formatTo('fr_FR'), 'id' => $shippingMethod['id']]]);
         }
+    }
+
+    protected function getCustomerParams() : array
+    {
+        $gatewayMethod = 'createCustomer';
+        $cust_id = '';
+        if ($this->session->exists(CURRENT_USER_SESSION_NAME)) {
+            $cust_id = $this->session->get(CURRENT_USER_SESSION_NAME)['customer_id'];
+            if (!empty($cust_id) && $cust_id != '') {
+                $gatewayMethod = 'retriveCustomer';
+            }
+        }
+
+        return [$cust_id, $gatewayMethod];
     }
 }

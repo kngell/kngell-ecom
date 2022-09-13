@@ -13,6 +13,7 @@ trait DisplayFormElementTrait
                 $options[] = new Option(['value' => $item->$valueName, 'content' => $item->$contentName]);
             }
         }
+
         return [
             $this->frm->selectOptions([], $options),
         ];

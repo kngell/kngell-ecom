@@ -15,6 +15,7 @@ trait AddressBookTraits
             $addr .= $address->region . ', ';
             $addr .= $address->pays['name'];
         }
+
         return $this->response->htmlDecode($addr);
     }
 
@@ -22,27 +23,26 @@ trait AddressBookTraits
     {
         $html = '';
         $this->element($el);
-        /** @var CustomerEntity */
-        $customerEntity = $this->customer->getEntity();
-        if ($customerEntity->isInitialized('address')) {
-            foreach ($customerEntity->getAddress() as $address) {
+        if ($this->customerEntity->isInitialized('address')) {
+            foreach ($this->customerEntity->getAddress() as $address) {
                 $temp = str_replace('{{active}}', $address->principale === 'Y' ? 'card--active' : '', $this->template);
                 $temp = str_replace('{{id}}', $this->AddressInputId($address->ab_id), $temp);
-                $temp = str_replace('{{prenom}}', $customerEntity->getFirstName() ?? '', $temp);
-                $temp = str_replace('{{nom}}', $customerEntity->getLastName() ?? '', $temp);
+                $temp = str_replace('{{prenom}}', $this->customerEntity->getFirstName() ?? '', $temp);
+                $temp = str_replace('{{nom}}', $this->customerEntity->getLastName() ?? '', $temp);
                 $temp = str_replace('{{address1}}', $address->address1 ?? '', $temp);
                 $temp = str_replace('{{address2}}', $address->address2 ?? '', $temp);
                 $temp = str_replace('{{code_postal}}', $address->zip_code ?? '', $temp);
                 $temp = str_replace('{{ville}}', $address->ville ?? '', $temp);
                 $temp = str_replace('{{region}}', $address->region ?? '', $temp);
                 $temp = str_replace('{{pays}}', $address->pays['name'] ?? '', $temp);
-                $temp = str_replace('{{telephone}}', $customerEntity->getPhone() ?? '', $temp);
+                $temp = str_replace('{{telephone}}', $this->customerEntity->getPhone() ?? '', $temp);
                 $temp = str_replace('{{formModify}}', $this->manageOptions('Modifier', $address, $frmID), $temp);
                 $temp = str_replace('{{formErase}}', $this->manageOptions('Supprimer', $address, $frmID), $temp);
                 $temp = str_replace('{{FormSelect}}', $this->manageOptions('Selectionner', $address, $frmID), $temp);
                 $html .= $temp;
             }
         }
+
         return $html;
     }
 
@@ -78,6 +78,7 @@ trait AddressBookTraits
             ButtonType::class => ['type' => 'submit', 'class' => [$class]],
         ])->noLabel()->noWrapper()->content($str != 'Selectionner' ? $str : '')->attr($attr)->html();
         $frmHtml .= $this->frmEnd();
+
         return $frmHtml;
     }
 
@@ -88,8 +89,10 @@ trait AddressBookTraits
                 'action' => '#',
                 'class' => $class . $obj->ab_id,
             ])->setCsrfKey($class . $obj->ab_id);
+
             return $this->frm->begin();
         }
+
         return '';
     }
 
@@ -98,6 +101,7 @@ trait AddressBookTraits
         if ($this->noManageForm === false) {
             return $this->frm->end();
         }
+
         return '';
     }
 }

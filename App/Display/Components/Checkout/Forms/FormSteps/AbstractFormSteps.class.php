@@ -16,7 +16,7 @@ abstract class AbstractFormSteps
     protected ?object $frm;
     protected ?ButtonsGroup $btns;
     protected ?CartSummary $summary;
-    protected ?Customer $customer;
+    protected ?CustomerEntity $customerEntity;
     protected ?CollectionInterface $paths;
     protected CollectionInterface $userCart;
     protected ?AddressBookPage $addressBook;
@@ -44,6 +44,7 @@ abstract class AbstractFormSteps
         } else {
             list($html, $text) = $this->addressBook->all();
         }
+
         return $addreMode == 'text' ? $this->response->htmlDecode($text) : $html;
     }
 
@@ -52,6 +53,7 @@ abstract class AbstractFormSteps
         $btnGroup = $this->getTemplate('buttonGroupPath');
         $btnGroup = str_replace('{{buttonsLeft}}', $this->btns->buttonsGroup('prev'), $btnGroup);
         $btnGroup = str_replace('{{buttonsRight}}', $this->btns->buttonsGroup('next', $nextText), $btnGroup);
+
         return $btnGroup;
     }
 

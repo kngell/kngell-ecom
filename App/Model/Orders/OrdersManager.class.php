@@ -26,8 +26,10 @@ class OrdersManager extends Model
                 ->on(['ord_user_id|orders', 'user_id|users'], ['ord_id|orders', 'od_order_id|order_details'], ['od_product_id|order_details', 'pdt_id|products'], ['ord_status|orders', 'os_id|order_status'])
                 ->where([$this->_colIndex => $en->getOrdUserId()])
                 ->return('object');
+
             return new Collection($this->getAll()->get_results());
         }
+
         return new Collection();
     }
 
@@ -47,12 +49,14 @@ class OrdersManager extends Model
             $orders = $r['results'];
             unset($r['results']);
             $keys = array_unique(array_column($orders, 'ord_id'));
+
             return new Collection([
                 'orders' => new Collection($orders),
                 'order_details' => $this->container(OrderDetailsManager::class)->getOrderDetails($keys),
                 'params' => array_merge($r, $params),
             ]);
         }
+
         return new Collection();
     }
 }

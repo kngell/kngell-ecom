@@ -21,6 +21,7 @@ class ProductsManager extends Model
             ->where(['br_id' => [$brand, 'categories']])
             ->groupBy(['pdt_id DESC' => 'product_categorie'])
             ->return('object');
+
         return new Collection($this->getAll()->get_results());
     }
 
@@ -38,6 +39,7 @@ class ProductsManager extends Model
         if ($pdt->count() === 1) {
             return current($pdt->get_results());
         }
+
         return null;
     }
 }

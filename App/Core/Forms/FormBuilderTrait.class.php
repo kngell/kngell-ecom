@@ -16,6 +16,7 @@ trait FormBuilderTrait
                 $v[$key] = $value;
             }
         }
+
         return $v;
     }
 
@@ -49,6 +50,7 @@ trait FormBuilderTrait
                 return $val;
             }
         }
+
         return '';
     }
 
@@ -63,6 +65,7 @@ trait FormBuilderTrait
                 }
             }
         }
+
         return $output;
     }
 
@@ -91,8 +94,10 @@ trait FormBuilderTrait
                 }
                 $output .= '<option' . $disabled . ' value="' . $key . '"' . $selected . '>' . ($useModel ? $this->getNameFromID($choice, $options['object'] ?? '') : $choice) . '' . $selected . '</option>' . "\n";
             }
+
             return $output;
         }
+
         return false;
     }
 
@@ -121,8 +126,10 @@ trait FormBuilderTrait
                     $val .= '<input type="' . $attr['type'] . '" name="' . $attr['name'] . '" id="' . $attr['id'] . '_' . $value . '" class="' . implode(' ', $attr['class']) . '" value="' . (is_string($value) ? strtolower($value) : $value) . '"' . $checked . '>' . ' ' . (is_int($value) ? $this->autoFigureNameFromInt($value) : $key) . "\n<br>";
                 }
             }
+
             return $val;
         }
+
         return false;
     }
 
@@ -175,6 +182,7 @@ trait FormBuilderTrait
                     }
                 }
             }
+
             return $template;
         }
     }
@@ -189,8 +197,10 @@ trait FormBuilderTrait
             $template = str_replace('{{spanClass}}', implode(' ', $htmlAttr['spanClass']), $template);
             $template = str_replace('{{label}}', $show_label ? $label : '', $template);
             $template = str_replace('{{req}}', isset($options['required']) && $options['required'] == true ? $htmlAttr['require'] : '', $template);
+
             return $template;
         }
+
         return '';
     }
 
@@ -217,6 +227,7 @@ trait FormBuilderTrait
         if (in_array($objectType::class, ['CheckBoxType', 'RadioType'])) {
             return $template;
         }
+
         return str_replace('{{label}}', $show_label ? $objectType->getLabelTemplate() : '', $template);
     }
 

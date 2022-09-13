@@ -33,6 +33,7 @@ class ForgotPasswordAjaxController extends Controller
                     ])->save();
                     if ($user_request->count() > 1) {
                         $this->dispatcher->dispatch(new ForgotPasswordEvent($user->getEntity()));
+
                         return true;
                     } else {
                         $this->jsonResponse(['error' => 'error', 'msg' => $this->helper->showMessage('warning', 'Failed to proceed request!')]);

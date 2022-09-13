@@ -6,4 +6,6 @@ interface ApplicationInterface
     public function run();
 
     public function make(string $abstract, array $args = []): mixed;
+
+    public function setPath(string $rootPath): self;
 }

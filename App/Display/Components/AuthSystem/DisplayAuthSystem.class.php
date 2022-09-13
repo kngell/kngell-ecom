@@ -15,6 +15,7 @@ class DisplayAuthSystem extends AbstractAuthSystem implements DisplayPagesInterf
         $authTemplate = str_replace('{{loginBox}}', $this->loginBox(), $authTemplate);
         $authTemplate = str_replace('{{registerBox}}', $this->registerBox(), $authTemplate);
         $authTemplate = str_replace('{{forgotBox}}', $this->forgotPwBox(), $authTemplate);
+
         return [
             'authenticationComponent' => $authTemplate,
         ];
@@ -23,18 +24,21 @@ class DisplayAuthSystem extends AbstractAuthSystem implements DisplayPagesInterf
     private function loginBox() : string
     {
         $Box = $this->getTemplate('loginboxPath');
+
         return str_replace('{{loginForm}}', $this->loginForm(), $Box);
     }
 
     private function registerBox() : string
     {
         $Box = $this->getTemplate('registerboxPath');
+
         return str_replace('{{registerForm}}', $this->registerForm(), $Box);
     }
 
     private function forgotPwBox() : string
     {
         $Box = $this->getTemplate('forgotboxPath');
+
         return str_replace('{{forgotPassword}}', $this->forgotForm(), $Box);
     }
 

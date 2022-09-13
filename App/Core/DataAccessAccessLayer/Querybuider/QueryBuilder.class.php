@@ -17,6 +17,7 @@ class QueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
         }
         $arg = array_merge(self::SQL_DEFAULT, $args);
         $this->key = $arg;
+
         return $this;
     }
 
@@ -30,9 +31,11 @@ class QueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
                 $keys = implode(', ', array_keys($this->key['fields']));
                 $values = ':' . implode(', :', array_keys($this->key['fields']));
                 $this->sql = 'INSERT INTO ' . $this->key['table'] . ' (' . $keys . ') VALUES (' . $values . ')';
+
                 return $this->sql;
             }
         }
+
         return false;
     }
 
@@ -49,8 +52,10 @@ class QueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
             if (array_key_exists('recursive', $this->key['extras'])) {
                 $this->sql = $this->recursive($query, $this->sql);
             }
+
             return $this->sql . (isset($this->key['where']['bind_array']) ? '&' . serialize($this->key['where']['bind_array']) : '');
         }
+
         return false;
     }
 
@@ -64,6 +69,7 @@ class QueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
         if ($this->isValidQueryType('show')) {
             return $this->sql = 'SHOW COLUMNS FROM ' . "{$this->key['table']}";
         }
+
         return false;
     }
 
@@ -92,9 +98,11 @@ class QueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
                 if (isset($this->key['primary_key']) && $this->key['primary_key'] === '0') {
                     $this->sql = "UPDATE {$this->key['table']} SET {$keyValues}";
                 }
+
                 return $this->sql . (isset($this->key['where']['bind_array']) ? '&' . serialize($this->key['where']['bind_array']) : '');
             }
         }
+
         return false;
     }
 
@@ -109,9 +117,11 @@ class QueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
         if ($this->isValidQueryType('delete')) {
             if (is_array($this->key['conditions']) && count($this->key['conditions']) > 0) {
                 $this->sql = (isset($this->key['conditions'][0]) && $this->key['conditions'][0] != 'all') ? 'DELETE FROM ' . $this->key['table'] : 'DELETE FROM ' . $this->key['table'] . $this->where();
+
                 return $this->sql . (isset($this->key['where']['bind_array']) ? '&' . serialize($this->key['where']['bind_array']) : '');
             }
         }
+
         return false;
     }
 
@@ -122,24 +132,27 @@ class QueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
      * @inheritDoc
      * @return string
      */
-    public function search():string
+    public function search() : string|bool
     {
-        if ($this->isValidQueryType('search')) {
-            if (is_array($this->key['fields']) && count($this->key['fields']) > 0) {
-                $index = array_keys($this->key['conditions']);
-                $this->sql = "DELETE from {$this->key['table']} WHERE {$index[0]} = :{$index[0]} LIMIT 1";
-                $bulkdelete = array_values($this->key['fields']);
-                if (is_array($bulkdelete) && count($bulkdelete) > 1) {
-                    for ($i = 0; $i < count($bulkdelete); $i++) {
-                        $this->sql = "DELETE FROM {$this->key['table']} WHERE {$index[0]} = :{$index[0]}";
-                    }
-                }
-
-                return $this->sql;
+        if ($this->isQueryTypeValid('search')) {
+            if (is_array($this->key['selectors']) && $this->key['selectors'] != '') {
+                $this->sql = "SELECT * FROM {$this->key['table']}";
+                $this->sql .= $this->where();
+                // if ($this->has('selectors')) {
+                //     $values = [];
+                //     foreach ($this->key['selectors'] as $selector) {
+                //         $values[] = $selector . ' LIKE ' . ":{$selector}";
+                //     }
+                //     if (count($this->key['selectors']) >= 1) {
+                //         $this->sql .= implode(' OR ', $values);
+                //     }
+                // }
+                $this->sql .= $this->orderBy();
+                $this->sql .= $this->queryOffset();
             }
-        }
 
-        return false;
+            return $this->sql;
+        }
     }
 
     /**
@@ -154,6 +167,7 @@ class QueryBuilder extends AbstractQueryBuilder implements QueryBuilderInterface
         if ($this->isValidQueryType('custom')) {
             return $this->key['custom'];
         }
+
         return false;
     }
 

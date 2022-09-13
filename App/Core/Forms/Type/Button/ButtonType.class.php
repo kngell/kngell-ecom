@@ -52,12 +52,14 @@ class ButtonType extends AbstractAttr implements FormBuilderTypeInterface
     public function getButton(array $globalAttr = []) : string
     {
         $this->globalAttr = $globalAttr;
+
         return $this->__toString();
     }
 
     public function htmlAttr() : array
     {
         $htmlArg = self::HTML_ELEMENT_PARTS !== null ? self::HTML_ELEMENT_PARTS : [];
+
         return $htmlArg;
     }
 
@@ -124,6 +126,7 @@ class ButtonType extends AbstractAttr implements FormBuilderTypeInterface
             'require' => false,
             'model_data' => false,
         ];
+
         return !empty($this->settings) ? array_merge($defaults, $this->settings) : $defaults;
     }
 
@@ -135,6 +138,7 @@ class ButtonType extends AbstractAttr implements FormBuilderTypeInterface
     public function type(string $str) : self
     {
         $this->attr[__FUNCTION__] = $str;
+
         return $this;
     }
 

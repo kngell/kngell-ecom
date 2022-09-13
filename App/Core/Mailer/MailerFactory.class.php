@@ -31,6 +31,7 @@ class MailerFactory
         if (!$transporterObject) {
             throw new MailerInvalidArgumentException($transportString . ' is not a valid mailer object');
         }
+
         return Container::getInstance()->make(MailerInterface::class, [
             'transporterObject' => $transporterObject,
             'settings' => $this->settings,

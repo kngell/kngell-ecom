@@ -14,6 +14,7 @@ class SlidersManager extends Model
     public function all() : CollectionInterface
     {
         $this->table()->return('object');
+
         return new Collection($this->getAll()->get_results());
     }
 }

@@ -7,6 +7,7 @@ class ValidStringValidator extends CustomValidator
     {
         $getter = $this->getModel()->getEntity()->getGetters($this->getField());
         $value = $this->getModel()->getEntity()->{$getter}();
+
         return preg_match('/^[a-zA-Z- ]+$/', $value);
     }
 }

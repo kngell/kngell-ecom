@@ -76,6 +76,7 @@
   </footer>
   <!-- End footer -->
   <!-- Librairies -->
+  <?= $jv_script_from_php ?? ''?>
   <script type="text/javascript" src="<?= $this->asset('js/librairies/frontlib', 'js') ?? '' ?>">
   </script>
   <!-- Common vendor -->

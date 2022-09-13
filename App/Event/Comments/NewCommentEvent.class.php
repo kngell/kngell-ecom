@@ -27,6 +27,7 @@ class NewCommentEvent extends Event implements EventsInterface
     public function setMaxCommentToShow($maxCommentToShow) :self
     {
         $this->maxCommentToShow = $maxCommentToShow;
+
         return $this;
     }
 }

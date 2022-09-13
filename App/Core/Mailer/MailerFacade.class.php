@@ -41,6 +41,7 @@ class MailerFacade
         if (null !== $hset) {
             $this->mailer->charset($hset);
         }
+
         return $this;
     }
 }

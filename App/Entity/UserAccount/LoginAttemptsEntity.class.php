@@ -63,6 +63,7 @@ class LoginAttemptsEntity extends Entity
     public function delete(?string $field = null) : self
     {
         unset($this->$field);
+
         return $this;
     }
 
@@ -82,6 +83,7 @@ class LoginAttemptsEntity extends Entity
     public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -101,6 +103,7 @@ class LoginAttemptsEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -120,6 +123,7 @@ class LoginAttemptsEntity extends Entity
     public function setLaId(int $laId) : self
     {
         $this->laId = $laId;
+
         return $this;
     }
 
@@ -139,6 +143,7 @@ class LoginAttemptsEntity extends Entity
     public function setUserId(int $userId) : self
     {
         $this->userId = $userId;
+
         return $this;
     }
 }

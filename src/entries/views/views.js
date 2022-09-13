@@ -1,6 +1,8 @@
 /** Errors */
 import "views/client/errors/_errors.php";
 import "views/client/errors/404.php";
+/** Restricted access */
+import "views/client/restricted/index.php";
 /** Authentication System */
 import "views/client/components/authSystem/loginModal.php";
 import "views/client/components/authSystem/forgorPwModal.php";
@@ -35,7 +37,6 @@ import "views/client/brand/clothes/shop.php";
 import "views/client/brand/clothes/details.php";
 import "views/client/brand/clothes/partials/_brand.php";
 import "views/client/brand/clothes/partials/_middle_season.php";
-
 /** Shopping cart & whishlist component */
 import "views/client/components/shoppingCart/shoppingCart.php";
 import "views/client/components/shoppingCart/partials/_shopping_cart.php";
@@ -50,7 +51,6 @@ import "views/client/components/checkout/partials/progress_bar/_progress_bar.php
 import "views/client/components/checkout/partials/cart_summary/_card_summary.php";
 import "views/client/components/checkout/partials/cart_summary/_cart_summary_data.php";
 import "views/client/components/checkout/partials/cart_summary/_cartSummaryTotal.php";
-import "views/client/components/checkout/partials/user_informations/_checkout_add_address.php";
 import "views/client/components/checkout/partials/user_informations/_chk_user_info.php";
 import "views/client/components/checkout/partials/user_informations/_user_data.php";
 import "views/client/components/checkout/partials/buttons_group/_button_group.php";
@@ -66,6 +66,8 @@ import "views/client/components/checkout/partials/billing_informations/_billing_
 /** Paiements Infos */
 import "views/client/components/checkout/partials/paiment_informations/_paiement_data.php";
 import "views/client/components/checkout/partials/paiment_informations/_paiment_infos.php";
+/**Modals Components */
+import "views/client/components/modals/_checkout_add_address.php";
 /** Credit Card */
 import "views/client/components/credit_card/_cc_front.php";
 import "views/client/components/credit_card/_cc_back.php";
@@ -77,5 +79,4 @@ import "views/client/learn/learn.php";
 import "views/client/components/Email/welcomeTemplate.php";
 /** user Account elements */
 import "views/client/components/user_account/account.php";
-import "views/client/components/user_account/partials/_user_payment_card.php";
 import "views/client/components/user_account/partials/_transaction_menu.php";

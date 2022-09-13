@@ -26,12 +26,14 @@ class EventDispatcher extends AbstractEventDispatcher implements EventDispatcher
             }
         }
         $event->setResults($eventResults);
+
         return $event;
     }
 
     public function add(string $name, callable $callable): self
     {
         $this->listener->add($name, $callable);
+
         return $this;
     }
 
@@ -47,6 +49,7 @@ class EventDispatcher extends AbstractEventDispatcher implements EventDispatcher
         uasort($listeners, function ($listenerA, $listenerB) {
             return $listenerB['priority'] - $listenerA['priority'];
         });
+
         return $listeners;
     }
 }

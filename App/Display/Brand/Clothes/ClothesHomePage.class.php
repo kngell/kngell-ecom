@@ -56,6 +56,7 @@ class ClothesHomePage extends AbstractBrandPage implements DisplayPagesInterface
         $temp = str_replace('{{text_left}}', $text[0], $temp);
         $temp = str_replace('{{text_right}}', $text[1], $temp);
         $temp = str_replace('{{btn_text}}', $slider->slider_btn_text, $temp);
+
         return $temp;
     }
 
@@ -75,6 +76,7 @@ class ClothesHomePage extends AbstractBrandPage implements DisplayPagesInterface
             $temp = str_replace('{{btn}}', $btn, $temp);
             $html .= $temp;
         }
+
         return str_replace('{{arrivals_items}}', $html, $template);
     }
 
@@ -93,8 +95,10 @@ class ClothesHomePage extends AbstractBrandPage implements DisplayPagesInterface
                     $html .= $temp;
                 }
             }
+
             return str_replace('{{features_items}}', $html, $template);
         }
+
         return '';
     }
 
@@ -114,6 +118,7 @@ class ClothesHomePage extends AbstractBrandPage implements DisplayPagesInterface
             $temp = str_replace('{{button}}', $this->clothesButton(), $temp);
             $html .= $temp;
         }
+
         return str_replace('{{dresses_suit_items}}', $html, $template);
     }
 
@@ -128,6 +133,7 @@ class ClothesHomePage extends AbstractBrandPage implements DisplayPagesInterface
             $temp = str_replace('{{button}}', $this->clothesButton(), $temp);
             $html .= $temp;
         }
+
         return str_replace('{{best_wishes_items}}', $html, $template);
     }
 }

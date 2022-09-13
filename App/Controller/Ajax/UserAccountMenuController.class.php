@@ -17,9 +17,9 @@ class UserAccountMenuController extends Controller
         if (isset($data['user_process'])) {
             $process_result = match ($data['user_process']) {
                 'orders' => $this->ordersMenu($data),
-               'users' => $this->usersMenu(),
-               'address_book' => $this->addressBookMenu(),
-               'payments_mode' => $this->paymentModeMenu()
+                'users' => $this->usersMenu(),
+                'address_book' => $this->addressBookMenu(),
+                'payments_mode' => $this->paymentModeMenu()
             };
         }
     }

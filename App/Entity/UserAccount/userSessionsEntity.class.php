@@ -48,6 +48,7 @@ class UserSessionsEntity extends Entity
     public function setUserId($userID) : self
     {
         $this->userId = $userID;
+
         return $this;
     }
 
@@ -74,6 +75,7 @@ class UserSessionsEntity extends Entity
     public function delete(?string $field = null) : self
     {
         unset($this->$field);
+
         return $this;
     }
 
@@ -93,6 +95,7 @@ class UserSessionsEntity extends Entity
     public function setPassword(string $password) : self
     {
         $this->password = $password;
+
         return $this;
     }
 
@@ -104,6 +107,7 @@ class UserSessionsEntity extends Entity
     public function setUsId(int $usID) : self
     {
         $this->usId = $usID;
+
         return $this;
     }
 
@@ -143,6 +147,7 @@ class UserSessionsEntity extends Entity
     public function setSessionToken(string $sessionToken) : self
     {
         $this->sessionToken = $sessionToken;
+
         return $this;
     }
 
@@ -162,6 +167,7 @@ class UserSessionsEntity extends Entity
     public function setUserAgent(string $userAgent) : self
     {
         $this->userAgent = $userAgent;
+
         return $this;
     }
 
@@ -181,6 +187,7 @@ class UserSessionsEntity extends Entity
     public function setUserCookie(string $userCookie) : self
     {
         $this->userCookie = $userCookie;
+
         return $this;
     }
 
@@ -200,6 +207,7 @@ class UserSessionsEntity extends Entity
     public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 

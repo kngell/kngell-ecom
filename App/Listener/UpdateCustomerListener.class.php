@@ -9,6 +9,7 @@ class UpdateCustomerListener implements ListenerInterface
         $object = $event->getObject();
         /** @var CustomerEntity */
         $customerEntity = unserialize($object->getSession()->get(CHECKOUT_PROCESS_NAME));
+
         return ['RegisterTo newLetter'];
     }
 }

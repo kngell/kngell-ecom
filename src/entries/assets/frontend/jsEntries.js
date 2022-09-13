@@ -19,5 +19,9 @@ module.exports = {
       import: ["js/components/todoList/todoList"],
       dependOn: "js/librairies/frontlib",
     },
+    "js/main/auth_modals": {
+      import: ["js/main/frontend/partials/_auth_modals"],
+      dependOn: "js/librairies/frontlib",
+    },
   },
 };

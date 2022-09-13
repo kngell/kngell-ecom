@@ -34,6 +34,7 @@ class SettingsEntity extends Entity
     public function setSetID(int $setID) : self
     {
         $this->setID = $setID;
+
         return $this;
     }
 
@@ -53,6 +54,7 @@ class SettingsEntity extends Entity
     public function setSettingName(string $settingName) : self
     {
         $this->settingName = $settingName;
+
         return $this;
     }
 
@@ -72,6 +74,7 @@ class SettingsEntity extends Entity
     public function setSettingKey(string $settingKey) : self
     {
         $this->settingKey = $settingKey;
+
         return $this;
     }
 
@@ -91,6 +94,7 @@ class SettingsEntity extends Entity
     public function setSettingDescr(string $settingDescr) : self
     {
         $this->settingDescr = $settingDescr;
+
         return $this;
     }
 
@@ -110,6 +114,7 @@ class SettingsEntity extends Entity
     public function setValue(string $value) : self
     {
         $this->value = $value;
+
         return $this;
     }
 
@@ -129,6 +134,7 @@ class SettingsEntity extends Entity
     public function setStatus(string $status) : self
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -148,6 +154,7 @@ class SettingsEntity extends Entity
     public function setUpdatedAt(DatetimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -167,6 +174,7 @@ class SettingsEntity extends Entity
     public function setCreatedAt(DatetimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 }

@@ -29,6 +29,7 @@ abstract class AbstractAuthSystem
         if (!file_exists($path)) {
             throw new BaseException('Chemin du fichier non valide');
         }
+
         return true;
     }
 
@@ -65,6 +66,7 @@ abstract class AbstractAuthSystem
             ->label('Login')->id('sigin')
             ->html(), $loginTemplate);
         $loginTemplate = str_replace('{{form_end}}', $form->end(), $loginTemplate);
+
         return $loginTemplate;
     }
 
@@ -105,6 +107,7 @@ abstract class AbstractAuthSystem
             SubmitType::class => ['name' => 'reg_singin'], ], null, ['show_label' => false,
             ])->label('Register')->id('reg_singin'), $registerTemplate);
         $registerTemplate = str_replace('{{form_end}}', $form->end(), $registerTemplate);
+
         return $registerTemplate;
     }
 
@@ -126,6 +129,7 @@ abstract class AbstractAuthSystem
             SubmitType::class => ['name' => 'forgot'],
         ])->label('Reset Password'), $template);
         $template = str_replace('{{form_end}}', $form->end(), $template);
+
         return $template;
     }
 }

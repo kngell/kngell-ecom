@@ -3,27 +3,18 @@
 declare(strict_types=1);
 class View extends AbstractView
 {
-    private StdClass $ressources;
+    private object $ressources;
     private string $_head;
     private string $_body;
     private string $_footer;
     private string $_html;
     private string $_outputBuffer;
-    private string $view_file;
-    private string $search_box;
     private Token $token;
     private ResponseHandler $response;
+    private RequestHandler $request;
     private array $properties = [];
 
-    /**
-     * Main constructor
-     * ======================================================================================.
-     * @param string $view_file
-     * @param array $view_data
-     * @param string $file_path
-     * @param object $ressources
-     */
-    public function __construct(array $viewAry = [])
+    public function __construct(array $viewAry, FilesSystemInterface $fileSyst)
     {
         $this->ressources = json_decode(file_get_contents(APP . 'assets.json'));
         if (!empty($viewAry)) {
@@ -33,11 +24,13 @@ class View extends AbstractView
                 }
             }
         }
+        $this->fileSyst = $fileSyst;
     }
 
     public function route(string $route)
     {
         $route = $route == DS ? 'home' : $route;
+
         return HOST . DS . $route;
     }
 
@@ -64,14 +57,19 @@ class View extends AbstractView
      */
     public function render(string $viewname = '', array $params = []) : ?string
     {
-        if (!empty($viewname)) { //$this->view_file != $viewname
+        if (!empty($viewname)) {
             $this->view_file = preg_replace("/\s+/", '', $viewname);
-            //home/kngell/projects/ecom/App/Views/client/users/account/verifyUserAccount.php
             if (is_readable(VIEW . strtolower($this->file_path) . $this->view_file . '.php')) {
                 return $this->renderViewContent(VIEW . strtolower($this->file_path) . $this->view_file . '.php', $params);
             }
+            if ($file = $this->viewFile($this->view_file)) {
+                $file = array_pop($file);
+                if (is_readable($file)) {
+                    return $this->renderViewContent($file, $params);
+                }
+            }
         }
-        return '';
+        throw new BaseException("Cette vue n'existe pas", 1);
     }
 
     /** @inheritDoc */
@@ -112,8 +110,10 @@ class View extends AbstractView
                 $path .= $value . $separator;
                 $i++;
             }
+
             return $this->getAsset($check, $path, $asset, $ext);
         }
+
         return '';
     }
 
@@ -132,10 +132,15 @@ class View extends AbstractView
         extract($params, EXTR_SKIP);
         require_once $view;
         $this->start('html');
-        require_once VIEW . strtolower(explode(DS, $this->file_path)[0]) . DS . 'layouts' . DS . $this->_layout . '.php';
+        $layout = $this->viewFile('layouts' . DS . $this->_layout);
+        if ($layout) {
+            require_once array_pop($layout); //VIEW . strtolower(explode(DS, $this->file_path)[0]) . DS . 'layouts' . DS . $this->_layout . '.php';
+        }
         $this->end();
         if ($this->webView) {
-            $this->response->handler()->setContent($this->content('html'))->send();
+            // $this->response->handler()->setContent($this->content('html'))->prepare($this->request->handler())->send();
+            $this->response->setContent($this->content('html'))->prepare($this->request)->send();
+
             return null;
         } else {
             return html_entity_decode($this->content('html'));

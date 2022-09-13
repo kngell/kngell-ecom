@@ -21,6 +21,7 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
     public function prepare(string $sql):self
     {
         $this->_query = $this->_con->open()->prepare($sql);
+
         return $this;
     }
 
@@ -54,6 +55,7 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
                 $this->_query->bindValue(':' . $key, $value, $this->valueType($value));
             }
         }
+
         return $this->_query;
     }
 
@@ -68,6 +70,7 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
         if ($type) {
             return $this;
         }
+
         return false;
     }
 
@@ -94,6 +97,7 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
                 }
             }
         }
+
         return $this->_query;
     }
 
@@ -146,6 +150,7 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
                 'read','showColumns' => $this->select_result($options),
                 'create','update','delete' => $this->c_u_d_result(),
             };
+
             return $this;
         }
     }
@@ -160,6 +165,7 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
     {
         try {
             $sql = $this->cleanSql($sql);
+
             return isset($parameters[0]) && $parameters[0] == 'all' ? $this->prepare($sql)->execute() : $this->prepare($sql)->bindParameters($parameters)->execute();
         } catch (Throwable $th) {
             throw $th;
@@ -214,17 +220,17 @@ class DataMapper extends AbstractDataMapper implements DataMapperInterface
                 } else {
                     $this->bind(":$key", $val['value']);
                 }
-            break;
+                break;
             case isset($val['operator']) && in_array($val['operator'], ['NOT IN', 'IN']):
                 if (!empty($this->bind_arr)) {
                     foreach ($this->bind_arr as $k => $v) {
                         $this->bind(":$k", $v);
                     }
                 }
-            break;
+                break;
             default:
                 $this->bind(":$key", $val['value']);
-            break;
+                break;
         }
     }
 }

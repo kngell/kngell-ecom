@@ -41,6 +41,7 @@ class AddressBookEntity extends Entity
     public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -60,6 +61,7 @@ class AddressBookEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -79,6 +81,7 @@ class AddressBookEntity extends Entity
     public function setAbId(int $abId) : self
     {
         $this->abId = $abId;
+
         return $this;
     }
 
@@ -98,6 +101,7 @@ class AddressBookEntity extends Entity
     public function setTbl(string $tbl) : self
     {
         $this->tbl = $tbl;
+
         return $this;
     }
 
@@ -117,6 +121,7 @@ class AddressBookEntity extends Entity
     public function setRelId(int $relId) : self
     {
         $this->relId = $relId;
+
         return $this;
     }
 
@@ -136,6 +141,7 @@ class AddressBookEntity extends Entity
     public function setAddress1(string $address1) : self
     {
         $this->address1 = $address1;
+
         return $this;
     }
 
@@ -155,6 +161,7 @@ class AddressBookEntity extends Entity
     public function setAddress2(string $address2) : self
     {
         $this->address2 = $address2;
+
         return $this;
     }
 
@@ -174,6 +181,7 @@ class AddressBookEntity extends Entity
     public function setZipCode(string $zipCode) : self
     {
         $this->zipCode = $zipCode;
+
         return $this;
     }
 
@@ -193,6 +201,7 @@ class AddressBookEntity extends Entity
     public function setVille(string $ville) : self
     {
         $this->ville = $ville;
+
         return $this;
     }
 
@@ -212,6 +221,7 @@ class AddressBookEntity extends Entity
     public function setRegion(string $region) : self
     {
         $this->region = $region;
+
         return $this;
     }
 
@@ -231,6 +241,7 @@ class AddressBookEntity extends Entity
     public function setPays(string $pays) : self
     {
         $this->pays = $pays;
+
         return $this;
     }
 
@@ -250,6 +261,7 @@ class AddressBookEntity extends Entity
     public function setPrincipale(string $principale) : self
     {
         $this->principale = $principale;
+
         return $this;
     }
 
@@ -269,6 +281,7 @@ class AddressBookEntity extends Entity
     public function setSaveForLater(string $saveForLater) : self
     {
         $this->saveForLater = $saveForLater;
+
         return $this;
     }
 
@@ -288,12 +301,14 @@ class AddressBookEntity extends Entity
     public function setBillingAddr(string $billingAddr) : self
     {
         $this->billingAddr = $billingAddr;
+
         return $this;
     }
 
     public function delete(?string $field = null) : self
     {
         unset($this->$field);
+
         return $this;
     }
 }

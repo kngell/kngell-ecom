@@ -42,6 +42,7 @@ final class DatabaseConnexion implements DatabaseConnexionInterface
                 throw new DatabaseConnexionExceptions($e->getMessage(), (int) $e->getCode());
             }
         }
+
         return $this->con;
     }
 
@@ -83,6 +84,7 @@ final class DatabaseConnexion implements DatabaseConnexionInterface
     public function setCredentials(array $credentials)
     {
         $this->credentials = $credentials;
+
         return $this;
     }
 }

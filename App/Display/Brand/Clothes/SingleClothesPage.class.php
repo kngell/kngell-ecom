@@ -50,6 +50,7 @@ class SingleClothesPage extends AbstractBrandPage implements DisplayPagesInterfa
                 $template = str_replace('{{price}}', $this->money->getFormatedAmount(strval($p->compare_price ?? 0)), $template);
             }
         }
+
         return $template;
     }
 
@@ -64,6 +65,7 @@ class SingleClothesPage extends AbstractBrandPage implements DisplayPagesInterfa
             $temp = str_replace('{{button}}', $this->clothesButton(), $temp);
             $html .= $temp;
         }
+
         return str_replace('{{related_product_item}}', $html, $template);
     }
 }

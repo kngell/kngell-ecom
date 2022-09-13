@@ -9,7 +9,7 @@ abstract class AbstractAddressBookPage
     use AddressBookGetterAndSettersTrait;
 
     protected ?CollectionInterface $paths;
-    protected ?Customer $customer;
+    protected ?CustomerEntity $customerEntity;
     protected ?FormBuilder $frm;
     protected ?string $template;
     protected ?ResponseHandler $response;
@@ -18,11 +18,11 @@ abstract class AbstractAddressBookPage
     private string $billingAddr = 'Y';
     private SessionInterface $session;
 
-    public function __construct(?AddressBookPath $paths = null, ?Customer $customer = null, ?FormBuilder $frm = null, ?ResponseHandler $response = null)
+    public function __construct(?AddressBookPath $paths = null, ?CustomerEntity $customerEntity = null, ?FormBuilder $frm = null, ?ResponseHandler $response = null)
     {
         $this->session = Container::getInstance()->make(SessionInterface::class);
         $this->paths = $paths->Paths();
-        $this->customer = $this->customer($customer);
+        $this->customerEntity = $customerEntity;
         $this->frm = $frm;
         $this->template = $this->getTemplate('addressBookContentPath');
         $this->response = $response;
@@ -43,24 +43,24 @@ abstract class AbstractAddressBookPage
                 $text .= $this->singleAddressText($address);
             }
         }
+
         return $text;
     }
 
     protected function addresses(string $type = 'all') : CollectionInterface
     {
-        /** @var CustomerEntity */
-        $en = $this->customer->getEntity();
-        if ($en->isInitialized('address')) {
+        if ($this->customerEntity->isInitialized('address')) {
             return match ($type) {
-                'delivery' => $en->getAddress()->filter(function ($addr) {
+                'delivery' => $this->customerEntity->getAddress()->filter(function ($addr) {
                     return $addr->principale === $this->deliveryAddr;
                 }),
-                'billing' => $en->getAddress()->filter(function ($addr) {
+                'billing' => $this->customerEntity->getAddress()->filter(function ($addr) {
                     return $addr->billing_addr === $this->billingAddr;
                 }),
-                default => $en->getAddress()
+                default => $this->customerEntity->getAddress()
             };
         }
+
         return new Collection([]);
     }
 
@@ -68,6 +68,7 @@ abstract class AbstractAddressBookPage
     {
         $template = $this->getTemplate('addressBookPath');
         $template = str_replace('{{content}}', $htmlContent, $template);
+
         return $template;
     }
 }

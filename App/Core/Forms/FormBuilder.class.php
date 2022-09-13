@@ -6,6 +6,7 @@ class FormBuilder extends AbstractFormBuilder
 {
     use FormBuilderTrait;
     use SessionTrait;
+    use FormStrReplaceInputTrait;
 
     protected array $inputObject = [];
     protected Object $currentObject;
@@ -21,7 +22,6 @@ class FormBuilder extends AbstractFormBuilder
     protected GlobalVariablesInterface $globals;
     protected FormBuilderBlueprint $print;
     private object|null $dataRepository = null;
-    private ContainerInterface $container;
 
     /**
      * Main class constructor.
@@ -58,6 +58,7 @@ class FormBuilder extends AbstractFormBuilder
                 }
             }
         }
+
         return $this;
     }
 
@@ -73,7 +74,7 @@ class FormBuilder extends AbstractFormBuilder
     {
         if (is_array($args)) {
             foreach ($args as $objectType => $objectTypeOptions) {
-                $newTypeObject = $this->container->make($objectType, [
+                $newTypeObject = Container::getInstance()->make($objectType, [
                     'fields' => $objectTypeOptions,
                     'options' => $options,
                     'settings' => $settings,
@@ -84,6 +85,7 @@ class FormBuilder extends AbstractFormBuilder
                 $newTypeObject->configureOptions();
                 $this->inputObject[] = $newTypeObject;
                 $this->currentObject = $newTypeObject;
+
                 return $this->htmlAttr(array_merge(self::FIELD_ARGS, $this->currentObject->htmlAttr()));
             }
         }
@@ -128,6 +130,7 @@ class FormBuilder extends AbstractFormBuilder
         if (isset($this->element) && !empty($this->element)) {
             return $this->element;
         }
+
         return false;
     }
 
@@ -138,6 +141,7 @@ class FormBuilder extends AbstractFormBuilder
         } else {
             $this->htmlAttr = self::HTML_ELEMENT_PARTS;
         }
+
         return $this;
     }
 
@@ -150,6 +154,7 @@ class FormBuilder extends AbstractFormBuilder
             $key = $this->csrfKey != '' ? $this->csrfKey : 'alertErr';
             $alertHtml .= $this->csrfForm($frmID != '' ? $frmID : $key);
         }
+
         return sprintf('<form %s>', $this->renderHtmlElement($this->formAttr)) . PHP_EOL . $alertHtml;
     }
 
@@ -164,10 +169,11 @@ class FormBuilder extends AbstractFormBuilder
                 $fields .= $this->processFields($objectType);
             }
         }
+
         return $fields;
     }
 
-    public function end()
+    public function end() : string
     {
         return isset($this->formAttr['leave_form_open']) && $this->formAttr['leave_form_open'] === true ? '' : '</form>';
     }
@@ -196,6 +202,7 @@ class FormBuilder extends AbstractFormBuilder
         if ($this->canHandleRequest() && $this->isSubmittable($submit)) {
             return true;
         }
+
         return false;
     }
 
@@ -221,10 +228,10 @@ class FormBuilder extends AbstractFormBuilder
     public function canHandleRequest() : array
     {
         $method = ($this->globals->getServer('REQUEST_METHOD') ?? '');
-        if ($method == 'POST' && array_key_exists('HTTP_X_HTTP_METHOD', $this->globals->getServer())) {
-            if ($this->globals->getServer('HTTP_X_HTTP_METHOD') == 'DELETE') {
+        if ($method == 'POST' && array_key_exists('HTTP_X_HTTP_METHOD', $this->request->getServer())) {
+            if ($this->request->getServer('HTTP_X_HTTP_METHOD') == 'DELETE') {
                 $method == 'DELETE';
-            } elseif ($this->globals->getServer('HTTP_X_HTTP_METHOD') == 'PUT') {
+            } elseif ($this->request->getServer('HTTP_X_HTTP_METHOD') == 'PUT') {
                 $method == 'PUT';
             } else {
                 throw new FormBuilderUnexpectedValueException('Unexpected Header');
@@ -268,6 +275,7 @@ class FormBuilder extends AbstractFormBuilder
     public function getJson()
     {
         list($_method, $_post, $_json) = $this->canHandleRequest();
+
         return $_json;
     }
 
@@ -277,6 +285,7 @@ class FormBuilder extends AbstractFormBuilder
     public function getData() : array
     {
         list($_method, $_post, $_json) = $this->canHandleRequest();
+
         return $_post;
     }
 
@@ -297,7 +306,8 @@ class FormBuilder extends AbstractFormBuilder
      */
     public function isSubmittable(string $name = 'submit') : bool
     {
-        $sb = $this->globals->getPost($name);
+        $sb = $this->request->getPost($name);
+
         return isset($sb);
     }
 
@@ -315,10 +325,10 @@ class FormBuilder extends AbstractFormBuilder
 
     protected function getStream()
     {
-        $ct = $this->globals->getServer('CONTENT_TYPE');
-        $contentType = isset($ct) && $this->globals->getServer('REQUEST_METHOD') == 'POST' ? trim($this->globals->getServer('CONTENT_TYPE')) : '';
+        $ct = $this->request->getServer('CONTENT_TYPE');
+        $contentType = isset($ct) && $this->request->getServer('REQUEST_METHOD') == 'POST' ? trim($this->request->getServer('CONTENT_TYPE')) : '';
         if ($contentType === 'application/json') {
-            $content = trim(file_get_contents('php://input', false, stream_context_get_default(), 0, $this->globals->getServer('CONTENT_LENGTH')));
+            $content = trim(file_get_contents('php://input', false, stream_context_get_default(), 0, $this->request->getServer('CONTENT_LENGTH')));
             $decode = json_decode($content, true);
             if (is_array($decode)) {
                 echo $decode;
@@ -330,12 +340,11 @@ class FormBuilder extends AbstractFormBuilder
 
     private function properties()
     {
-        $this->container = Container::getInstance();
-        $this->error = $this->container->make(CoreError::class);
-        $this->token = $this->container->make(Token::class);
-        $this->request = $this->container->make(RequestHandler::class);
-        $this->globals = $this->container->make(GlobalVariablesInterface::class);
-        $this->print = $this->container->make(FormBuilderBlueprint::class);
+        $container = Container::getInstance();
+        $this->error = $container->make(CoreError::class);
+        $this->token = $container->make(Token::class);
+        $this->request = $container->make(RequestHandler::class);
+        $this->print = $container->make(FormBuilderBlueprint::class);
     }
 
     /**
@@ -353,20 +362,22 @@ class FormBuilder extends AbstractFormBuilder
                 case $field:
                     // [inline_flip_icon, inline_icon, inline_icon_class, before_after_wrapper etc...]
                     extract($objectType->getSettings(), EXTR_SKIP);
-        /* Wrap the element and form input within a container element */
-        if ($container) {
-            //[before, after, element, element_id, element_class, element_style]
-            extract($this->htmlAttr);
-            $html .= (isset($field_wrapper) && $field_wrapper == true) ? $this->buildTemplate($objectType, $this->htmlAttr, $label_up) : '%s'; //"\n{$before}" : '';
-            $html = $this->buildLabel($objectType, $html, $this->htmlAttr, $label, $show_label);
-            $html = sprintf($html, $this->fieldWrapper($html, $element, $element_class, $input_wrapper));
-            return sprintf($html, $objectType->view($label, $model_data));
-        } else { /* else we can render the form field outside of a container */
-            $html .= $objectType->view();
-        }
-        break;
-        endswitch;
+                    /* Wrap the element and form input within a container element */
+                    if ($container) {
+                        //[before, after, element, element_id, element_class, element_style]
+                        extract($this->htmlAttr);
+                        $html .= (isset($field_wrapper) && $field_wrapper == true) ? $this->buildTemplate($objectType, $this->htmlAttr, $label_up) : '%s'; //"\n{$before}" : '';
+                        $html = $this->buildLabel($objectType, $html, $this->htmlAttr, $label, $show_label);
+                        $html = sprintf($html, $this->fieldWrapper($html, $element, $element_class, $input_wrapper));
+
+                        return sprintf($html, $objectType->view($label, $model_data));
+                    } else { /* else we can render the form field outside of a container */
+                        $html .= $objectType->view();
+                    }
+                    break;
+            endswitch;
         endforeach;
+
         return $html;
     }
 
@@ -385,8 +396,10 @@ class FormBuilder extends AbstractFormBuilder
             /* Main element closing tag */
             $html .= "\n %s ";
             $html .= "\n</div>";
+
             return $html;
         }
+
         return '%s';
     }
 }

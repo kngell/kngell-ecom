@@ -18,6 +18,7 @@ class Token extends RandomStringGenerator
         $time = time();
         $separator = !empty($frm) ? $frm : '|';
         $hash = hash_hmac('sha256', session_id() . $identifiant . $time . $frm ?? '', CSRF_TOKEN_SECRET, true);
+
         return $this->urlSafeEncode($hash . $separator . $identifiant . $separator . $time);
     }
 
@@ -41,6 +42,7 @@ class Token extends RandomStringGenerator
                 return true;
             }
         }
+
         return false;
     }
 
@@ -52,6 +54,7 @@ class Token extends RandomStringGenerator
             $randomKey = $this->getRandomInteger(0, $this->alphabetLength);
             $token .= $this->alphabet[$randomKey];
         }
+
         return $token;
     }
 
@@ -63,6 +66,7 @@ class Token extends RandomStringGenerator
             return true;
         }
         $serverToken = hash_hmac('sha256', $formName, $this->session->exists(TOKEN_NAME) ? $this->session->get(TOKEN_NAME) : '');
+
         return hash_equals($serverToken, $token);
     }
 

@@ -49,6 +49,7 @@ trait LoggerTrait
         if ($timestamp == null) {
             $timestamp = date('Y-m-d H:i:s');
         }
+
         return '[' . $timestamp . '] ' . strtoupper($level) . ':' . $this->interpolate($message, $context) . "\n";
     }
 }

@@ -97,6 +97,7 @@ class CheckoutProcessChangeController extends Controller
         if ($en->getBillingAddr() == 'Y') {
             return 'billing';
         }
+
         return 'all';
     }
 
@@ -115,6 +116,7 @@ class CheckoutProcessChangeController extends Controller
             $get = 'all';
             $address->principale = 0;
         }
+
         return [$update, $get, $address];
     }
 
@@ -130,6 +132,7 @@ class CheckoutProcessChangeController extends Controller
             }
             $shAry[] = $shClass;
         }
+
         return new collection($shAry);
     }
 }

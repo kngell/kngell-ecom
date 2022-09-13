@@ -25,30 +25,31 @@ abstract class AbstractSinglePage
         $this->paths = $paths->Paths();
     }
 
-    protected function outputSingleProduct(string $template) : string
+    protected function outputSingleProduct(string $template, $p) : string
     {
-        $p = $this->product;
         $p->userCart = $this->userCart->getUserCart();
         $template = str_replace('{{title}}', $p->title ?? 'Unknown', $template);
         $template = str_replace('{{brand}}', $p->item_brand ?? 'Brand', $template);
-        $template = str_replace('{{image}}', isset($p->media) ? $p->media[0] : ImageManager::asset_img('products/product-540x60.jpg'), $template);
-        if (isset($p->media) && count($p->media) > 0) {
+        $template = str_replace('{{image}}', $this->media($p), $template);
+        $media = is_string($p->media) ? unserialize($p->media) : $p->media;
+        if (isset($media) && is_array($media) && count($media) > 0) {
             $galleryTemplate = $this->getTemplate('imgGalleryTemplate');
             $htmlGallery = '';
-            for ($i = 0; $i < count($p->media); $i++) {
-                $htmlItem = str_replace('{{imageGallery}}', $this->media($p), $galleryTemplate);
+            foreach ($media as $img) {
+                $htmlItem = str_replace('{{imageGallery}}', ImageManager::asset_img($img), $galleryTemplate);
                 $htmlItem = str_replace('{{title}}', $p->title, $htmlItem);
                 $htmlGallery .= $htmlItem;
             }
             $template = str_replace('{{imageGalleryTemplate}}', $htmlGallery, $template);
-            $template = str_replace('{{proceedToBuyForm}}', $this->productForm($p, 'Proceed to buy'), $template);
-            $template = str_replace('{{addToCartForm}}', $this->productForm($p, 'Add to Cart'), $template);
-            $template = str_replace('{{comparePrice}}', $this->money->getFormatedAmount($p->compare_price), $template);
-            $template = str_replace('{{regularPrice}}', $this->money->getFormatedAmount($p->regular_price), $template);
-            $template = str_replace('{{savings}}', $this->money->getFormatedAmount(strval($p->compare_price - $p->regular_price)), $template);
-            $template = str_replace('{{imageUser}}', ImageManager::asset_img('users/avatar.png'), $template);
-            $template = str_replace('{{imageUser2}}', ImageManager::asset_img('users/default-female-avatar.jpg'), $template);
         }
+        $template = str_replace('{{proceedToBuyForm}}', $this->productForm($p, 'Proceed to buy'), $template);
+        $template = str_replace('{{addToCartForm}}', $this->productForm($p, 'Add to Cart'), $template);
+        $template = str_replace('{{comparePrice}}', $this->money->getFormatedAmount($p->compare_price), $template);
+        $template = str_replace('{{regularPrice}}', $this->money->getFormatedAmount($p->regular_price), $template);
+        $template = str_replace('{{savings}}', $this->money->getFormatedAmount(strval($p->compare_price - $p->regular_price)), $template);
+        $template = str_replace('{{imageUser}}', ImageManager::asset_img('users/avatar.png'), $template);
+        $template = str_replace('{{imageUser2}}', ImageManager::asset_img('users/default-female-avatar.jpg'), $template);
+
         return $template;
     }
 }

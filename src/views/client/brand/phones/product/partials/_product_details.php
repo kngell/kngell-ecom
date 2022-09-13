@@ -44,7 +44,7 @@
                                 echo '<button type="submit" class="btn btn-warning font-size-14 form-control">Add to
                                 Cart</button>';
                             }
-                            ?>
+            ?>
                         </form>
                     </div>
                 </div>

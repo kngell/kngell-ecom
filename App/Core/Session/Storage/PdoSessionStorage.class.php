@@ -54,8 +54,10 @@ class PdoSessionStorage extends AbstractSessionStorage
         if ($this->SessionExists($key)) {
             $value = $_SESSION[$key];
             $this->deleteSession($key);
+
             return $value;
         }
+
         return $default;
     }
 

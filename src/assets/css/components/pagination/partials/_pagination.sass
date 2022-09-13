@@ -1,0 +1,52 @@
+
+@use 'corecss/abstract/variables' as *
+.pagination-box
+   display: flex
+   justify-content: center
+   align-items: center
+   border-radius: 1.2rem
+   .page-link
+      background-color: transparent
+      color: $dark-color
+      border: none
+      display: inline
+   .pagination
+      text-align: center
+      margin: 30px 30px 50px
+      user-select: none
+      li
+         display: inline-block
+         margin: 5px
+         // box-shadow: 0 5px 25px rgb(1 1 1 / 10% )
+         box-shadow: 0 7px 12px rgba(121,121,121,.24)
+         a
+            color: #fff
+            text-decoration: none
+            font-size: 1.2em
+            line-height: 45px
+      .previous-page, .next-page
+         background: $color-second
+         width: 80px
+         border-radius: 45px
+         cursor: pointer
+         transition: .3s ease
+      .current-page, .dots
+         background: #ccc
+         width: 45px
+         border-radius: 50%
+         cursor: pointer
+      .previous-page
+         &:hover
+            transform: translateX(-5px)
+      .next-page
+         &:hover
+            transform: translateX(5px)
+      .page-item
+         .page-link
+            &:hover, &:hover,&:active, &:active
+               outline: none
+               box-shadow: none
+   .active
+      background: $color-second!important
+   .disable
+      background: #ccc!important

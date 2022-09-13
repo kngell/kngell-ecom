@@ -30,6 +30,7 @@ abstract class AbstractEmailSenderEvent extends Event
     public function setUserName(string $userName) : self
     {
         $this->userName = $userName;
+
         return $this;
     }
 
@@ -49,6 +50,7 @@ abstract class AbstractEmailSenderEvent extends Event
     public function setHost(array $host) : self
     {
         $this->host = $host;
+
         return $this;
     }
 
@@ -68,6 +70,7 @@ abstract class AbstractEmailSenderEvent extends Event
     public function setPreheadText(string $preheadText) : self
     {
         $this->preheadText = $preheadText;
+
         return $this;
     }
 
@@ -87,6 +90,7 @@ abstract class AbstractEmailSenderEvent extends Event
     public function setMsgTitle(string $msgTitle) : self
     {
         $this->msgTitle = $msgTitle;
+
         return $this;
     }
 
@@ -106,6 +110,7 @@ abstract class AbstractEmailSenderEvent extends Event
     public function setMsgBody(string $msgBody) : self
     {
         $this->msgBody = $msgBody;
+
         return $this;
     }
 
@@ -125,6 +130,7 @@ abstract class AbstractEmailSenderEvent extends Event
     public function setBtnText(string $btnText) : self
     {
         $this->btnText = $btnText;
+
         return $this;
     }
 
@@ -144,6 +150,7 @@ abstract class AbstractEmailSenderEvent extends Event
     public function setMsgEnd(string $msgEnd) : self
     {
         $this->msgEnd = $msgEnd;
+
         return $this;
     }
 
@@ -163,6 +170,7 @@ abstract class AbstractEmailSenderEvent extends Event
     public function setLink(string $link) : self
     {
         $this->link = $link;
+
         return $this;
     }
 
@@ -182,6 +190,7 @@ abstract class AbstractEmailSenderEvent extends Event
     public function setEmail(string $email) : self
     {
         $this->email = $email;
+
         return $this;
     }
 }

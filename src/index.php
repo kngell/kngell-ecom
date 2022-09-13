@@ -5,7 +5,7 @@ declare(strict_types=1);
 defined('ROOT_DIR') or define('ROOT_DIR', realpath(dirname(__DIR__)));
 $autoload = ROOT_DIR . '/vendor/autoload.php';
 if (is_file($autoload)) {
-    require_once $autoload;
+    $autoload = require_once $autoload;
 }
 
 try {
@@ -21,6 +21,6 @@ try {
         ->setRoutes(YamlFile::get('routes'))
         ->setContainerProviders(YamlFile::get('providers'))
         ->run();
-} catch (\Throwable $e) {
+} catch (BaseResourceNotFoundException $e) {
     throw new BaseResourceNotFoundException($e->getMessage(), $e->getCode());
 }

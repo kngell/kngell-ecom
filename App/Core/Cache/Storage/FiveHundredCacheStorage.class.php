@@ -50,6 +50,7 @@ class FiveHundredCacheStorage extends AbstractCacheStorage
     public function getCache(string $key): string|bool
     {
         @include "/tmp/$key";
+
         return isset($value) ? $value : false;
 //        $this->isCacheValidated($key, false);
 //        $cacheEntryPathAndFilename = $this->cacheEntryPathAndFilename($key);
@@ -68,6 +69,7 @@ class FiveHundredCacheStorage extends AbstractCacheStorage
     public function hasCache(string $key): bool
     {
         $this->isCacheValidated($key, false);
+
         return file_exists($this->cacheEntryPathAndFilename($key));
     }
 
@@ -83,6 +85,7 @@ class FiveHundredCacheStorage extends AbstractCacheStorage
             $result = $this->tryRemoveWithLock($cacheEntryPathAndFilename);
             if ($result === true) {
                 clearstatcache(true, $cacheEntryPathAndFilename);
+
                 return true;
             }
             usleep(rand(10, 500));

@@ -36,6 +36,7 @@ class TransactionsEntity extends Entity
     public function setTrId(int $trId) : self
     {
         $this->trId = $trId;
+
         return $this;
     }
 
@@ -55,6 +56,7 @@ class TransactionsEntity extends Entity
     public function setTransactionId(string $transactionId) : self
     {
         $this->transactionId = $transactionId;
+
         return $this;
     }
 
@@ -74,6 +76,7 @@ class TransactionsEntity extends Entity
     public function setCustomerId(string $customerId) : self
     {
         $this->customerId = $customerId;
+
         return $this;
     }
 
@@ -93,6 +96,7 @@ class TransactionsEntity extends Entity
     public function setUserId(int $userId) : self
     {
         $this->userId = $userId;
+
         return $this;
     }
 
@@ -112,6 +116,7 @@ class TransactionsEntity extends Entity
     public function setCurrency(string $currency) : self
     {
         $this->currency = $currency;
+
         return $this;
     }
 
@@ -131,6 +136,7 @@ class TransactionsEntity extends Entity
     public function setStatus(string $status) : self
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -150,6 +156,7 @@ class TransactionsEntity extends Entity
     public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -169,6 +176,7 @@ class TransactionsEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 

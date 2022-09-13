@@ -27,6 +27,7 @@ trait DisplayTraits
                 }
             }
         }
+
         return $resp;
     }
 
@@ -35,12 +36,14 @@ trait DisplayTraits
         if (!file_exists($file)) {
             throw new BaseException('File does not exist!', 1);
         }
+
         return true;
     }
 
     protected function getTemplate(string $path) : string
     {
         $this->isFileexists($this->paths->offsetGet($path));
+
         return file_get_contents($this->paths->offsetGet($path));
     }
 
@@ -52,25 +55,26 @@ trait DisplayTraits
                 return str_starts_with($media[0], IMG) ? $media[0] : ImageManager::asset_img($media[0]);
             }
         }
+
         return '';
     }
 
-    protected function customer(?Customer $customer = null) : ?Customer
+    protected function customerEntity(?CustomerEntity $customer = null) : ?CustomerEntity
     {
-        $session = Container::getInstance()->make(SessionInterface::class);
-        if (null !== $customer && $customer->getEntity()->isInitialized('address')) {
-            if ($customer->getEntity()->{$customer->getEntity()->getGetters('address')}()->count() > 0) {
+        // $session = Container::getInstance()->make(SessionInterface::class);
+        if (null !== $customer && $customer->isInitialized('address')) {
+            if ($customer->{$customer->getGetters('address')}()->count() > 0) {
                 return $customer;
             }
         }
-        if ($session->exists(CHECKOUT_PROCESS_NAME)) {
-            $customerEntity = unserialize($session->get(CHECKOUT_PROCESS_NAME));
-            $customer = $customer->setEntity($customerEntity);
-            return $customer;
-        }
-        if (null !== $customer) {
-            return $customer;
-        }
+        // if ($session->exists(CHECKOUT_PROCESS_NAME)) {
+        //     $customerEntity = unserialize($session->get(CHECKOUT_PROCESS_NAME));
+        //     $customer = $customer->setEntity($customerEntity);
+        //     return $customer;
+        // }
+        // if (null !== $customer) {
+        //     return $customer;
+        // }
         throw new BaseException('Customer does not exist!');
     }
 }

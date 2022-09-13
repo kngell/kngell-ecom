@@ -5,38 +5,42 @@ declare(strict_types=1);
 abstract class AbstractCheckout
 {
     use DisplayTraits;
+    use DisplayFormElementTrait;
     use CheckoutTrait;
     use CheckoutFromTrait;
+
     protected ?CollectionInterface $userCart;
     protected ?CollectionInterface $shippingClass;
     protected ?CollectionInterface $paths;
     protected ?FormBuilder $frm;
     protected ?CollectionInterface $pmtMode;
-    protected ?Customer $customer;
+    protected ?CustomerEntity $customerEntity;
     protected ?ButtonsGroup $btns;
     protected ?CartSummary $cartSummary;
     protected ?ResponseHandler $response;
     protected ?AddressBookPage $addressBook;
     protected MoneyManager $money;
     protected ?CreditCardPage $creditCard;
+    protected ?Modals $modals;
     protected string $stripKey = STRIPE_KEY_PUBLIC;
 
-    public function __construct(?CollectionInterface $userCart, ?CollectionInterface $shippingClass, ?CollectionInterface $pmtMode, ?FormBuilder $frm, ?CollectionInterface $paths, ?Customer $customer, ?CreditCardPage $creditCard = null)
+    public function __construct(?CollectionInterface $userCart, ?CollectionInterface $shippingClass, ?CollectionInterface $pmtMode, ?FormBuilder $frm, ?CollectionInterface $paths, ?CreditCardPage $creditCard = null, ?Modals $modals = null, ?customerEntity $customerEntity = null)
     {
+        $this->customerEntity = $customerEntity;
         $this->userCart = $userCart;
         $this->shippingClass = $shippingClass;
         $this->pmtMode = $pmtMode;
         $this->frm = $frm;
         $this->paths = $paths;
-        $this->customer = $customer;
         $this->btns = new ButtonsGroup($this->frm);
         $this->addressBook = Container::getInstance()->make(AddressBookPage::class, [
-            'customer' => $customer,
+            'customerEntity' => $this->customerEntity,
         ]);
         $this->money = MoneyManager::getInstance();
         $this->response = Container::getInstance()->make(ResponseHandler::class);
         $this->cartSummary = (new CartSummary($userCart, $this->shippingClass, $this->money, $this->paths));
         $this->creditCard = $creditCard;
+        $this->modals = $modals;
     }
 
     protected function creditCardContent() : string
@@ -47,6 +51,7 @@ abstract class AbstractCheckout
         $template = str_replace('{{cardHolder}}', $this->frm->input([
             TextType::class => ['name' => 'card_holder', 'class' => ['card_holder']],
         ])->id('card_holder')->Label('Card Holder:')->placeholder(' ')->html(), $template);
+
         return $template;
     }
 
@@ -58,7 +63,7 @@ abstract class AbstractCheckout
             'pmtMode' => $this->pmtMode,
             'frm' => $this->frm,
             'paths' => $this->paths,
-            'customer' => $this->customer,
+            'customerEntity' => $this->customerEntity,
             'btns' => $this->btns,
             'summary' => $this->cartSummary,
             'addressBook' => $this->addressBook,
@@ -69,26 +74,30 @@ abstract class AbstractCheckout
 
     protected function addressBookContent(string $frmID = '') : string
     {
-        list($htmlChk, $htmlModal, $text) = $this->addressBook->setCustomer($this->customer)->all($frmID);
+        list($htmlChk, $htmlModal, $text) = $this->addressBook->setCustomer($this->customerEntity)->all($frmID);
+
         return $htmlModal;
     }
 
     protected function userCheckoutSesstion() : void
     {
         if (AuthManager::isUserLoggedIn()) {
-
             /** @var SessionInterface */
             $session = Container::getInstance()->make(SessionInterface::class);
-
-            /** @var CustomerEntity */
-            $en = !$session->exists(CHECKOUT_PROCESS_NAME) ? $this->customer->getEntity() : unserialize($session->get(CHECKOUT_PROCESS_NAME));
-            $en->setBillTo($this->getCustomerAddress($en, 'bill'));
-            $en->setShipTo($this->getCustomerAddress($en, 'ship'));
-            $en->setShippingMethod($this->shippingMethod($this->shippingClass));
-            $en->setCartSummary($this->sessionCart($this->cartSummary));
-            $en->setPromo('');
-            $session->set(CHECKOUT_PROCESS_NAME, serialize($en));
+            $this->customerEntity->setBillTo($this->getCustomerAddress($this->customerEntity, 'bill'));
+            $this->customerEntity->setShipTo($this->getCustomerAddress($this->customerEntity, 'ship'));
+            $this->customerEntity->setShippingMethod($this->shippingMethod($this->shippingClass));
+            $this->customerEntity->setCartSummary($this->sessionCart($this->cartSummary));
+            $this->customerEntity->setPromo('');
+            $session->set(CHECKOUT_PROCESS_NAME, serialize($this->customerEntity));
         }
+    }
+
+    private function customerEntity() : ?CustomerEntity
+    {
+        $session = Container::getInstance()->make(SessionInterface::class);
+
+        return !$session->exists(CHECKOUT_PROCESS_NAME) ? $this->customerEntity : unserialize($session->get(CHECKOUT_PROCESS_NAME));
     }
 
     private function getCustomerAddress(?CustomerEntity $en = null, ?string $type = null) : string
@@ -100,6 +109,7 @@ abstract class AbstractCheckout
                 if ($type != null) {
                     if ($type == 'ship') {
                         $addr->principale == 'Y' ? $addr->billing_addr = 'Y' : '';
+
                         return $addr->principale == 'Y';
                     }
                     if ($type == 'bill') {
@@ -112,12 +122,14 @@ abstract class AbstractCheckout
             if ($customerAddress->count() === 1) {
                 $get = $type == 'ship' ? 'delivery' : 'billing';
                 list($htmlFrm, $htmlModal, $text) = $this->addressBook->$get();
+
                 return $text;
             }
             if ($customerAddress->count() === 0 && $type == 'bill') {
                 return $this->getCustomerAddress($en, 'ship');
             }
         }
+
         return '';
     }
 }

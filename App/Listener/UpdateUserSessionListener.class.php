@@ -16,6 +16,7 @@ class UpdateUserSessionListener implements ListenerInterface
             $session_values = $session->get(CURRENT_USER_SESSION_NAME);
             isset($session_values['verified']) ? $session_values['verified'] = 1 : '';
         }
+
         return [];
     }
 }

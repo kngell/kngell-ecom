@@ -15,25 +15,25 @@ class BillingInfos extends AbstractFormSteps implements CheckoutFormStepInterfac
     {
         $mainTemplate = $this->getTemplate('mainBillingPath');
         $shippingData = $this->getTemplate('billingData');
+
         return $this->outputTemplate($mainTemplate, $shippingData);
     }
 
     protected function outputTemplate(string $template, string $dataTemplate) : string
     {
         $temp = '';
-        /** @var CustomerEntity */
-        $en = $this->customer->getEntity();
         list('name' => $method, 'price' => $price) = $this->shippingMethod($this->shippingClass);
         $temp = str_replace('{{userCartSummary}}', $this->summary->display($this), $template);
         $temp = str_replace('{{data}}', $dataTemplate, $temp);
         $temp = str_replace('{{title}}', $this->titleTemplate($this->stepTitle), $temp);
-        $temp = str_replace('{{contact_email}}', $en->isInitialized('email') ? $en->getEmail() : '', $temp);
+        $temp = str_replace('{{contact_email}}', $this->customerEntity->isInitialized('email') ? $this->customerEntity->getEmail() : '', $temp);
         $temp = str_replace('{{address_de_livraion}}', $this->customerAddress(1), $temp);
         $temp = str_replace('{{shipping_mode}}', $method, $temp);
         $temp = str_replace('{{shipping_price}}', $this->money->getFormatedAmount($price, 2), $temp);
         $temp = str_replace('{{discountCode}}', $this->discountCode(), $temp);
         $temp = str_replace('{{billingFrom}}', $this->billingform(), $temp);
         $temp = str_replace('{{buttons_group}}', $this->buttons(), $temp);
+
         return $temp;
     }
 
@@ -69,6 +69,7 @@ class BillingInfos extends AbstractFormSteps implements CheckoutFormStepInterfac
         $this->frm->globalClasses([
             'wrapper' => [],
         ]);
+
         return $template;
     }
 }

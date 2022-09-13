@@ -54,6 +54,7 @@ abstract class RandomStringGenerator
             $rnd = hexdec(bin2hex(random_bytes($bytes)));
             $rnd = $rnd & $filter;
         } while ($rnd >= $range);
+
         return $min + $rnd;
     }
 }

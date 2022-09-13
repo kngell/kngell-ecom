@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use FileException;
 
 class FileSystemManagementException extends FileException
 {

@@ -24,7 +24,8 @@ class Entity extends AbstractEntity
     public function getFieldValue(string $field) : mixed
     {
         $method = $this->getGetters($this->regenerateField($field));
-        return $this->reflectionInstance()->getMethod($method)->invoke($this, $method);
+
+        return $this->reflectionclass()->getMethod($method, $this)->invoke($this, $method);
     }
 
     public function getAllAttributes() : array
@@ -34,12 +35,7 @@ class Entity extends AbstractEntity
 
     public function isInitialized(string $field) : bool
     {
-        $f = $this->regenerateField($field);
-        $rp = $this->reflectionInstance()->getProperty($f);
-        if ($rp->isInitialized($this)) {
-            return true;
-        }
-        return false;
+        return $this->reflectionClass()->isInitialized($this->regenerateField($field), $this);
     }
 
     public function getColId(string $withDocComment = 'id', bool $entityProp = false) :  string
@@ -52,6 +48,7 @@ class Entity extends AbstractEntity
                 exit;
             }
         }
+
         return '';
     }
 
@@ -76,6 +73,7 @@ class Entity extends AbstractEntity
                 }
             }
         }
+
         return $properties;
     }
 
@@ -92,6 +90,7 @@ class Entity extends AbstractEntity
     public function getPropertyComment(string $field) : string
     {
         $propertyComment = $this->reflectionInstance()->getProperty($field)->getDocComment();
+
         return $this->filterPropertyComment($propertyComment);
     }
 
@@ -108,6 +107,7 @@ class Entity extends AbstractEntity
         } else {
             return $this->assingEntity($attrs, $params);
         }
+
         return $this;
     }
 
@@ -133,6 +133,7 @@ class Entity extends AbstractEntity
         $reflectionProperty = $this->reflectionInstance()->getProperty($field);
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($this, null);
+
         return $this;
     }
 
@@ -148,6 +149,7 @@ class Entity extends AbstractEntity
         if ($cleanData) {
             return $cleanData;
         }
+
         return [];
     }
 }

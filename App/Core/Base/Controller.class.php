@@ -5,7 +5,7 @@ declare(strict_types=1);
 abstract class Controller extends AbstractController
 {
     use DatabaseCacheTrait;
-    use MethodsForDisplayingPageTrait;
+    use DisplayFrontEndPagesTrait;
     use ControllerTrait;
 
     public function __construct(array $params = [])
@@ -37,6 +37,7 @@ abstract class Controller extends AbstractController
         if ($rp->isInitialized($this)) {
             return true;
         }
+
         return false;
     }
 
@@ -46,6 +47,7 @@ abstract class Controller extends AbstractController
         if ($this->view_instance === null) {
             throw new BaseLogicException('You cannot use the render method if the View is not available !');
         }
+
         return $this->view_instance->render($viewName, array_merge($this->frontEndComponents, $context));
     }
 
@@ -62,6 +64,7 @@ abstract class Controller extends AbstractController
                     'token' => $this->token,
                     'file_path' => $this->filePath,
                     'response' => $this->response,
+                    'request' => $this->request,
                 ],
             ]);
         }
@@ -74,6 +77,8 @@ abstract class Controller extends AbstractController
 
     protected function before() : void
     {
+        $this->createView();
+        $this->saveViewPage();
         $this->container(Middleware::class)->middlewares(middlewares: $this->callBeforeMiddlewares(), contructorArgs:[])
             ->middleware($this, function ($object) {
                 return $object;

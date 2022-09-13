@@ -214,6 +214,7 @@ class FileStorageRepository extends FileStorage implements FileStorageRepository
         } else {
             $total_records = $this->numRows();
         }
+
         return [
             $key,
             $value,

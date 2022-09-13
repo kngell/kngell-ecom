@@ -52,6 +52,7 @@ class Cache extends AbstractCache
         if ($data === false) {
             return $default;
         }
+
         return unserialize((string) $data);
     }
 
@@ -70,6 +71,7 @@ class Cache extends AbstractCache
         } catch (Throwable $throwable) {
             throw new CacheException('An exception was thrown in retrieving the key from the cache backend.', 0, $throwable);
         }
+
         return true;
     }
 
@@ -81,6 +83,7 @@ class Cache extends AbstractCache
     public function clear(): bool
     {
         $this->storage->flush();
+
         return true;
     }
 
@@ -98,6 +101,7 @@ class Cache extends AbstractCache
         foreach ($keys as $key) {
             $result[$key] = $this->get($key, $default);
         }
+
         return $result;
     }
 
@@ -115,6 +119,7 @@ class Cache extends AbstractCache
         foreach ($values as $key => $value) {
             $all = $this->set($key, $value, $ttl) && $all;
         }
+
         return $all;
     }
 
@@ -129,6 +134,7 @@ class Cache extends AbstractCache
         foreach ($keys as $key) {
             $this->delete($key);
         }
+
         return true;
     }
 
@@ -141,6 +147,7 @@ class Cache extends AbstractCache
     public function exists(string $key): bool
     {
         $this->ensureCacheEntryIdentifierIsvalid($key);
+
         return $this->storage->hasCache($key);
     }
 }

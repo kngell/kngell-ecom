@@ -20,10 +20,12 @@ class Sessionxxx implements Sessioninterface
         }
         if (session_status() === PHP_SESSION_ACTIVE) {
             $this->isStarted = true;
+
             return true;
         }
         session_start();
         $this->isStarted = true;
+
         return true;
     }
 
@@ -37,6 +39,7 @@ class Sessionxxx implements Sessioninterface
         if ($this->has($key)) {
             return $_SESSION[$key];
         }
+
         return $default;
     }
 

@@ -65,6 +65,7 @@ class ProductsEntity extends Entity
     public function setPdtId(int $pdtID) : self
     {
         $this->pdtId = $pdtID;
+
         return $this;
     }
 
@@ -84,6 +85,7 @@ class ProductsEntity extends Entity
     public function setUserSalt(string $userSalt) : self
     {
         $this->user_salt = $userSalt;
+
         return $this;
     }
 
@@ -103,6 +105,7 @@ class ProductsEntity extends Entity
     public function setUnitId(int $unitID) : self
     {
         $this->unitId = $unitID;
+
         return $this;
     }
 
@@ -122,6 +125,7 @@ class ProductsEntity extends Entity
     public function setTitle(string $title) : self
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -141,6 +145,7 @@ class ProductsEntity extends Entity
     public function setShortDescr(string $shortDescr) : self
     {
         $this->shortDescr = $shortDescr;
+
         return $this;
     }
 
@@ -160,6 +165,7 @@ class ProductsEntity extends Entity
     public function setDescr(string $descr) : self
     {
         $this->descr = $descr;
+
         return $this;
     }
 
@@ -179,6 +185,7 @@ class ProductsEntity extends Entity
     public function setRegularPrice(string $regularPrice) : self
     {
         $this->regularPrice = $regularPrice;
+
         return $this;
     }
 
@@ -198,6 +205,7 @@ class ProductsEntity extends Entity
     public function setComparePrice(string $comparePrice) : self
     {
         $this->comparePrice = $comparePrice;
+
         return $this;
     }
 
@@ -217,6 +225,7 @@ class ProductsEntity extends Entity
     public function setCostPerItem(string $costPerItem) : self
     {
         $this->costPerItem = $costPerItem;
+
         return $this;
     }
 
@@ -236,6 +245,7 @@ class ProductsEntity extends Entity
     public function setChargeTax(string $chargeTax) : self
     {
         $this->chargeTax = $chargeTax;
+
         return $this;
     }
 
@@ -255,6 +265,7 @@ class ProductsEntity extends Entity
     public function setMedia(string $media) : self
     {
         $this->media = $media;
+
         return $this;
     }
 
@@ -274,6 +285,7 @@ class ProductsEntity extends Entity
     public function setSku(string $sku) : self
     {
         $this->sku = $sku;
+
         return $this;
     }
 
@@ -293,6 +305,7 @@ class ProductsEntity extends Entity
     public function setBarreCode(string $barreCode) : self
     {
         $this->barreCode = $barreCode;
+
         return $this;
     }
 
@@ -312,6 +325,7 @@ class ProductsEntity extends Entity
     public function setTrackQty(string $trackQty) : self
     {
         $this->trackQty = $trackQty;
+
         return $this;
     }
 
@@ -331,6 +345,7 @@ class ProductsEntity extends Entity
     public function setContiniousSell(string $continiousSell) : self
     {
         $this->continiousSell = $continiousSell;
+
         return $this;
     }
 
@@ -350,6 +365,7 @@ class ProductsEntity extends Entity
     public function setQty(int $qty) : self
     {
         $this->qty = $qty;
+
         return $this;
     }
 
@@ -369,6 +385,7 @@ class ProductsEntity extends Entity
     public function setBackBorder(string $backBorder) : self
     {
         $this->backBorder = $backBorder;
+
         return $this;
     }
 
@@ -388,6 +405,7 @@ class ProductsEntity extends Entity
     public function setStockThreshold(int $stockThreshold) : self
     {
         $this->stockThreshold = $stockThreshold;
+
         return $this;
     }
 
@@ -407,6 +425,7 @@ class ProductsEntity extends Entity
     public function setWeight(string $weight) : self
     {
         $this->weight = $weight;
+
         return $this;
     }
 
@@ -426,6 +445,7 @@ class ProductsEntity extends Entity
     public function setLenght(string $lenght) : self
     {
         $this->lenght = $lenght;
+
         return $this;
     }
 
@@ -445,6 +465,7 @@ class ProductsEntity extends Entity
     public function setWidth(string $width) : self
     {
         $this->width = $width;
+
         return $this;
     }
 
@@ -464,6 +485,7 @@ class ProductsEntity extends Entity
     public function setHeight(string $height) : self
     {
         $this->height = $height;
+
         return $this;
     }
 
@@ -483,6 +505,7 @@ class ProductsEntity extends Entity
     public function setSize(string $size) : self
     {
         $this->size = $size;
+
         return $this;
     }
 
@@ -502,6 +525,7 @@ class ProductsEntity extends Entity
     public function setPackageSize(string $packageSize) : self
     {
         $this->packageSize = $packageSize;
+
         return $this;
     }
 
@@ -521,6 +545,7 @@ class ProductsEntity extends Entity
     public function setColor(string $color) : self
     {
         $this->color = $color;
+
         return $this;
     }
 
@@ -540,6 +565,7 @@ class ProductsEntity extends Entity
     public function setShippingClass(int $shippingClass) : self
     {
         $this->shippingClass = $shippingClass;
+
         return $this;
     }
 
@@ -559,6 +585,7 @@ class ProductsEntity extends Entity
     public function setStatus(string $status) : self
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -578,6 +605,7 @@ class ProductsEntity extends Entity
     public function setWarehouse(int $warehouse) : self
     {
         $this->warehouse = $warehouse;
+
         return $this;
     }
 
@@ -597,6 +625,7 @@ class ProductsEntity extends Entity
     public function setCompany(int $company) : self
     {
         $this->company = $company;
+
         return $this;
     }
 
@@ -616,6 +645,7 @@ class ProductsEntity extends Entity
     public function setSlug(string $slug) : self
     {
         $this->slug = $slug;
+
         return $this;
     }
 
@@ -635,6 +665,7 @@ class ProductsEntity extends Entity
     public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -654,6 +685,7 @@ class ProductsEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -673,6 +705,7 @@ class ProductsEntity extends Entity
     public function setDeleted($deleted) : self
     {
         $this->deleted = $deleted;
+
         return $this;
     }
 
@@ -681,6 +714,7 @@ class ProductsEntity extends Entity
         if (isset($this->$field)) {
             unset($this->$field);
         }
+
         return $this;
     }
 }

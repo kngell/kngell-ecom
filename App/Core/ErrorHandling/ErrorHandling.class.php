@@ -29,6 +29,7 @@ class ErrorHandling
     public static function isMode()
     {
         $mode = YamlFile::get('app')['debug_error'];
+
         return $mode;
     }
 
@@ -67,28 +68,19 @@ class ErrorHandling
         if (self::isMode()['mode'] == 'dev' && self::isMode()['mode'] != 'prod') {
             list($srcCode, $snippet) = self::srcCode($exception->getFile(), $exception->getLine(), 'highlight');
             $stacktrace = self::$trace;
-            self::render('error', ['exception' => $exception, 'snippet' => $snippet, 'srcCode' => $srcCode, 'stacktrace' => $stacktrace]);
+            $params = ['exception' => $exception, 'snippet' => $snippet, 'srcCode' => $srcCode, 'stacktrace' => $stacktrace];
+            Container::getInstance()->make(RooterInterface::class)->resolve('error', $params);
         } else {
             $logFile = LOG_DIR . '/error-' . date('Y-m-d') . '-.log';
             ini_set('log_errors', 'On');
             ini_set('error_log', $logFile);
-
             $message = 'Uncaught exception: ' . get_class($exception);
             $message .= 'with message ' . $exception->getMessage();
             $message .= "\nStack trace: " . $exception->getTraceAsString();
             $message .= "\nThrown in " . $exception->getFile() . ' on line ' . $exception->getLine();
             error_log($message, 1, $logFile);
-            self::render('errors/user', ['exception' => $exception, 'snippet' => '', 'srcCode' => '', 'stacktrace' => '']);
-        }
-    }
-
-    public static function render(string $route, array $params = []) : void
-    {
-        $rooter = Container::getInstance()->make(RooterInterface::class);
-        list($controller, $method) = $rooter->resolveWithException($route);
-        $controllerObject = $rooter->controllerObject($controller, $method);
-        if (is_callable([$controllerObject, $method], true, $callableName)) {
-            $controllerObject->$method($params);
+            $params = ['exception' => $exception, 'snippet' => '', 'srcCode' => '', 'stacktrace' => ''];
+            Container::getInstance()->make(RooterInterface::class)->resolve('error', $params);
         }
     }
 
@@ -129,6 +121,7 @@ class ErrorHandling
                 $code = sprintf('%d | %s', $i, $src[$i]);
             }
         }
+
         return [
             $code,
             $snippet,
@@ -153,6 +146,7 @@ class ErrorHandling
             $code .= '</li>';
         }
         $code .= '</ul>';
+
         return $code;
     }
 

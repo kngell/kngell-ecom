@@ -6,8 +6,33 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RequestHandler extends GlobalVariables
 {
+    use HttpTraits;
+
+    private HttpMethod $method;
+    private ?string $protocol;
+    private string $requestUri;
+    private float $requestStartTime;
+    private ?string $rawContent = null;
+    private CollectionInterface $query;
+    private CollectionInterface $post;
+    private CollectionInterface $cookies;
+    private CollectionInterface $server;
+    private CollectionInterface $headers;
+    private CollectionInterface $httpFiles;
+
     public function __construct(private Sanitizer $sanitizer)
     {
+        $this->requestStartTime = $this->getServer('request_time_float');
+        $this->method = HttpMethod::fromString($this->getServer('request_method'));
+        $this->post = new Collection($this->getPost());
+        $this->query = new Collection($this->getGet());
+        $this->server = new Collection($this->getServer());
+        $this->protocol = $this->getServer('server_protocol');
+        $this->requestUri = $this->getServer('request_uri');
+
+        $this->initHeaders();
+        $this->initFiles();
+        $this->emptyGlobals();
     }
 
     public function handler() : Request
@@ -21,6 +46,7 @@ class RequestHandler extends GlobalVariables
                 }
             }
         }
+
         return false;
     }
 
@@ -39,6 +65,7 @@ class RequestHandler extends GlobalVariables
         if ($position === false) {
             return $path;
         }
+
         return substr($path, 0, $position);
     }
 
@@ -54,6 +81,7 @@ class RequestHandler extends GlobalVariables
         if (($position = strpos($path, '?')) !== false) {
             $path = substr($path, 0, $position);
         }
+
         return $path;
     }
 
@@ -90,13 +118,13 @@ class RequestHandler extends GlobalVariables
                 break;
             case 'put':
                 return ($global == 'put') ? true : false;
-            break;
+                break;
             case 'files':
                 return ($global == 'file') ? true : false;
-            break;
+                break;
             default:
                 return false;
-            break;
+                break;
         }
     }
 
@@ -107,6 +135,7 @@ class RequestHandler extends GlobalVariables
             foreach ($postData[$input] as $val) {
                 $r[] = $this->sanitizer::clean($val);
             }
+
             return $r;
         }
         if (!$input) {
@@ -117,6 +146,7 @@ class RequestHandler extends GlobalVariables
 
             return $data;
         }
+
         return isset($postData[$input]) ? $this->sanitizer::clean($postData[$input]) : false;
     }
 
@@ -136,6 +166,7 @@ class RequestHandler extends GlobalVariables
                     }
                 }
             }
+
             return $r;
         }
     }
@@ -215,6 +246,51 @@ class RequestHandler extends GlobalVariables
     public function add_slashes(mixed $data) : string
     {
         return addslashes($data);
+    }
+
+    private function emptyGlobals() : void
+    {
+        $_GET = [];
+        $_POST = [];
+        $_REQUEST = [];
+        $_COOKIE = [];
+        $_FILES = [];
+    }
+
+    private function initFiles() : void
+    {
+        $this->httpFiles = new Collection();
+        $files = $this->getFiles();
+        if (empty($files)) {
+            return;
+        }
+        foreach ($files as $key => $file) {
+            $file = $this->sanitizer::cleanFiles($file);
+            if (!ArrayUtil::isAssoc($file)) {
+                $subFiles = [];
+                foreach ($file as $subFile) {
+                    $subFile[] = new FileRequest($subFile['tmp_name'], $subFile['name'], $subFile['type'], $subFile['error']);
+                }
+                $this->httpFiles->offsetGet($key, $subFile);
+            } else {
+                $this->httpFiles->offsetGet($key, new FileRequest($file['tmp_name'], $file['name'], $file['type'], $file['error']));
+            }
+        }
+    }
+
+    private function initHeaders() : void
+    {
+        $this->headers = new Collection();
+        $server = $this->getServer();
+        if (empty($server)) {
+            return;
+        }
+        foreach ($server as $key => $value) {
+            if (strtoupper(substr($key, 0, 5)) === 'HTTP_') {
+                $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
+                $this->headers->offsetSet($name, $value);
+            }
+        }
     }
 
     private function removeQueryString(string $url) : string

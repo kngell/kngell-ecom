@@ -5,7 +5,7 @@
       </h5>
       <h1 class="second-title">
          <?php $title = explode('|', $slider['title']);
-                $title = array_map('trim', $title); ?>
+        $title = array_map('trim', $title); ?>
          <span class="title-left"><?=$title[0]?>
          </span>&nbsp;<span class="title-right"><?=$title[1]?></span>
       </h1>

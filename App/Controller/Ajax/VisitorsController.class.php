@@ -45,6 +45,7 @@ class VisitorsController extends Controller
                     }
                 }
             }
+
             return $this->model(VisitorsManager::class)->assign($new_visitor)->manageVisitors($new_visitor);
         }
     }

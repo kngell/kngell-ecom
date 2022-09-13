@@ -6,7 +6,6 @@ import _chk_addressModal from "./partials/_chk_addressModal";
 import _chk_shipping_modeChange from "./partials/_chk_shipping_modeChange";
 import variables from "./partials/_chk_init_variables";
 import { csrftoken, frm_name } from "corejs/config";
-import { popperOffsets } from "@popperjs/core";
 // import _chk_success_msg from "./partials/_chk_success_msg";
 // import _credit_card from "../credit_card/_card";
 class Checkout {

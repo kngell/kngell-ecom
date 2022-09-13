@@ -10,6 +10,7 @@ class ClearCustomerSessionListener implements ListenerInterface
         if ($object->getSession()->exists(CHECKOUT_PROCESS_NAME)) {
             $object->getSession()->delete(CHECKOUT_PROCESS_NAME);
         }
+
         return [];
     }
 }

@@ -121,6 +121,7 @@ final class BaseConstants
         // PERMISSIONS
         // -----------------------------------------------------------------------
         defined('ACCESS_RESTRICTED') or define('ACCESS_RESTRICTED', 'Restricted');
+        defined('PREVIOUS_PAGE') or define('PREVIOUS_PAGE', 'ppp_page');
 
         // -----------------------------------------------------------------------
         // FACEBOOK
@@ -151,6 +152,10 @@ final class BaseConstants
         defined('CHECKOUT_PROCESS_NAME') or define('CHECKOUT_PROCESS_NAME', 'checkoutxxxxkljdfd');
         defined('TRANSACTION_ID') or define('TRANSACTION_ID', 'trsss_checkout_transaction');
         defined('BRAND_NUM') or define('BRAND_NUM', 'checkoutxxxxkljdfd');
+        // -----------------------------------------------------------------------
+        // User Account
+        // -----------------------------------------------------------------------
+        defined('USER_ACCOUNT_DATA') or define('USER_ACCOUNT_DATA', 'user_account_kngell_xxx');
         // -----------------------------------------------------------------------
         // Time zone cookies
         // -----------------------------------------------------------------------

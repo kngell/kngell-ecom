@@ -132,7 +132,7 @@ class Home {
       .then((visitors_data) => {
         var data = {
           ...{
-            url: "visitors",
+            url: "/visitors",
           },
           ...visitors_data,
         };

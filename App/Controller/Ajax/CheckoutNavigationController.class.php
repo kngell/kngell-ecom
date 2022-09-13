@@ -14,7 +14,10 @@ class CheckoutNavigationController extends Controller
     public function validate(array $args = []) : void
     {
         $data = $this->isValidRequest();
-        if (isset($data['page'])) {
+        if ($data == false) {
+            $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Invalid csrf Token! Please connect login In to continue.')]);
+        }
+        if ($data && isset($data['page'])) {
             $resp = match ($data['page']) {
                 '0' => $this->validateInfosContact($data),
                 '1' => $this->validateShippingClass($data),
@@ -41,6 +44,7 @@ class CheckoutNavigationController extends Controller
             }
             $shAry[] = $shClass;
         }
+
         return new collection($shAry);
     }
 

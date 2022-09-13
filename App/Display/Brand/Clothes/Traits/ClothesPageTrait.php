@@ -17,8 +17,10 @@ trait ClothesPageTrait
                     }
                 }
             }
+
             return 'style="background-image: ' . $url . ' "';
         }
+
         return '';
     }
 

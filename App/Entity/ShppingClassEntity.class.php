@@ -37,6 +37,7 @@ class ShippingClassEntity extends Entity
     public function setShcId(int $shcId) : self
     {
         $this->shcId = $shcId;
+
         return $this;
     }
 
@@ -56,6 +57,7 @@ class ShippingClassEntity extends Entity
     public function setShCompId(int $shCompId) : self
     {
         $this->shCompId = $shCompId;
+
         return $this;
     }
 
@@ -75,6 +77,7 @@ class ShippingClassEntity extends Entity
     public function setShName(string $shName) : self
     {
         $this->shName = $shName;
+
         return $this;
     }
 
@@ -94,6 +97,7 @@ class ShippingClassEntity extends Entity
     public function setShDescr(string $shDescr) : self
     {
         $this->shDescr = $shDescr;
+
         return $this;
     }
 
@@ -113,6 +117,7 @@ class ShippingClassEntity extends Entity
     public function setStatus(string $status) : self
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -132,6 +137,7 @@ class ShippingClassEntity extends Entity
     public function setPrice(string $price) : self
     {
         $this->price = $price;
+
         return $this;
     }
 
@@ -151,6 +157,7 @@ class ShippingClassEntity extends Entity
     public function setDeliveryLeadTime(int $deliveryLeadTime) : self
     {
         $this->deliveryLeadTime = $deliveryLeadTime;
+
         return $this;
     }
 
@@ -170,6 +177,7 @@ class ShippingClassEntity extends Entity
     public function setDefaultShippingClass(string $defaultShippingClass) : self
     {
         $this->defaultShippingClass = $defaultShippingClass;
+
         return $this;
     }
 
@@ -189,6 +197,7 @@ class ShippingClassEntity extends Entity
     public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -208,6 +217,7 @@ class ShippingClassEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 }

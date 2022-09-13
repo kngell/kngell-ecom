@@ -14,7 +14,7 @@ trait ControllerTrait
         }, ARRAY_FILTER_USE_KEY);
     }
 
-    public function container(?string $class = null, array $args = []) : object
+    public function container(?string $class = null, array $args = []) : object|string
     {
         if (null != $class) {
             return Application::diGet($class, $args);
@@ -32,9 +32,23 @@ trait ControllerTrait
             }
             /** @var CartEntity */
             $en = $m->getEntity();
+
             return $sc->item_id === $en->getItemId();
         });
+
         return $shopping_cart;
+    }
+
+    public function saveViewPage() : void
+    {
+        if ($this->session->exists(PREVIOUS_PAGE)) {
+            $this->previousPage = $this->session->get(PREVIOUS_PAGE);
+        }
+        $newPage = $this->request->getQuery()->get('url');
+
+        if (!in_array($newPage, ['account'])) {
+            $this->session->set(PREVIOUS_PAGE, $newPage);
+        }
     }
 
     protected function isIncommingDataValid(object $m, string $ruleMethod, array $newKeys = []) : void
@@ -57,18 +71,20 @@ trait ControllerTrait
         }
         $setter = $m->getEntity()->getSetter($m->getEntity()->getColId('media'));
         $m->getEntity()->{$setter}(serialize($paths));
+
         return $m;
     }
 
-    protected function isValidRequest(?string $csrfName = null) : array
+    protected function isValidRequest(?string $csrfName = null) : array|bool
     {
         $data = $this->request->get();
         if ($data['csrftoken'] && $this->token->validate($data['csrftoken'], $csrfName == null ? $data['frm_name'] : $csrfName)) {
             return $data;
         }
-        $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Invalid csrf Token!')]);
 
-        $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Invalid post Request!')]);
+        return false;
+
+        // $this->jsonResponse(['result' => 'error', 'msg' => $this->helper->showMessage('warning', 'Invalid post Request!')]);
     }
 
     /**

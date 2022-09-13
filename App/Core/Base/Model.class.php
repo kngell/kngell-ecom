@@ -4,30 +4,14 @@ declare(strict_types=1);
 class Model extends AbstractModel
 {
     use ModelTrait;
-    use ModelGetterAndSetterTrait;
 
-    protected ContainerInterface $container;
-    protected MoneyManager $money;
-    protected Entity $entity;
-    protected ModelHelper $helper;
-    protected SessionInterface $session;
-    protected CookieInterface $cookie;
-    protected CacheInterface $cache;
-    protected Token $token;
-    protected RequestHandler $request;
-    protected ResponseHandler $response;
-    protected Validator $validator;
-    protected bool $validates = true;
-    protected array $validationErr = [];
-    protected string $tableSchema;
-    protected string $tableSchemaID;
     private $_results;
     private int $_count;
     private bool $_softDelete = false;
     private bool $_deleted_item = false;
     private string $_current_ctrl_method = 'update';
     private int $_lasID;
-    private bool $_flatDb; //$_matchingTestColumn;
+    private bool $_flatDb;
 
     /**
      * Main Constructor
@@ -48,6 +32,7 @@ class Model extends AbstractModel
     public function assign(array $data) : self
     {
         $this->entity->assign($data);
+
         return $this;
     }
 
@@ -78,6 +63,7 @@ class Model extends AbstractModel
             ->where([$colID != '' ? $colID : $this->get_colID() => $id])
             ->return($mode)
             ->build();
+
         return $this->findFirst($data_query);
     }
 
@@ -89,6 +75,7 @@ class Model extends AbstractModel
     public function getAllByIndex(mixed $id, string $return = '') : ?self
     {
         $this->table()->where([$this->getColIndex() => $id])->return($return == '' ? 'class' : $return);
+
         return $this->getAll();
     }
 
@@ -103,6 +90,7 @@ class Model extends AbstractModel
         while ($this->getDetails($output, $colid_name)->count() > 0) :
             $output = $prefix . $this->token->generate($token_length) . $suffix;
         endwhile;
+
         return $output;
     }
 
@@ -125,9 +113,11 @@ class Model extends AbstractModel
             }
             if ($save->count() > 0) {
                 $params['saveID'] = $save ?? '';
+
                 return $this->afterSave($params);
             }
         }
+
         return null;
     }
 

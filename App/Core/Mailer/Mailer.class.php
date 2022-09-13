@@ -44,6 +44,7 @@ class Mailer extends AbstractMailer
         $this->isValid($subject);
         $this->transporterObject->isHTML(true);
         $this->transporterObject->Subject = $subject;
+
         return $this;
     }
 
@@ -57,12 +58,14 @@ class Mailer extends AbstractMailer
     {
         $this->isValid($from['email']);
         $this->transporterObject->setFrom($from['email'], (isset($from['name']) && !empty($from['name'])) ? $from['name'] : '');
+
         return $this;
     }
 
     public function charset(string $hset) : self
     {
         $this->transporterObject->CharSet = $hset;
+
         return $this;
     }
 
@@ -80,6 +83,7 @@ class Mailer extends AbstractMailer
         if ($externalSource != null) {
             $this->transporterObject->msgHTML(file_get_contents($externalSource), $externalSourcePath);
         }
+
         return $this;
     }
 
@@ -97,6 +101,7 @@ class Mailer extends AbstractMailer
         } else {
             $this->transporterObject->addAddress($args);
         }
+
         return $this;
     }
 
@@ -111,6 +116,7 @@ class Mailer extends AbstractMailer
     {
         $this->isValid($from);
         $this->transporterObject->addReplyTo($from, ($name !== null) ? $name : null);
+
         return $this;
     }
 
@@ -124,6 +130,7 @@ class Mailer extends AbstractMailer
     {
         $this->isValid($cc);
         $this->transporterObject->addCC($cc);
+
         return $this;
     }
 
@@ -137,6 +144,7 @@ class Mailer extends AbstractMailer
     {
         $this->isValid($bcc);
         $this->transporterObject->addBCC($bcc);
+
         return $this;
     }
 
@@ -155,6 +163,7 @@ class Mailer extends AbstractMailer
         } else {
             $this->transporterObject->addAttachment($args);
         }
+
         return $this;
     }
 
@@ -175,11 +184,13 @@ class Mailer extends AbstractMailer
                 if ($saveMail === true) {
                     $this->saveMail($this->transporterObject);
                 }
+
                 return $successMsg;
             }
         } catch (MailerException $exception) {
             throw $exception;
         }
+
         return false;
     }
 

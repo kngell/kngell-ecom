@@ -30,6 +30,7 @@ trait ControllerGettersAndSettersTrait
     public function setFilePath(string $filePath) : self
     {
         $this->filePath = $filePath;
+
         return $this;
     }
 
@@ -49,6 +50,7 @@ trait ControllerGettersAndSettersTrait
     public function setCache(CacheInterface $cache) : self
     {
         $this->cache = $cache;
+
         return $this;
     }
 
@@ -68,12 +70,14 @@ trait ControllerGettersAndSettersTrait
     public function setCachedFiles(array $cachedFiles) : self
     {
         $this->cachedFiles = $cachedFiles;
+
         return $this;
     }
 
     public function getPageTitle() : string
     {
         $this->isValidView();
+
         return $this->view_instance->getPageTitle();
     }
 
@@ -85,12 +89,14 @@ trait ControllerGettersAndSettersTrait
     public function setCommentsArg(mixed $commentOutput) : self
     {
         $this->customProperties['comments'] = $commentOutput;
+
         return $this;
     }
 
     public function frontComponents(array $froncComponents = []) : self
     {
         $this->frontEndComponents = $froncComponents;
+
         return $this;
     }
 
@@ -110,6 +116,7 @@ trait ControllerGettersAndSettersTrait
     public function setRequest(RequestHandler $request) : self
     {
         $this->request = $request;
+
         return $this;
     }
 
@@ -129,6 +136,7 @@ trait ControllerGettersAndSettersTrait
     public function setResponse(ResponseHandler $response) : self
     {
         $this->response = $response;
+
         return $this;
     }
 
@@ -148,6 +156,7 @@ trait ControllerGettersAndSettersTrait
     public function setHelper(ControllerHelper $helper) : self
     {
         $this->helper = $helper;
+
         return $this;
     }
 
@@ -167,12 +176,44 @@ trait ControllerGettersAndSettersTrait
     public function setUrl(string $url) : self
     {
         $this->url = $url;
+
         return $this;
+    }
+
+    /**
+     * Get the value of routeParams.
+     */
+    public function getRouteParams(): array
+    {
+        return $this->routeParams;
+    }
+
+    /**
+     * Set the value of routeParams.
+     */
+    public function setRouteParams(array $routeParams): self
+    {
+        $this->routeParams = $routeParams;
+
+        return $this;
+    }
+
+    public function geContainer() : ContainerInterface
+    {
+        return $this->container;
+    }
+
+    /**
+     * Get the value of previousPage.
+     */
+    public function getPreviousPage(): ?string
+    {
+        return $this->previousPage ?? null;
     }
 
     protected function reflectionInstance() : ReflectionClass
     {
-        return CustomReflection::getInstance()->reflectionInstance($this::class);
+        return CustomReflector::getInstance()->reflectionInstance($this::class);
     }
 
     protected function getController() : string
@@ -183,11 +224,6 @@ trait ControllerGettersAndSettersTrait
     protected function getMethod() : string
     {
         return $this->method;
-    }
-
-    protected function getRoutes(): array
-    {
-        return $this->routeParams;
     }
 
     protected function getSiteUrl(?string $path = null): string
@@ -209,23 +245,21 @@ trait ControllerGettersAndSettersTrait
     {
         $this->isValidView();
         $this->view_instance->layout($layout);
+
         return $this;
     }
 
     protected function pageTitle(?string $page = null)
     {
         $this->isValidView();
+
         return $this->view_instance->pageTitle($page);
     }
 
     protected function getView() : View
     {
         $this->isValidView();
-        return $this->view_instance;
-    }
 
-    protected function geContainer() : ContainerInterface
-    {
-        return $this->container;
+        return $this->view_instance;
     }
 }

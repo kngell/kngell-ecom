@@ -34,6 +34,7 @@ class PaymentModeEntity extends Entity
     public function setPmId(int $pmId) : self
     {
         $this->pmId = $pmId;
+
         return $this;
     }
 
@@ -53,6 +54,7 @@ class PaymentModeEntity extends Entity
     public function setPmName(string $pmName) : self
     {
         $this->pmName = $pmName;
+
         return $this;
     }
 
@@ -72,6 +74,7 @@ class PaymentModeEntity extends Entity
     public function setPmDescr(string $pmDescr) : self
     {
         $this->pmDescr = $pmDescr;
+
         return $this;
     }
 
@@ -91,6 +94,7 @@ class PaymentModeEntity extends Entity
     public function setStatus(string $status) : self
     {
         $this->status = $status;
+
         return $this;
     }
 
@@ -110,6 +114,7 @@ class PaymentModeEntity extends Entity
     public function setDeleted(int $deleted) : self
     {
         $this->deleted = $deleted;
+
         return $this;
     }
 
@@ -129,6 +134,7 @@ class PaymentModeEntity extends Entity
     public function setCreatedAt(DateTimeInterface $createdAt) : self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -148,6 +154,7 @@ class PaymentModeEntity extends Entity
     public function setUpdatedAt(DateTimeInterface $updatedAt) : self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 }

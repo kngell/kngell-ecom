@@ -20,6 +20,7 @@ class Uploader implements UploaderInterface
                     } else {
                         $setter = $en->getSetter($en->getColId('media'));
                         $this->model->getEntity()->{$setter}(serialize([$incommingPath]));
+
                         return $this->model;
                     }
                 }
@@ -28,6 +29,7 @@ class Uploader implements UploaderInterface
             if ($path === 'error') {
                 throw new UnableToSaveFileOnDiskException('Unable to save file on disk! Please contact the administrator!');
             }
+
             return $path;
         }
     }
@@ -42,10 +44,13 @@ class Uploader implements UploaderInterface
                     if (!file_exists(IMAGE_ROOT_SRC . $targetFilePath) && !in_array($this->fm->getDestinationPath(), ['posts'])) {
                         copy($this->fm->getTargetDir() . DS . $fileName, IMAGE_ROOT_SRC . $fileName);
                     }
+
                     return $fileName;
                 }
+
                 return 'error';
             }
+
             return  $fileName;
         }
     }

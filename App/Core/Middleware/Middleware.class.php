@@ -50,6 +50,7 @@ class Middleware
         if (!is_array($middlewares)) {
             throw new MiddlewareInvalidArgumentException(get_class($middlewares) . ' is not a valid middleware object.');
         }
+
         return new static(array_merge($this->middlewares, $middlewares),$contructorArgs);
     }
 

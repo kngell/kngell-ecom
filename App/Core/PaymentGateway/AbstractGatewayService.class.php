@@ -13,6 +13,7 @@ abstract class AbstractGatewayService
         if ($this->paymentIntent->status === 'succeeded') {
             return true;
         }
+
         return false;
     }
 }

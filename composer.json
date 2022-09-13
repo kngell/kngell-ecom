@@ -43,11 +43,11 @@
     "symfony/http-foundation": "^6.0",
     "tijsverkoyen/css-to-inline-styles": "^2.2",
     "pelago/emogrifier": "^6.0",
-    "league/iso3166": "^4.0"
+    "league/iso3166": "^4.0",
+    "psr/container": "^2.0"
   },
   "require-dev": {
     "symfony/var-dumper": "^6.0",
-    "friendsofphp/php-cs-fixer": "^3.8",
     "symfony/dotenv": "^6.0"
   },
   "autoload": {
@@ -57,7 +57,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "App\\Tests\\": "tests/"
+      "App\\Services\\": "/Services/"
     }
   },
   "scripts": {

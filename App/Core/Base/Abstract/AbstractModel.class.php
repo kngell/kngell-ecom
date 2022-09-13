@@ -4,9 +4,25 @@ declare(strict_types=1);
 
 abstract class AbstractModel
 {
+    use ModelGetterAndSetterTrait;
     protected string $_modelName;
     protected QueryParams $queryParams;
     protected RepositoryInterface|FileStorageRepositoryInterface $repository;
+    protected ContainerInterface $container;
+    protected MoneyManager $money;
+    protected Entity $entity;
+    protected ModelHelper $helper;
+    protected SessionInterface $session;
+    protected CookieInterface $cookie;
+    protected CacheInterface $cache;
+    protected Token $token;
+    protected RequestHandler $request;
+    protected ResponseHandler $response;
+    protected Validator $validator;
+    protected bool $validates = true;
+    protected array $validationErr = [];
+    protected string $tableSchema;
+    protected string $tableSchemaID;
 
     /*
      * Prevent Deleting Ids
@@ -30,11 +46,6 @@ abstract class AbstractModel
         return $this->getQueryParams()->table($tbl, $columns, 'table_recursive');
     }
 
-    public function getQueryParams() : QueryParams
-    {
-        return $this->queryParams;
-    }
-
     public function conditions() : self
     {
         if ($this->queryParams->hasConditions()) {
@@ -45,6 +56,7 @@ abstract class AbstractModel
             throw new BaseException('unable to update row!');
         }
         $this->table()->where([$colID => $this->entity->{$this->entity->getGetters($colID)}()])->build();
+
         return $this;
     }
 
@@ -66,6 +78,7 @@ abstract class AbstractModel
         if (isset($this->fileErr)) {
             unset($this->fileErr);
         }
+
         return true;
     }
 
@@ -105,6 +118,7 @@ abstract class AbstractModel
     public function afterDelete($params = [])
     {
         $params = null;
+
         return true;
     }
 
@@ -151,6 +165,7 @@ abstract class AbstractModel
                 $columnsName[] = '$' . $column->Field;
             }
         }
+
         return $columnsName;
     }
 }

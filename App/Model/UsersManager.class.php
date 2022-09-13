@@ -31,6 +31,23 @@ class UsersManager extends Model
             }
         }
         $user_roles = null;
+
         return $response ? $response : [];
+    }
+
+    public function singleUser(int $id = -1) : ?self
+    {
+        if (!($id < 0)) {
+            $this->table()->leftJoin('user_extra_data', ['u_descr', 'u_comment', 'gender', 'dob', 'u_function'])
+                ->on(['user_id', 'user_id'])
+                ->where(['user_id' => $id])
+                ->return('class');
+            $u = $this->getAll();
+            if ($u->count() === 1) {
+                return $u->assign((array) current($u->get_results()));
+            }
+        }
+
+        return null;
     }
 }

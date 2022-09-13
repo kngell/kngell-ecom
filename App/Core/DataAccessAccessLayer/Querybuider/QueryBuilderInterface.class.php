@@ -35,9 +35,9 @@ interface QueryBuilderInterface
     /**
      * --------------------------------------------------------------------------------------------------
      * Search query.
-     *@return string
+     *@return string|bool
      */
-    public function search() : string;
+    public function search() : string|bool;
 
     /**
      * --------------------------------------------------------------------------------------------------

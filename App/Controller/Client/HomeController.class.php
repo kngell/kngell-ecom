@@ -22,7 +22,8 @@ class HomeController extends Controller
         // echo $this->route_params;
         // /** @var SlidersManager */
         // $model = $this->container(OrdersManager::class);
-        // dd(Stringify::camelCase(implode(',', $model->getTableColumn())));
+        // dd(StringUtil::camelCase(implode(',', $model->getTableColumn())));
+
         $this->pageTitle('Modile Phones - Best Aparels Online Store');
         $this->view()->addProperties(['name' => 'Home Page']);
         $this->render('phones' . DS . 'index', $this->displayPhones(brand:2, cache: 'phones_products'));

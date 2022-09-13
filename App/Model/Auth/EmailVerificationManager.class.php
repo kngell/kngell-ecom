@@ -25,6 +25,7 @@ class EmailVerificationManager extends Model
         if ($user->count() > 0) {
             return $user->assign((array) current($user->get_results()));
         }
+
         return null;
     }
 

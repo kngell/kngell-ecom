@@ -33,6 +33,7 @@ class SelectOptions
     public function setOptionGlobalAttr(array $optionGlobalAttr) : self
     {
         $this->optionGlobalAttr = $optionGlobalAttr;
+
         return $this;
     }
 
@@ -52,6 +53,7 @@ class SelectOptions
     public function setOptions(array $options) : self
     {
         $this->options = $options;
+
         return $this;
     }
 }

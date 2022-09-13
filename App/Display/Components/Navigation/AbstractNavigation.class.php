@@ -7,13 +7,13 @@ abstract class AbstractNavigation
     use DisplayTraits;
 
     protected CollectionInterface $paths;
-    protected ?object $settings;
+    protected ?CollectionInterface $settings;
     protected ?DisplaySearchBox $searchBox;
     protected ?array $cartItem;
     protected ?View $view;
     protected ?CollectionInterface $menu = null;
 
-    public function __construct(NavigationPath $paths, ?object $settings = null, ?DisplaySearchBox $searchBox = null, ?array $cartItem = [], ?View $view = null)
+    public function __construct(NavigationPath $paths, ?CollectionInterface $settings = null, ?DisplaySearchBox $searchBox = null, ?array $cartItem = [], ?View $view = null)
     {
         $this->paths = $paths->Paths();
         $this->settings = $settings;
@@ -27,10 +27,12 @@ abstract class AbstractNavigation
     {
         $settings = $this->getTemplate('settingsPath');
         if (isset($this->settings) && !empty($this->settings)) {
-            $settings = str_replace('{{address}}', $this->settings->site_address, $settings);
-            $settings = str_replace('{{phone}}', $this->settings->site_phone, $settings);
+            $settings = str_replace('{{address}}', $this->settings->offsetGet('site_address'), $settings);
+            $settings = str_replace('{{phone}}', $this->settings->offsetGet('site_phone'), $settings);
+
             return $settings;
         }
+
         return '';
     }
 
@@ -43,6 +45,7 @@ abstract class AbstractNavigation
         }
         $template = str_replace('{{connectedUser}}', $connexion, $this->getTemplate('conectPath'));
         $template = str_replace('{{wishlist}}', $this->cartItem['whishlistItmes'], $template);
+
         return $template;
     }
 
@@ -66,12 +69,14 @@ abstract class AbstractNavigation
                 $menu_html .= $this->menuItem($name, $link, $active);
             }
         }
+
         return $menu_html;
     }
 
     protected function getTemplate(string $path) : string
     {
         $this->isFileexists($this->paths->offsetGet($path));
+
         return file_get_contents($this->paths->offsetGet($path));
     }
 
@@ -99,12 +104,14 @@ abstract class AbstractNavigation
                 }
             }
         }
+
         return str_replace('{{dropdownMenu}}', $menu_html, $menu);
     }
 
     private function dropdownActive(string $active, string $key, string $value)
     {
         $href = $key != 'Logout' ? $value : 'javascript:void(0)';
+
         return '<li class="dropdown-item nav-item ' . $active . '">
    <a class="nav-link" href="' . $href . '">' . $key . '</a>
 </li>';
@@ -113,6 +120,7 @@ abstract class AbstractNavigation
     private function dropdown(string $active, string $key, string $value) : string
     {
         $href = $key != 'Logout' ? $value : 'javascript:void(0)';
+
         return '<li class="dropdown-item nav-item' . $active . ' alert alert-warning">
    <a class="nav-link text-danger" href="' . $href . '"> ' . $key . ' </a>
 </li>';
